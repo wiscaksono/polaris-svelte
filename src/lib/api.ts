@@ -10,7 +10,7 @@ export interface BaseResponse<T> {
 
 class API {
 	private baseURL: string;
-	private token: string | undefined;
+	token: string | undefined;
 
 	constructor(baseURL: string) {
 		this.baseURL = baseURL;
@@ -19,7 +19,7 @@ class API {
 
 	setToken(token: string) {
 		this.token = token;
-		localStorage.setItem('api_token', token);
+		if (browser) localStorage.setItem('api_token', token);
 	}
 
 	private async request<T>(path: string, options?: RequestInit) {
