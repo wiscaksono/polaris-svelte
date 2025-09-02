@@ -9,6 +9,8 @@
 	import { api } from '$lib/api';
 	import { onMount } from 'svelte';
 
+	import Layout from '$lib/components/layout/layout.svelte';
+
 	let { children, data } = $props();
 
 	const queryClient = new QueryClient({
@@ -29,6 +31,13 @@
 </svelte:head>
 
 <QueryClientProvider client={queryClient}>
-	{@render children?.()}
+	{#if data.listMenu}
+		<Layout listMenu={data.listMenu}>
+			{@render children?.()}
+		</Layout>
+	{:else}
+		{@render children?.()}
+	{/if}
+
 	<SvelteQueryDevtools />
 </QueryClientProvider>

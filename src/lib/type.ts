@@ -33,3 +33,16 @@ export type PolisListRes<T extends string> = {
 } & {
 	[key in T]: Polis[];
 };
+
+export interface ListMenu {
+	id: number;
+	name: string;
+	count: number | null;
+	sub: SubMenu[];
+}
+
+export interface SubMenu {
+	id: number;
+	name: string;
+	count: number | null;
+}
