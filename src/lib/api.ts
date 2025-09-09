@@ -8,6 +8,18 @@ export interface BaseResponse<T> {
 	data: T;
 }
 
+// Custom error class for API failures
+export class ApiError extends Error {
+	constructor(
+		public status: number,
+		public statusText: string,
+		public body?: unknown
+	) {
+		super(statusText);
+		this.name = 'ApiError';
+	}
+}
+
 class API {
 	private baseURL: string;
 	token: string | undefined;
@@ -46,10 +58,30 @@ class API {
 
 		try {
 			const response = await fetch(`${this.baseURL}${path}`, requestOptions);
-			if (!response.ok) throw new Error(response.statusText);
+
+			if (!response.ok) {
+				// Attempt to parse a JSON body for more detailed error messages
+				let errorBody;
+				try {
+					errorBody = await response.json();
+				} catch (e: unknown) {
+					if (e instanceof Error) {
+						console.error('Failed to parse JSON:', e.message);
+					} else {
+						console.error('An unknown error occurred during JSON parsing.');
+					}
+					errorBody = await response.text();
+				}
+				throw new ApiError(response.status, response.statusText, errorBody);
+			}
+
+			// The original API call's return type is now handled in the catch block above
+			// to avoid silently failing when response.ok is false.
 			return response.json() as Promise<BaseResponse<T>>;
 		} catch (error) {
-			console.error(error);
+			// Catch network-related errors (e.g., failed to fetch, network offline)
+			// and also re-throw our custom ApiError for consistency.
+			console.error(`API request to ${path} failed:`, error);
 			throw error;
 		}
 	}
