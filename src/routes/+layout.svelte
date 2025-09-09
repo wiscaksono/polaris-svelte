@@ -10,8 +10,6 @@
 	import { api } from '$lib/api';
 	import { onMount } from 'svelte';
 
-	import Layout from '$lib/components/layout/layout.svelte';
-
 	let { children, data } = $props();
 
 	const queryClient = new QueryClient({
@@ -33,14 +31,7 @@
 
 <Tooltip.Provider delayDuration={100}>
 	<QueryClientProvider client={queryClient}>
-		{#if data.listMenu}
-			<Layout>
-				{@render children?.()}
-			</Layout>
-		{:else}
-			{@render children?.()}
-		{/if}
-
+		{@render children?.()}
 		<SvelteQueryDevtools />
 	</QueryClientProvider>
 </Tooltip.Provider>

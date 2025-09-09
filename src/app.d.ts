@@ -1,4 +1,5 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
+
 // for information about these interfaces
 declare global {
 	namespace App {
@@ -6,9 +7,7 @@ declare global {
 			message: string;
 			errorId: string;
 		}
-		interface Locals {
-			token: string | undefined;
-		}
+		// interface Locals {}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}

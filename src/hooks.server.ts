@@ -1,9 +1,10 @@
-import { dev } from '$app/environment';
 import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('api_token');
 	const isLoginPage = event.url.pathname.startsWith('/login');
+
+	console.log(event.locals.user);
 
 	if (!token && !isLoginPage) redirect(303, '/login');
 
@@ -35,9 +36,7 @@ export const handleError: HandleServerError = ({ error }) => {
 		);
 	}
 
-	const message = dev
-		? `[${errorId}] An error occurred: ${error instanceof Error ? error.message : 'Unknown error'}`
-		: `An unexpected error occurred. Please reference this ID: ${errorId}`;
+	const message = `Sorry, something went wrong while processing your request. Please contact support and provide this reference code bellow`;
 
 	return { message, errorId };
 };

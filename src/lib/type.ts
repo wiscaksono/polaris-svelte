@@ -34,15 +34,12 @@ export type PolisListRes<T extends string> = {
 	[key in T]: Polis[];
 };
 
-export interface ListMenu {
-	id: number;
-	name: string;
-	count: number | null;
-	sub: SubMenu[];
-}
-
-export interface SubMenu {
-	id: number;
-	name: string;
-	count: number | null;
+export interface User {
+	role_name: string;
+	lus_id: number;
+	user_login_name: string;
+	user_full_name: string;
+	pathfile_ceres: string;
+	user_nik: string;
+	token: string;
 }
