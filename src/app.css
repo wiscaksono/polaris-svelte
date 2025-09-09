@@ -1,3 +1,28 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+::-webkit-scrollbar {
+	@apply h-2.5 w-2.5;
+}
+
+::-webkit-scrollbar-track {
+	@apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply rounded-full border-[1px] border-solid border-transparent bg-[#E6E6E6] bg-clip-padding hover:bg-[#1C1C1C];
+}
+
+@layer utilities {
+	/* Hide scrollbar for Chrome, Safari, and Opera */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* Hide scrollbar for IE, Edge, and Firefox */
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+}

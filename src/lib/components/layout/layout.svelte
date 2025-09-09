@@ -1,19 +1,27 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
-	import type { ListMenu } from '$lib/type';
+	import { Tooltip } from 'bits-ui';
+	import { SvelteMap } from 'svelte/reactivity';
+	import { Collapsible } from 'bits-ui';
+	import { page } from '$app/state';
+	import { cn } from '$lib';
+	import * as icon from '@lucide/svelte';
+	import { slide } from 'svelte/transition';
 
-	import { convertMenu } from './converter';
+	import { sideMenu } from '$lib/constants';
+
+	import { onMount, type Snippet } from 'svelte';
 
 	interface $$Props {
 		children: Snippet;
-		listMenu: ListMenu[];
 	}
 
-	let { children, listMenu }: $$Props = $props();
+	let { children }: $$Props = $props();
 
-	let isOpen = $state(false);
+	let isOpen = $state(true);
 
-	const menu = convertMenu(listMenu);
+	const accordionState = new SvelteMap<number, boolean>();
+
+	const allOpen = $derived(!isOpen);
 
 	function toggleSidebar(event: KeyboardEvent) {
 		const isCmd = event.metaKey;
@@ -25,66 +33,295 @@
 			isOpen = !isOpen;
 		}
 	}
+
+	const localStorageKey = 'sidebarAccordionState';
+
+	onMount(() => {
+		const storedState = localStorage.getItem(localStorageKey);
+		if (storedState) {
+			const parsedState = JSON.parse(storedState);
+			if (parsedState) {
+				for (const [key, value] of Object.entries(parsedState)) {
+					accordionState.set(Number(key), value as boolean);
+				}
+			}
+		}
+	});
+
+	// Effect to save the state to localStorage whenever it changes
+	$effect(() => {
+		const serializableState = Object.fromEntries(accordionState);
+		localStorage.setItem(localStorageKey, JSON.stringify(serializableState));
+	});
 </script>
 
 <svelte:window onkeydown={toggleSidebar} />
 
-<div class="flex h-dvh">
-	<aside class={`border-r bg-black p-4 ${isOpen ? 'w-64' : 'w-16'}`}>
-		<header class="mb-5 flex h-7 items-center justify-center">
-			{#if isOpen}
-				<svg
-					width="163"
-					height="26"
-					viewBox="0 0 163 26"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<path
-						d="M6.31 25.08H0V0.546021H11.951C14.776 0.546021 17.111 1.39402 18.703 2.99702C20.248 4.55502 21.065 6.78502 21.065 9.44602C21.0732 10.577 20.8562 11.6983 20.4266 12.7446C19.9971 13.7908 19.3636 14.7411 18.563 15.54C16.785 17.31 14.29 18.244 11.356 18.244H6.309L6.31 25.08ZM10.728 1.79702L9.46 6.61702C9.38103 7.0099 9.18429 7.36941 8.89597 7.64772C8.60765 7.92604 8.24142 8.10996 7.846 8.17502L3.128 9.39502L7.843 10.615C8.23887 10.68 8.60552 10.8642 8.89406 11.1429C9.1826 11.4216 9.37933 11.7816 9.458 12.175L10.724 16.994L11.991 12.174C12.07 11.7811 12.2667 11.4216 12.555 11.1433C12.8433 10.865 13.2096 10.6811 13.605 10.616L18.325 9.39502L13.609 8.17502C13.2136 8.10996 12.8473 7.92604 12.559 7.64772C12.2707 7.36941 12.074 7.0099 11.995 6.61702L10.728 1.79702Z"
-						fill="#E11F27"
-					/>
-					<path
-						d="M37.9831 0C30.3071 0 24.3501 5.222 24.3501 12.688C24.3501 20.153 30.3081 25.375 37.9821 25.375C45.6561 25.375 51.6141 20.153 51.6141 12.687C51.6151 5.223 45.6601 0 37.9831 0ZM37.9831 19.73C33.6371 19.73 30.8331 16.857 30.8331 12.686C30.8331 8.515 33.6371 5.641 37.9831 5.641C42.3291 5.641 45.1681 8.515 45.1681 12.686C45.1681 16.856 42.3291 19.733 37.9831 19.733V19.731V19.73ZM73.4871 19.45H61.8161V0.42H55.5071V24.955H73.4871V19.45ZM96.1981 24.951H103.03L92.1331 0.421H86.0341L75.1341 24.955H81.9341L83.4061 21.307H94.7261L96.1981 24.951ZM85.5781 16.017L88.4881 8.867L89.0861 7.253L89.6831 8.867L92.5931 16.017H85.5781ZM121.679 24.955H129.144L123.151 16.823C126.236 15.281 127.848 12.302 127.848 8.867C127.848 3.995 124.553 0.42 118.665 0.42H105.557V24.955H111.866V17.875H116.773L121.679 24.955ZM111.866 5.923H117.403C120.172 5.923 121.399 6.87 121.399 9.008C121.399 10.83 120.453 12.408 117.333 12.408H111.866V5.923ZM138.433 0.423H132.124V24.955H138.432L138.433 0.423ZM149.403 7.363C149.403 6.311 150.455 5.365 152.698 5.365C155.025 5.461 157.307 6.046 159.394 7.082L161.672 2.175C159.1 0.742749 156.204 -0.00545382 153.26 0.002C146.986 0.002 143.026 3.122 143.096 7.959C143.271 16.756 156.519 14.197 156.519 17.948C156.519 19.49 154.311 19.911 152.629 19.911C149.79 19.911 146.846 18.684 144.603 17.422L142.151 22.399C145.324 24.3544 148.974 25.3973 152.701 25.413C158.831 25.41 163 22.464 163 17.383C163 8.166 149.403 11.215 149.403 7.36V7.363Z"
-						fill="#ffffff"
-					/>
-				</svg>
-			{:else}
-				<svg
-					width="22"
-					height="25"
-					viewBox="0 0 22 25"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<path
-						d="M6.31 24.534H0V0H11.951C14.776 0 17.111 0.848 18.703 2.451C20.248 4.009 21.065 6.239 21.065 8.9C21.0732 10.031 20.8562 11.1523 20.4266 12.1985C19.9971 13.2448 19.3636 14.1951 18.563 14.994C16.785 16.764 14.29 17.698 11.356 17.698H6.309L6.31 24.534ZM10.728 1.251L9.46 6.071C9.38103 6.46388 9.18429 6.82339 8.89597 7.1017C8.60765 7.38002 8.24142 7.56394 7.846 7.629L3.128 8.849L7.843 10.069C8.23887 10.134 8.60552 10.3181 8.89406 10.5969C9.1826 10.8756 9.37933 11.2356 9.458 11.629L10.724 16.448L11.991 11.628C12.07 11.2351 12.2667 10.8756 12.555 10.5973C12.8433 10.319 13.2096 10.1351 13.605 10.07L18.325 8.849L13.609 7.629C13.2136 7.56394 12.8473 7.38002 12.559 7.1017C12.2707 6.82339 12.074 6.46388 11.995 6.071L10.728 1.251Z"
-						fill="#E11F27"
-					/>
-				</svg>
-			{/if}
+<main class="flex h-dvh overflow-hidden bg-[#F3F3F3]">
+	<aside
+		class={cn(
+			'flex shrink-0 flex-col overflow-hidden transition-[width]',
+			isOpen ? 'w-64' : 'w-14'
+		)}
+	>
+		<header
+			class={cn(
+				'flex items-center justify-between border-b border-[#E6E6E6] transition-[padding]',
+				isOpen ? 'p-4' : 'p-2'
+			)}
+		>
+			<div class="flex flex-1 items-center gap-2">
+				<div class="grid size-10 place-items-center rounded-lg bg-[#1D1D1D]">
+					<svg
+						width="22"
+						height="26"
+						viewBox="0 0 22 26"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M6.59001 26H0V0H12.4813C15.4317 0 17.8703 0.898671 19.5329 2.59746C21.1465 4.24855 21.9998 6.6118 21.9998 9.43181C22.0083 10.6304 21.7817 11.8187 21.3331 12.9274C20.8845 14.0362 20.2228 15.0433 19.3867 15.8899C17.5298 17.7657 14.9241 18.7555 11.8599 18.7555H6.58896L6.59001 26ZM11.2041 1.32575L9.87979 6.43377C9.79731 6.85012 9.59185 7.23111 9.29073 7.52606C8.98962 7.821 8.60713 8.01592 8.19417 8.08486L3.26681 9.37776L8.19103 10.6707C8.60447 10.7395 8.98739 10.9347 9.28874 11.2301C9.59008 11.5254 9.79554 11.907 9.8777 12.3239L11.1999 17.4308L12.5231 12.3228C12.6056 11.9065 12.811 11.5255 13.1122 11.2305C13.4133 10.9356 13.7958 10.7407 14.2087 10.6717L19.1382 9.37776L14.2129 8.08486C13.7999 8.01592 13.4175 7.821 13.1163 7.52606C12.8152 7.23111 12.6098 6.85012 12.5273 6.43377L11.2041 1.32575Z"
+							fill="#F3F3F3"
+						/>
+					</svg>
+				</div>
+
+				{#if isOpen}
+					<div
+						class="flex flex-1 flex-col justify-between gap-1 whitespace-nowrap"
+						transition:slide={{ axis: 'x', duration: 150 }}
+					>
+						<p class="text-lg leading-4 font-semibold text-[#1D1D1D]">POLARIS</p>
+						<p class="text-sm leading-4 font-light text-[#4E4E4E]">By MSIG Life</p>
+					</div>
+				{/if}
+			</div>
 		</header>
 
-		<ul class="space-y-2">
-			{#each menu as item (item.id)}
-				<li>
-					<a
-						href={item.href}
-						class={`rounded-lg border whitespace-nowrap text-white ${!isOpen ? 'grid size-8 place-items-center' : 'flex h-8 items-center gap-2 p-1'}`}
-					>
-						<item.icon class={`shrink-0 ${!isOpen ? 'mx-auto' : 'size-6'}`} />
-						{#if isOpen}
-							<span class="flex-1 text-sm">
-								{item.name}
-							</span>
+		<nav
+			aria-label="Main sidebar"
+			class="no-scrollbar relative flex-1 overflow-x-hidden overflow-y-auto"
+		>
+			<div
+				aria-hidden="true"
+				class={cn(
+					'sticky top-0 left-0 w-full bg-gradient-to-b from-[#F3F3F3] via-[#F3F3F3]/80 transition-[height]',
+					isOpen ? 'h-[18px]' : 'h-3'
+				)}
+			></div>
+
+			{#each sideMenu as { title, child: subMenu }, i (i)}
+				<Collapsible.Root
+					{title}
+					open={allOpen || accordionState.get(i) === true}
+					onOpenChange={(open) => {
+						accordionState.set(i, open);
+					}}
+				>
+					{#snippet child({ props })}
+						{#if title}
+							<section
+								{...props}
+								class={cn(
+									'border-b border-[#E6E6E6] transition-all first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0',
+									isOpen ? 'pt-0 pb-0' : 'pt-2'
+								)}
+							>
+								<Collapsible.Trigger>
+									{#snippet child({ props })}
+										{#if isOpen}
+											<button
+												{...props}
+												transition:slide={{ axis: 'y', duration: 150 }}
+												class="flex w-full items-center justify-between px-4 py-3 text-sm font-medium whitespace-nowrap text-[#4E4E4E] hover:opacity-80"
+											>
+												{title}
+												<icon.ChevronDown size={16} />
+											</button>
+										{/if}
+									{/snippet}
+								</Collapsible.Trigger>
+								<Collapsible.Content forceMount>
+									{#snippet child({ props, open })}
+										{#if open}
+											<ul
+												{...props}
+												transition:slide={{ duration: 150 }}
+												class={cn(
+													'overflow-hidden transition-all',
+													isOpen ? 'space-y-1 px-4 pb-3 ' : 'space-y-0.5 px-2 pb-2'
+												)}
+											>
+												{#each subMenu as { title, href, icon: Icon }, j (j)}
+													{@const isActive = href === page.url.pathname}
+													<Tooltip.Root disabled={isOpen}>
+														<Tooltip.Trigger>
+															{#snippet child({ props })}
+																<a
+																	{...props}
+																	{href}
+																	class={cn(
+																		'flex items-center gap-3 overflow-hidden rounded-lg border border-transparent p-2 text-[#4E4E4E] transition-all hover:border-[#E6E6E6] hover:bg-white hover:text-[#1C1C1C]',
+																		isActive
+																			? 'border-[#E6E6E6] bg-white text-[#1C1C1C]'
+																			: 'border-transparent bg-transparent',
+																		isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
+																	)}
+																>
+																	<Icon
+																		stroke="1.5"
+																		class={cn(
+																			isOpen ? 'size-4' : 'size-5',
+																			'shrink-0 transition-all'
+																		)}
+																	/>
+																	{#if isOpen}
+																		<span
+																			class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap"
+																			transition:slide={{ axis: 'x', duration: 150 }}>{title}</span
+																		>
+																	{/if}
+																</a>
+															{/snippet}
+														</Tooltip.Trigger>
+														<Tooltip.Portal>
+															<Tooltip.Content sideOffset={14} side="right">
+																<div
+																	class="rounded-lg border border-[#E6E6E6] bg-white px-3 py-2 text-sm font-medium text-[#4E4E4E]"
+																>
+																	{title}
+																</div>
+															</Tooltip.Content>
+														</Tooltip.Portal>
+													</Tooltip.Root>
+												{/each}
+											</ul>
+										{/if}
+									{/snippet}
+								</Collapsible.Content>
+							</section>
+						{:else}
+							<section
+								class={cn(
+									'border-b border-[#E6E6E6] transition-[padding] first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0',
+									isOpen ? 'px-4 py-3' : 'p-2'
+								)}
+							>
+								<button
+									class={cn(
+										'mb-1 flex items-center gap-3 overflow-hidden rounded-lg border border-[#E6E6E6] bg-white p-2 text-[#4E4E4E] transition-[width,height]',
+										isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
+									)}
+								>
+									<icon.Search
+										class={cn(isOpen ? 'size-4' : 'size-5', 'shrink-0 transition-all')}
+									/>
+									{#if isOpen}
+										<span
+											class="flex-1 text-left text-sm leading-[12px] whitespace-nowrap"
+											transition:slide={{ axis: 'x', duration: 150 }}
+										>
+											Search Polis...
+										</span>
+										<span
+											class="block rounded-sm bg-[#D9D9D9] p-1 text-[10px] leading-[6px] whitespace-nowrap"
+											transition:slide={{ axis: 'x', duration: 150 }}
+										>
+											⌘ + P
+										</span>
+									{/if}
+								</button>
+								<ul class={cn(isOpen ? 'space-y-1' : 'space-y-0.5')}>
+									{#each subMenu as { title, href, icon: Icon }, j (j)}
+										{@const isActive = href === page.url.pathname}
+										<Tooltip.Root disabled={isOpen}>
+											<Tooltip.Trigger>
+												{#snippet child({ props })}
+													<a
+														{...props}
+														{href}
+														class={cn(
+															'flex items-center gap-3 overflow-hidden rounded-lg border border-transparent p-2 text-[#4E4E4E] transition-all hover:border-[#E6E6E6] hover:bg-white hover:text-[#1C1C1C]',
+															isActive
+																? 'border-[#E6E6E6] bg-white text-[#1C1C1C]'
+																: 'border-transparent bg-transparent',
+															isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
+														)}
+													>
+														<Icon
+															stroke="1.5"
+															class={cn(isOpen ? 'size-4' : 'size-5', 'shrink-0 transition-all')}
+														/>
+														{#if isOpen}
+															<span
+																class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap"
+																transition:slide={{ axis: 'x', duration: 150 }}>{title}</span
+															>
+														{/if}
+													</a>
+												{/snippet}
+											</Tooltip.Trigger>
+											<Tooltip.Portal>
+												<Tooltip.Content sideOffset={14} side="right">
+													<div
+														class="rounded-lg border border-[#E6E6E6] bg-white px-3 py-2 text-sm font-medium text-[#4E4E4E]"
+													>
+														{title}
+													</div>
+												</Tooltip.Content>
+											</Tooltip.Portal>
+										</Tooltip.Root>
+									{/each}
+								</ul>
+							</section>
 						{/if}
-					</a>
-				</li>
+					{/snippet}
+				</Collapsible.Root>
 			{/each}
-		</ul>
+
+			<div
+				aria-hidden="true"
+				class="sticky bottom-0 left-0 h-[18px] w-full bg-gradient-to-t from-[#F3F3F3] via-[#F3F3F3]/80"
+			></div>
+		</nav>
+
+		<header
+			class={cn(
+				'flex items-center justify-between border-t border-[#E6E6E6] transition-[padding]',
+				isOpen ? 'p-4' : 'p-2'
+			)}
+		>
+			<div class="flex flex-1 items-center gap-3">
+				<img
+					src="https://avatars.githubusercontent.com/u/63142229"
+					class={cn(
+						'rounded-full object-cover object-center transition-all',
+						isOpen ? 'size-8' : 'size-10'
+					)}
+					alt="Wisnu Wicaksono Avatar"
+				/>
+				{#if isOpen}
+					<div
+						class={cn('flex-1 whitespace-nowrap text-[#1C1C1C]')}
+						transition:slide={{ axis: 'x', duration: 150 }}
+					>
+						<p class="text-sm font-medium">Wisnu Wicaksono</p>
+						<p class="text-xs font-light">Administrator</p>
+					</div>
+				{/if}
+			</div>
+			{#if isOpen}
+				<button
+					class="grid size-9 place-items-center rounded-full hover:bg-[#E6E6E6]"
+					transition:slide={{ axis: 'x', duration: 150 }}
+				>
+					<icon.ChevronsUpDown size={16} />
+				</button>
+			{/if}
+		</header>
 	</aside>
 
-	<main class="p-2">
+	<section class="m-2 ml-0 flex-1 rounded-lg bg-white px-4 py-2.5 shadow-sm">
 		{@render children()}
-	</main>
-</div>
+	</section>
+</main>
