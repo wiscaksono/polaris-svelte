@@ -4,15 +4,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('api_token');
 	const isLoginPage = event.url.pathname.startsWith('/login');
 
-	console.log(event.locals.user);
-
 	if (!token && !isLoginPage) redirect(303, '/login');
 
 	const response = await resolve(event);
 	return response;
 };
 
-export const handleError: HandleServerError = ({ error }) => {
+export const handleError: HandleServerError = ({ error, status, message }) => {
 	const errorId = crypto.randomUUID();
 	const timestamp = new Date().toISOString();
 
@@ -20,7 +18,6 @@ export const handleError: HandleServerError = ({ error }) => {
 	const yellow = (msg: string) => `\x1b[33m${msg}\x1b[0m`;
 	const gray = (msg: string) => `\x1b[90m${msg}\x1b[0m`;
 
-	// Log the full error for server-side tracking
 	if (error instanceof Error) {
 		console.error(
 			`\n${red('✖ Unexpected Error')} ${gray(`[${timestamp}]`)}\n` +
@@ -36,7 +33,10 @@ export const handleError: HandleServerError = ({ error }) => {
 		);
 	}
 
-	const message = `Sorry, something went wrong while processing your request. Please contact support and provide this reference code bellow`;
+	const clientMessage =
+		status && status >= 400 && status < 500
+			? message
+			: 'Sorry, something went wrong while processing your request. Please contact support and provide this reference code bellow';
 
-	return { message, errorId };
+	return { message: clientMessage, errorId };
 };
