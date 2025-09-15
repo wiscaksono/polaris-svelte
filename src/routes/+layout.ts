@@ -4,6 +4,8 @@ import type { LayoutLoad } from './$types';
 
 export const ssr = false;
 
+export const csr = true;
+
 export const prerender = true;
 
 export const load: LayoutLoad = async () => {

@@ -2,16 +2,16 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { dataPolisQueries } from '$lib/queries';
 
-	const data = createQuery(dataPolisQueries.list({ pageSize: 10, pageNumber: 1 }));
+	const query = createQuery(dataPolisQueries.list({ pageSize: 10, pageNumber: 1 }));
 </script>
 
 <ul>
-	{#if $data.isPending}
+	{#if $query.isPending}
 		<li>Loading...</li>
-	{:else if $data.isError}
-		<li>Error: {$data.error.message}</li>
+	{:else if $query.isError}
+		<li>Error: {$query.error.message}</li>
 	{:else}
-		{#each $data.data['Data Polis'] as item, i (i)}
+		{#each $query.data['Data Polis'] as item, i (i)}
 			<li>
 				<a href="#">{item.idreg}</a>
 			</li>

@@ -348,6 +348,6 @@
 	</aside>
 
 	<section class="m-2 ml-0 flex-1 rounded-lg bg-white px-4 py-2.5 shadow-sm">
-		{@render children()}
+		<svelte:boundary onerror={console.error}>{@render children()}</svelte:boundary>
 	</section>
 </main>

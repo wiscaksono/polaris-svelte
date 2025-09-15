@@ -101,7 +101,7 @@ export const sideMenu = [
 		child: [
 			{
 				title: 'Re-assign Task',
-				href: '/administration/re-assign-task',
+				href: '/administration/reassign-task',
 				icon: icon.UserRoundCheck
 			},
 			{

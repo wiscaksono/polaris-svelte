@@ -2,7 +2,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { workbasketQueries } from '$lib/queries';
 
-	const query = createQuery(workbasketQueries.newSubmissionList({ pageSize: 10, pageNumber: 1 }));
+	const query = createQuery(workbasketQueries.furtherList({ pageSize: 10, pageNumber: 1 }));
 </script>
 
 <ul>
@@ -11,7 +11,7 @@
 	{:else if $query.isError}
 		<li>Error: {$query.error.message}</li>
 	{:else}
-		{#each $query.data.newSubmission as item (item.case_id)}
+		{#each $query.data.further as item (item.case_id)}
 			<li>
 				<a href={`/workbasket/new-submission/${item.case_id}`}>
 					{item.case_id}

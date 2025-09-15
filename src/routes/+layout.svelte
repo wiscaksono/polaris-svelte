@@ -3,8 +3,8 @@
 	import favicon from '$lib/assets/favicon.svg';
 
 	import { Tooltip } from 'bits-ui';
-	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 	import { QueryClientProvider } from '@tanstack/svelte-query';
+	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
 
 	let { children, data } = $props();
 </script>
@@ -16,6 +16,6 @@
 <Tooltip.Provider delayDuration={100}>
 	<QueryClientProvider client={data.queryClient}>
 		{@render children?.()}
-		<SvelteQueryDevtools />
+		<SvelteQueryDevtools buttonPosition="bottom-left" />
 	</QueryClientProvider>
 </Tooltip.Provider>
