@@ -13,7 +13,7 @@
 	{:else}
 		{#each $query.data['Data Polis'] as item, i (i)}
 			<li>
-				<a href="#">{item.idreg}</a>
+				<a href="/">{item.idreg}</a>
 			</li>
 		{/each}
 	{/if}

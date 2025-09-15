@@ -13,7 +13,7 @@
 	{:else}
 		{#each $query.data.flagged as item, i (i)}
 			<li>
-				<a href="#">{item.case_id}</a>
+				<a href="/">{item.case_id}</a>
 			</li>
 		{/each}
 	{/if}
