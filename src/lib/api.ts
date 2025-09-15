@@ -1,4 +1,6 @@
+import { jwtDecode } from 'jwt-decode';
 import { PUBLIC_BASE_POLARIS_API_URL } from '$env/static/public';
+import { goto } from '$app/navigation';
 
 export interface BaseResponse<T> {
 	result: string;
@@ -36,10 +38,15 @@ class API {
 	private async request<T>(path: string, options?: RequestInit) {
 		let requestOptions: RequestInit;
 
+		if (this.token && this.isTokenExpired(this.token)) {
+			console.log('Token expired on client, logging out.');
+			this.clearSession();
+			throw new ApiError(401, 'Unauthorized - Token Expired');
+		}
+
 		if (options?.body instanceof FormData) {
 			const headers = new Headers();
 			headers.set('Content-Type', 'multipart/form-data');
-
 			requestOptions = { method: 'POST', headers, body: options?.body };
 		} else {
 			requestOptions = {
@@ -47,8 +54,7 @@ class API {
 				credentials: 'include',
 				headers: {
 					Accept: 'application/json',
-					'Content-Type':
-						options?.body instanceof FormData ? 'multipart/form-data' : 'application/json',
+					'Content-Type': options?.body instanceof FormData ? 'multipart/form-data' : 'application/json',
 					...(this.token && { Authorization: `Bearer ${this.token}` })
 				},
 				...options
@@ -58,31 +64,49 @@ class API {
 		try {
 			const response = await fetch(`${this.baseURL}${path}`, requestOptions);
 
+			if (response.status === 401) {
+				console.log('Server returned 401, logging out.');
+				this.clearSession();
+				// Re-throw the error to be handled by the consuming component
+				throw new ApiError(response.status, response.statusText);
+			}
+
 			if (!response.ok) {
-				// Attempt to parse a JSON body for more detailed error messages
 				let errorBody;
 				try {
 					errorBody = await response.json();
 				} catch (e: unknown) {
-					if (e instanceof Error) {
-						console.error('Failed to parse JSON:', e.message);
-					} else {
-						console.error('An unknown error occurred during JSON parsing.');
-					}
+					console.error('Failed to parse JSON for error body:', e);
 					errorBody = await response.text();
 				}
 				throw new ApiError(response.status, response.statusText, errorBody);
 			}
 
-			// The original API call's return type is now handled in the catch block above
-			// to avoid silently failing when response.ok is false.
 			return response.json() as Promise<BaseResponse<T>>;
 		} catch (error) {
-			// Catch network-related errors (e.g., failed to fetch, network offline)
-			// and also re-throw our custom ApiError for consistency.
 			console.error(`API request to ${path} failed:`, error);
 			throw error;
 		}
+	}
+
+	private isTokenExpired(token: string) {
+		try {
+			const decodedToken = jwtDecode(token);
+			const { exp } = decodedToken;
+			if (typeof exp !== 'number') return true;
+			const currentTime = Math.round(Date.now() / 1000);
+
+			return exp < currentTime;
+		} catch (error) {
+			console.error('Error decoding token:', error);
+			return true;
+		}
+	}
+
+	private clearSession() {
+		this.token = undefined;
+		localStorage.removeItem('api_token');
+		goto('/');
 	}
 
 	get<T>(path: string) {
