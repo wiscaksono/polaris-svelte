@@ -41,5 +41,4 @@ export interface User {
 	user_full_name: string;
 	pathfile_ceres: string;
 	user_nik: string;
-	token: string;
 }

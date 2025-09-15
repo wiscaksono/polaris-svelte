@@ -9,18 +9,6 @@ export interface BaseResponse<T> {
 	data: T;
 }
 
-// Custom error class for API failures
-export class ApiError extends Error {
-	constructor(
-		public status: number,
-		public statusText: string,
-		public body?: unknown
-	) {
-		super(statusText);
-		this.name = 'ApiError';
-	}
-}
-
 class API {
 	private baseURL: string;
 	token: string | undefined;
@@ -41,7 +29,7 @@ class API {
 		if (this.token && this.isTokenExpired(this.token)) {
 			console.log('Token expired on client, logging out.');
 			this.clearSession();
-			throw new ApiError(401, 'Unauthorized - Token Expired');
+			throw new Error('Unauthorized - Token Expired');
 		}
 
 		if (options?.body instanceof FormData) {
@@ -61,32 +49,27 @@ class API {
 			};
 		}
 
-		try {
-			const response = await fetch(`${this.baseURL}${path}`, requestOptions);
+		const response = await fetch(`${this.baseURL}${path}`, requestOptions);
 
-			if (response.status === 401) {
-				console.log('Server returned 401, logging out.');
-				this.clearSession();
-				// Re-throw the error to be handled by the consuming component
-				throw new ApiError(response.status, response.statusText);
-			}
-
-			if (!response.ok) {
-				let errorBody;
-				try {
-					errorBody = await response.json();
-				} catch (e: unknown) {
-					console.error('Failed to parse JSON for error body:', e);
-					errorBody = await response.text();
-				}
-				throw new ApiError(response.status, response.statusText, errorBody);
-			}
-
-			return response.json() as Promise<BaseResponse<T>>;
-		} catch (error) {
-			console.error(`API request to ${path} failed:`, error);
-			throw error;
+		if (response.status === 401) {
+			console.log('Server returned 401, logging out.');
+			this.clearSession();
+			// Re-throw the error to be handled by the consuming component
+			throw new Error(response.statusText);
 		}
+
+		if (!response.ok) {
+			let errorBody;
+			try {
+				errorBody = await response.json();
+			} catch (e: unknown) {
+				console.error('Failed to parse JSON for error body:', e);
+				errorBody = await response.text();
+			}
+			throw new Error(errorBody);
+		}
+
+		return response.json() as Promise<BaseResponse<T>>;
 	}
 
 	private isTokenExpired(token: string) {
