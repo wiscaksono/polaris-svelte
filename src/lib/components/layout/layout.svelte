@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tooltip } from 'bits-ui';
+	import { Tooltip, DropdownMenu } from 'bits-ui';
 	import { SvelteMap } from 'svelte/reactivity';
 	import { Collapsible } from 'bits-ui';
 	import { page } from '$app/state';
@@ -8,6 +8,7 @@
 	import { slide } from 'svelte/transition';
 
 	import { sideMenu } from '$lib/constants';
+	import SearchPolis from './search-polis.svelte';
 
 	import { onMount, type Snippet } from 'svelte';
 
@@ -178,8 +179,10 @@
 																	{#if isOpen}
 																		<span
 																			class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap"
-																			transition:slide={{ axis: 'x', duration: 150 }}>{title}</span
+																			transition:slide={{ axis: 'x', duration: 150 }}
 																		>
+																			{title}
+																		</span>
 																	{/if}
 																</a>
 															{/snippet}
@@ -207,30 +210,7 @@
 									isOpen ? 'px-4 py-3' : 'p-2'
 								)}
 							>
-								<button
-									class={cn(
-										'mb-1 flex items-center gap-3 overflow-hidden rounded-lg border border-[#E6E6E6] bg-white p-2 text-[#4E4E4E] transition-[width,height]',
-										isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
-									)}
-								>
-									<icon.Search
-										class={cn(isOpen ? 'size-4' : 'size-5', 'shrink-0 transition-all')}
-									/>
-									{#if isOpen}
-										<span
-											class="flex-1 text-left text-sm leading-[12px] whitespace-nowrap"
-											transition:slide={{ axis: 'x', duration: 150 }}
-										>
-											Search Polis...
-										</span>
-										<span
-											class="block rounded-sm bg-[#D9D9D9] p-1 text-[10px] leading-[6px] whitespace-nowrap"
-											transition:slide={{ axis: 'x', duration: 150 }}
-										>
-											⌘ + P
-										</span>
-									{/if}
-								</button>
+								<SearchPolis isSidebarOpen={isOpen} />
 								<ul class={cn(isOpen ? 'space-y-1' : 'space-y-0.5')}>
 									{#each subMenu as { title, href, icon: Icon }, j (j)}
 										{@const isActive = href === page.url.pathname}
@@ -285,40 +265,86 @@
 			></div>
 		</nav>
 
-		<header
+		<div
 			class={cn(
-				'flex items-center justify-between border-t border-[#E6E6E6] transition-[padding]',
-				isOpen ? 'p-4' : 'p-2'
+				'grid place-items-center border-t border-[#E6E6E6] transition-[padding]',
+				isOpen ? 'p-2' : 'p-1'
 			)}
 		>
-			<div class="flex flex-1 items-center gap-3">
-				<img
-					src="https://avatars.githubusercontent.com/u/63142229"
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger
 					class={cn(
-						'rounded-full object-cover object-center transition-all',
-						isOpen ? 'size-8' : 'size-10'
+						'flex w-full items-center justify-between rounded-lg border border-transparent transition-all hover:border-[#E6E6E6] hover:bg-white data-[state=open]:border-[#E6E6E6] data-[state=open]:bg-white',
+						isOpen ? 'p-2' : 'p-1'
 					)}
-					alt="Wisnu Wicaksono Avatar"
-				/>
-				{#if isOpen}
-					<div
-						class={cn('flex-1 whitespace-nowrap text-[#1C1C1C]')}
-						transition:slide={{ axis: 'x', duration: 150 }}
-					>
-						<p class="text-sm font-medium">Wisnu Wicaksono</p>
-						<p class="text-xs font-light">Administrator</p>
-					</div>
-				{/if}
-			</div>
-			{#if isOpen}
-				<button
-					class="grid size-9 place-items-center rounded-full hover:bg-[#E6E6E6]"
-					transition:slide={{ axis: 'x', duration: 150 }}
 				>
-					<icon.ChevronsUpDown size={16} />
-				</button>
-			{/if}
-		</header>
+					<div class="flex flex-1 items-center gap-3">
+						<img
+							src="https://avatars.githubusercontent.com/u/63142229"
+							class={cn(
+								'rounded-full object-cover object-center transition-all',
+								isOpen ? 'size-8' : 'size-10'
+							)}
+							alt="Wisnu Wicaksono Avatar"
+						/>
+						{#if isOpen}
+							<div
+								class={cn('flex-1 text-start whitespace-nowrap text-[#1C1C1C]')}
+								transition:slide={{ axis: 'x', duration: 150 }}
+							>
+								<p class="text-sm font-medium">Wisnu Wicaksono</p>
+								<p class="text-xs font-light">Administrator</p>
+							</div>
+						{/if}
+					</div>
+					{#if isOpen}
+						<div
+							class="grid size-9 place-items-center rounded-full"
+							transition:slide={{ axis: 'x', duration: 150 }}
+						>
+							<icon.ChevronsUpDown size={16} />
+						</div>
+					{/if}
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Portal>
+					<DropdownMenu.Content
+						sideOffset={14}
+						align="end"
+						alignOffset={6}
+						side="right"
+						class="rounded-lg border border-[#E6E6E6] bg-white p-1 text-sm font-medium text-[#4E4E4E]"
+					>
+						<DropdownMenu.Item>
+							{#snippet child({ props })}
+								<a
+									{...props}
+									href="/"
+									class="flex w-full items-center gap-2 rounded-md p-2 text-start hover:bg-[#E6E6E6]/50"
+								>
+									<icon.Key stroke="1.5" class="size-4" />
+									<span class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap">
+										Change Password
+									</span>
+								</a>
+							{/snippet}
+						</DropdownMenu.Item>
+						<DropdownMenu.Item>
+							{#snippet child({ props })}
+								<button
+									{...props}
+									class="flex w-full items-center gap-2 rounded-md p-2 text-start hover:bg-[#E6E6E6]/50"
+								>
+									<icon.LogOut stroke="1.5" class="size-4" />
+									<span class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap">
+										Log Out
+									</span>
+								</button>
+							{/snippet}
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Portal>
+			</DropdownMenu.Root>
+		</div>
 	</aside>
 
 	<section class="m-2 ml-0 flex-1 rounded-lg bg-white px-4 py-2.5 shadow-sm">

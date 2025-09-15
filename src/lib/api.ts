@@ -1,4 +1,3 @@
-import { browser } from '$app/environment';
 import { PUBLIC_BASE_POLARIS_API_URL } from '$env/static/public';
 
 export interface BaseResponse<T> {
@@ -26,12 +25,12 @@ class API {
 
 	constructor(baseURL: string) {
 		this.baseURL = baseURL;
-		this.token = browser ? (localStorage.getItem('user_token') ?? undefined) : undefined;
+		this.token = localStorage.getItem('api_token') ?? undefined;
 	}
 
 	setToken(token: string) {
 		this.token = token;
-		if (browser) localStorage.setItem('api_token', token);
+		localStorage.setItem('api_token', token);
 	}
 
 	private async request<T>(path: string, options?: RequestInit) {

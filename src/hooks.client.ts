@@ -1,17 +1,7 @@
-import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
+import { type HandleClientError } from '@sveltejs/kit';
 import { ApiError } from '$lib/api';
 
-export const handle: Handle = async ({ event, resolve }) => {
-	const token = event.cookies.get('api_token');
-	const isLoginPage = event.url.pathname.startsWith('/login');
-
-	if (!token && !isLoginPage) redirect(303, '/login');
-
-	const response = await resolve(event);
-	return response;
-};
-
-export const handleError: HandleServerError = ({ error, status, message }) => {
+export const handleError: HandleClientError = ({ error, status, message }) => {
 	const errorId = crypto.randomUUID();
 	const timestamp = new Date().toISOString();
 
