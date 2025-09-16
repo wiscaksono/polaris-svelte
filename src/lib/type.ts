@@ -1,3 +1,10 @@
+export interface BaseResponse<T> {
+	result: string;
+	error: boolean;
+	message: string;
+	data: T;
+}
+
 export interface Polis {
 	reg_spaj: string;
 	nopol: string;

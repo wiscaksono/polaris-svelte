@@ -1,16 +1,13 @@
 import { jwtDecode } from 'jwt-decode';
 import { PUBLIC_BASE_POLARIS_API_URL } from '$env/static/public';
-import { goto } from '$app/navigation';
 
-export interface BaseResponse<T> {
-	result: string;
-	error: boolean;
-	message: string;
-	data: T;
-}
+import { goto } from '$app/navigation';
+import type { BaseResponse } from './type';
 
 class API {
 	private baseURL: string;
+	private isRefreshing = false;
+
 	token: string | undefined;
 
 	constructor(baseURL: string) {
@@ -23,30 +20,56 @@ class API {
 		localStorage.setItem('api_token', token);
 	}
 
-	private async request<T>(path: string, options?: RequestInit) {
-		let requestOptions: RequestInit;
+	private async refreshToken(): Promise<void> {
+		if (this.isRefreshing) return;
+		this.isRefreshing = true;
 
-		if (this.token && this.isTokenExpired(this.token)) {
-			console.log('Token expired on client, logging out.');
+		try {
+			const response = await fetch(this.baseURL + '/auth/refreshToken', {
+				headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${this.token}` }
+			});
+
+			if (!response.ok) throw new Error('Failed to refresh token');
+
+			const result = (await response.json()) as { token: string };
+			if (result.token && result.token) {
+				this.setToken(result.token);
+			} else {
+				throw new Error('No new token received');
+			}
+		} catch (error) {
+			console.error('Token refresh failed, logging out.', error);
 			this.clearSession();
-			throw new Error('Unauthorized - Token Expired');
+			throw error; // Re-throw to be caught by the original request
+		} finally {
+			this.isRefreshing = false;
+		}
+	}
+
+	private async request<T>(path: string, options?: RequestInit): Promise<BaseResponse<T>> {
+		if (this.token && this.isTokenExpired(this.token)) {
+			console.log('Token expired, attempting to refresh.');
+			try {
+				await this.refreshToken();
+			} catch {
+				throw new Error('Unauthorized - Token Refresh Failed');
+			}
 		}
 
-		if (options?.body instanceof FormData) {
-			const headers = new Headers();
-			headers.set('Content-Type', 'multipart/form-data');
-			requestOptions = { method: 'POST', headers, body: options?.body };
-		} else {
-			requestOptions = {
-				mode: 'cors',
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': options?.body instanceof FormData ? 'multipart/form-data' : 'application/json',
-					...(this.token && { Authorization: `Bearer ${this.token}` })
-				},
-				...options
-			};
+		const requestOptions: RequestInit = {
+			mode: 'cors',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				...(!(options?.body instanceof FormData) && { 'Content-Type': 'application/json' }),
+				...(this.token && { Authorization: `Bearer ${this.token}` })
+			},
+			...options
+		};
+
+		// Remove Content-Type for FormData to let the browser set it with the boundary
+		if (requestOptions.body instanceof FormData && requestOptions.headers) {
+			delete (requestOptions.headers as Record<string, string>)['Content-Type'];
 		}
 
 		const response = await fetch(`${this.baseURL}${path}`, requestOptions);
@@ -54,7 +77,6 @@ class API {
 		if (response.status === 401) {
 			console.log('Server returned 401, logging out.');
 			this.clearSession();
-			// Re-throw the error to be handled by the consuming component
 			throw new Error(response.statusText);
 		}
 
@@ -66,7 +88,7 @@ class API {
 				console.error('Failed to parse JSON for error body:', e);
 				errorBody = await response.text();
 			}
-			throw new Error(errorBody);
+			throw new Error(JSON.stringify(errorBody));
 		}
 
 		return response.json() as Promise<BaseResponse<T>>;
