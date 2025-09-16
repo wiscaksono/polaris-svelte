@@ -3,8 +3,8 @@
 
 	import { api, exclude } from '$lib';
 	import { goto } from '$app/navigation';
+	import { userStore } from '$lib/stores';
 	import { loginQuery } from '$lib/queries';
-	import { UserStore } from '$lib/stores/user.svelte';
 
 	let payload = $state({ username: 'billi', password: 'Asdf12345' });
 
@@ -13,8 +13,7 @@
 		onSuccess: (data) => {
 			api.setToken(data.token);
 
-			const userStore = new UserStore();
-			userStore.user = exclude(data, ['token']);
+			userStore.current = exclude(data, ['token']);
 
 			goto('/');
 		}

@@ -51,6 +51,7 @@
 		"bits-ui": "^2.9.6",
 		"clsx": "^2.1.1",
 		"jwt-decode": "^4.0.0",
+		"runed": "^0.31.1",
 		"tailwind-merge": "^3.3.1"
 	}
 }

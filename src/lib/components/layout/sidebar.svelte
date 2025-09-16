@@ -1,21 +1,20 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import * as icon from '@lucide/svelte';
+	import { PersistedState } from 'runed';
 	import { slide } from 'svelte/transition';
-	import { SvelteMap } from 'svelte/reactivity';
 	import { Tooltip, DropdownMenu, Collapsible } from 'bits-ui';
 
 	import { cn } from '$lib';
+	import { userStore } from '$lib/stores';
 	import { sideMenu } from '$lib/constants';
-	import { UserStore } from '$lib/stores/user.svelte';
 
 	import SearchPolis from './search-polis.svelte';
 
-	let isOpen = $state(true);
-	let allOpen = $derived(!isOpen);
-	let accordionState = new SvelteMap<number, boolean>();
-	const userStore = new UserStore();
+	const sidebarCollapsed = new PersistedState<boolean>('sidebar-collapsed', true);
+	const collapsibleState = new PersistedState<{ [key: number]: boolean }>('sidebar-collapsible-state', {});
+
+	let allOpen = $derived(!sidebarCollapsed.current);
 
 	function toggleSidebar(event: KeyboardEvent) {
 		const isCmd = event.metaKey;
@@ -24,35 +23,15 @@
 
 		if ((isCmd || isCtrl) && isB) {
 			event.preventDefault();
-			isOpen = !isOpen;
+			sidebarCollapsed.current = !sidebarCollapsed.current;
 		}
 	}
-
-	const localStorageKey = 'sidebarAccordionState';
-
-	onMount(() => {
-		const storedState = localStorage.getItem(localStorageKey);
-		if (storedState) {
-			const parsedState = JSON.parse(storedState);
-			if (parsedState) {
-				for (const [key, value] of Object.entries(parsedState)) {
-					accordionState.set(Number(key), value as boolean);
-				}
-			}
-		}
-	});
-
-	// Effect to save the state to localStorage whenever it changes
-	$effect(() => {
-		const serializableState = Object.fromEntries(accordionState);
-		localStorage.setItem(localStorageKey, JSON.stringify(serializableState));
-	});
 </script>
 
 <svelte:window onkeydown={toggleSidebar} />
 
-<aside class={cn('flex shrink-0 flex-col overflow-hidden transition-[width]', isOpen ? 'w-64' : 'w-14')}>
-	<header class={cn('flex items-center justify-between border-b border-[#E6E6E6] transition-[padding]', isOpen ? 'p-4' : 'p-2')}>
+<aside class={cn('flex shrink-0 flex-col overflow-hidden transition-[width]', sidebarCollapsed.current ? 'w-64' : 'w-14')}>
+	<header class={cn('flex items-center justify-between border-b border-[#E6E6E6] transition-[padding]', sidebarCollapsed.current ? 'p-4' : 'p-2')}>
 		<div class="flex flex-1 items-center gap-2">
 			<div class="grid size-10 place-items-center rounded-lg bg-[#1D1D1D]">
 				<svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +42,7 @@
 				</svg>
 			</div>
 
-			{#if isOpen}
+			{#if sidebarCollapsed.current}
 				<div class="flex flex-1 flex-col justify-between gap-1 whitespace-nowrap" transition:slide={{ axis: 'x', duration: 150 }}>
 					<p class="text-lg leading-4 font-semibold text-[#1D1D1D]">POLARIS</p>
 					<p class="text-sm leading-4 font-light text-[#4E4E4E]">By MSIG Life</p>
@@ -75,27 +54,33 @@
 	<nav aria-label="Main sidebar" class="no-scrollbar relative flex-1 overflow-x-hidden overflow-y-auto">
 		<div
 			aria-hidden="true"
-			class={cn('sticky top-0 left-0 w-full bg-gradient-to-b from-[#F3F3F3] via-[#F3F3F3]/80 transition-[height]', isOpen ? 'h-[18px]' : 'h-3')}
+			class={cn(
+				'sticky top-0 left-0 w-full bg-gradient-to-b from-[#F3F3F3] via-[#F3F3F3]/80 transition-[height]',
+				sidebarCollapsed.current ? 'h-[18px]' : 'h-3'
+			)}
 		></div>
 
 		{#each sideMenu as { title, child: subMenu }, i (i)}
-			<Collapsible.Root {title} open={allOpen || accordionState.get(i) === true} onOpenChange={(open) => accordionState.set(i, open)}>
+			<Collapsible.Root {title} open={allOpen || collapsibleState.current[i]} onOpenChange={(open) => (collapsibleState.current[i] = open)}>
 				{#snippet child({ props })}
 					{#if title}
 						<section
 							{...props}
-							class={cn('border-b border-[#E6E6E6] transition-all first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0', isOpen ? 'pt-0 pb-0' : 'pt-2')}
+							class={cn(
+								'border-b border-[#E6E6E6] transition-all first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0',
+								sidebarCollapsed.current ? 'pt-0 pb-0' : 'pt-2'
+							)}
 						>
 							<Collapsible.Trigger>
 								{#snippet child({ props })}
-									{#if isOpen}
+									{#if sidebarCollapsed.current}
 										<button
 											{...props}
 											transition:slide={{ axis: 'y', duration: 150 }}
-											class="flex w-full items-center justify-between px-4 py-3 text-sm font-medium whitespace-nowrap text-[#4E4E4E] hover:opacity-80"
+											class="group flex w-full items-center justify-between px-4 py-3 text-sm font-medium whitespace-nowrap text-[#4E4E4E] hover:opacity-80"
 										>
 											{title}
-											<icon.ChevronDown size={16} />
+											<icon.ChevronDown size={16} class="transition-transform group-data-[state=open]:rotate-180" />
 										</button>
 									{/if}
 								{/snippet}
@@ -106,11 +91,11 @@
 										<ul
 											{...props}
 											transition:slide={{ duration: 150 }}
-											class={cn('overflow-hidden transition-all', isOpen ? 'space-y-1 px-4 pb-3 ' : 'space-y-0.5 px-2 pb-2')}
+											class={cn('overflow-hidden transition-all', sidebarCollapsed.current ? 'space-y-1 px-4 pb-3 ' : 'space-y-0.5 px-2 pb-2')}
 										>
 											{#each subMenu as { title, href, icon: Icon }, j (j)}
 												{@const isActive = href === page.url.pathname}
-												<Tooltip.Root disabled={isOpen}>
+												<Tooltip.Root disabled={sidebarCollapsed.current}>
 													<Tooltip.Trigger>
 														{#snippet child({ props })}
 															<a
@@ -119,11 +104,11 @@
 																class={cn(
 																	'flex items-center gap-3 overflow-hidden rounded-lg border border-transparent p-2 text-[#4E4E4E] transition-all hover:border-[#E6E6E6] hover:bg-white hover:text-[#1C1C1C]',
 																	isActive ? 'border-[#E6E6E6] bg-white text-[#1C1C1C]' : 'border-transparent bg-transparent',
-																	isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
+																	sidebarCollapsed.current ? 'h-[34px] w-full' : 'h-10 w-10'
 																)}
 															>
-																<Icon stroke="1.5" class={cn(isOpen ? 'size-4' : 'size-5', 'shrink-0 transition-all')} />
-																{#if isOpen}
+																<Icon stroke="1.5" class={cn(sidebarCollapsed.current ? 'size-4' : 'size-5', 'shrink-0 transition-all')} />
+																{#if sidebarCollapsed.current}
 																	<span class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap" transition:slide={{ axis: 'x', duration: 150 }}>
 																		{title}
 																	</span>
@@ -149,15 +134,15 @@
 						<section
 							class={cn(
 								'border-b border-[#E6E6E6] transition-[padding] first-of-type:pt-0 last-of-type:border-b-0 last-of-type:pb-0',
-								isOpen ? 'px-4 py-3' : 'p-2'
+								sidebarCollapsed.current ? 'px-4 py-3' : 'p-2'
 							)}
 							{...props}
 						>
-							<SearchPolis isSidebarOpen={isOpen} />
-							<ul class={cn(isOpen ? 'space-y-1' : 'space-y-0.5')}>
+							<SearchPolis isSidebarOpen={sidebarCollapsed.current} />
+							<ul class={cn(sidebarCollapsed.current ? 'space-y-1' : 'space-y-0.5')}>
 								{#each subMenu as { title, href, icon: Icon }, j (j)}
 									{@const isActive = href === page.url.pathname}
-									<Tooltip.Root disabled={isOpen}>
+									<Tooltip.Root disabled={sidebarCollapsed.current}>
 										<Tooltip.Trigger>
 											{#snippet child({ props })}
 												<a
@@ -166,14 +151,14 @@
 													class={cn(
 														'flex items-center gap-3 overflow-hidden rounded-lg border border-transparent p-2 text-[#4E4E4E] transition-all hover:border-[#E6E6E6] hover:bg-white hover:text-[#1C1C1C]',
 														isActive ? 'border-[#E6E6E6] bg-white text-[#1C1C1C]' : 'border-transparent bg-transparent',
-														isOpen ? 'h-[34px] w-full' : 'h-10 w-10'
+														sidebarCollapsed.current ? 'h-[34px] w-full' : 'h-10 w-10'
 													)}
 												>
-													<Icon stroke="1.5" class={cn(isOpen ? 'size-4' : 'size-5', 'shrink-0 transition-all')} />
-													{#if isOpen}
-														<span class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap" transition:slide={{ axis: 'x', duration: 150 }}
-															>{title}</span
-														>
+													<Icon stroke="1.5" class={cn(sidebarCollapsed.current ? 'size-4' : 'size-5', 'shrink-0 transition-all')} />
+													{#if sidebarCollapsed.current}
+														<span class="flex-1 text-sm leading-[12px] font-medium whitespace-nowrap" transition:slide={{ axis: 'x', duration: 150 }}>
+															{title}
+														</span>
 													{/if}
 												</a>
 											{/snippet}
@@ -197,28 +182,28 @@
 		<div aria-hidden="true" class="sticky bottom-0 left-0 h-[18px] w-full bg-gradient-to-t from-[#F3F3F3] via-[#F3F3F3]/80"></div>
 	</nav>
 
-	<div class={cn('grid place-items-center border-t border-[#E6E6E6] transition-[padding]', isOpen ? 'p-2' : 'p-1')}>
+	<div class={cn('grid place-items-center border-t border-[#E6E6E6] transition-[padding]', sidebarCollapsed.current ? 'p-2' : 'p-1')}>
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger
 				class={cn(
 					'flex w-full items-center justify-between rounded-lg border border-transparent transition-all hover:border-[#E6E6E6] hover:bg-white data-[state=open]:border-[#E6E6E6] data-[state=open]:bg-white',
-					isOpen ? 'p-2' : 'p-1'
+					sidebarCollapsed.current ? 'p-2' : 'p-1'
 				)}
 			>
 				<div class="flex flex-1 items-center gap-3">
 					<img
-						src={userStore.user?.pathfile_ceres}
-						class={cn('rounded-full border object-cover object-center transition-all', isOpen ? 'size-8' : 'size-10')}
-						alt={`${userStore.user?.user_full_name} Avatar`}
+						src={userStore.current?.pathfile_ceres}
+						class={cn('rounded-full border object-cover object-center transition-all', sidebarCollapsed.current ? 'size-8' : 'size-10')}
+						alt={`${userStore.current?.user_full_name} Avatar`}
 					/>
-					{#if isOpen}
+					{#if sidebarCollapsed.current}
 						<div class={cn('flex-1 text-start whitespace-nowrap text-[#1C1C1C]')} transition:slide={{ axis: 'x', duration: 150 }}>
-							<p class="text-sm font-medium">{userStore.user?.user_full_name}</p>
-							<p class="text-xs font-light">{userStore.user?.role_name}</p>
+							<p class="text-sm font-medium">{userStore.current?.user_full_name}</p>
+							<p class="text-xs font-light">{userStore.current?.role_name}</p>
 						</div>
 					{/if}
 				</div>
-				{#if isOpen}
+				{#if sidebarCollapsed.current}
 					<div class="grid size-9 place-items-center rounded-full" transition:slide={{ axis: 'x', duration: 150 }}>
 						<icon.ChevronsUpDown size={16} />
 					</div>
