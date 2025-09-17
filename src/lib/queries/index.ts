@@ -1,9 +1,6 @@
-import { api } from '$lib/api';
+import { api } from '$lib/utils/api';
 import { queryOptions } from '@tanstack/svelte-query';
 
-export * from './login';
-export * from './workbasket';
-export * from './data-polis';
 
 export const searchPolisQuery = (search = '') => {
 	return queryOptions({

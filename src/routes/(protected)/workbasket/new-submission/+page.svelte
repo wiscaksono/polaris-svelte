@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
-	import { workbasketQueries } from '$lib/queries';
+	import { workbasketQueries } from '$lib/features/workbasket/queries';
 
 	const query = createQuery(workbasketQueries.newSubmissionList({ pageSize: 10, pageNumber: 1 }));
 </script>

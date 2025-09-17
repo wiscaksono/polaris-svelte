@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { createMutation } from '@tanstack/svelte-query';
 
-	import { api, exclude } from '$lib';
-	import { goto } from '$app/navigation';
 	import { userStore } from '$lib/stores';
-	import { loginQuery } from '$lib/queries';
+	import { api, exclude } from '$lib/utils';
+	import { loginQuery } from '$lib/features/login/queries';
 
 	let payload = $state({ username: 'billi', password: 'Asdf12345' });
 

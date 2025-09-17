@@ -5,11 +5,10 @@
 	import { slide } from 'svelte/transition';
 	import { Tooltip, DropdownMenu, Collapsible } from 'bits-ui';
 
-	import { cn } from '$lib';
+	import { cn } from '$lib/utils';
 	import { userStore } from '$lib/stores';
-	import { sideMenu } from '$lib/constants';
-
-	import SearchPolis from './search-polis.svelte';
+	import { sideMenu } from '$lib/utils/constants';
+	import SearchPolis from '$lib/features/search-polis/components/search-polis.svelte';
 
 	const sidebarCollapsed = new PersistedState<boolean>('sidebar-collapsed', true);
 	const collapsibleState = new PersistedState<{ [key: number]: boolean }>('sidebar-collapsible-state', {});

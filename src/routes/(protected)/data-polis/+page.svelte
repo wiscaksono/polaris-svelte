@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
-	import { dataPolisQueries } from '$lib/queries';
+	import { dataPolisQueries } from '$lib/features/data-polis/queries';
 
 	const query = createQuery(dataPolisQueries.list({ pageSize: 10, pageNumber: 1 }));
 </script>

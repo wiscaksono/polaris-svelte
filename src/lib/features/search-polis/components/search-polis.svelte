@@ -3,11 +3,10 @@
 	import { Search } from '@lucide/svelte';
 	import { slide } from 'svelte/transition';
 
-	import { cn } from '$lib';
+	import { cn } from '$lib/utils';
 
 	let { isSidebarOpen }: { isSidebarOpen: boolean } = $props();
 
-	let searchTerm = $state('');
 	let dialogOpen = $state(false);
 
 	function handleKeydown(e: KeyboardEvent) {
