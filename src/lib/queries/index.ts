@@ -1,7 +1,6 @@
 import { api } from '$lib/utils/api';
 import { queryOptions } from '@tanstack/svelte-query';
 
-
 export const searchPolisQuery = (search = '') => {
 	return queryOptions({
 		queryKey: ['search-polis', search],
