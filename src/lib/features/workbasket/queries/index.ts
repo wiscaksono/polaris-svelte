@@ -4,47 +4,66 @@ import { api } from '$lib/utils/api';
 
 import type { PolisListRes } from '$lib/utils/type';
 
+interface WorkbasketCommonParams {
+	pageSize?: number;
+	pageNumber?: number
+	caseId?: string;
+}
+
 export const workbasketQueries = {
-	newSubmissionList: ({ pageSize = 10, pageNumber = 1 }: { pageSize?: number; pageNumber?: number }) => {
+	newSubmissionList: (props: WorkbasketCommonParams) => {
 		return queryOptions({
-			queryKey: ['new-submission', 'list', pageSize, pageNumber],
+			queryKey: ['new-submission', 'list', props],
 			queryFn: async () => {
 				const { data } = await api.post<PolisListRes<'newSubmission'>>('/polaris/api-business-polaris/major/workbasket/filterSubmission', {
-					pageSize,
-					pageNumber
+					pageSize: props.pageSize ?? 10,
+					pageNumber: props.pageNumber ?? 1,
+					...props
 				});
 				return data;
 			}
 		});
 	},
 
-	furtherList: ({ pageSize = 10, pageNumber = 1 }: { pageSize?: number; pageNumber?: number }) => {
+	furtherList: (props: WorkbasketCommonParams) => {
 		return queryOptions({
-			queryKey: ['further', 'list', pageSize, pageNumber],
+			queryKey: ['further', 'list', props],
 			queryFn: async () => {
-				const { data } = await api.post<PolisListRes<'further'>>('/polaris/api-business-polaris/major/workbasket/further', { pageSize, pageNumber });
+				const { data } = await api.post<PolisListRes<'further'>>('/polaris/api-business-polaris/major/workbasket/further', {
+					pageSize: props.pageSize ?? 10,
+					pageNumber: props.pageNumber ?? 1,
+					...props
+				});
 				return data;
 			}
 		});
 	},
 
-	fillingList: ({ pageSize = 10, pageNumber = 1 }: { pageSize?: number; pageNumber?: number }) => {
+	fillingList: (props: WorkbasketCommonParams) => {
 		return queryOptions({
-			queryKey: ['filling', 'list', pageSize, pageNumber],
+			queryKey: ['filling', 'list', props],
 			queryFn: async () => {
-				const { data } = await api.post<PolisListRes<'filling'>>('/polaris/api-business-polaris/major/workbasket/filling', { pageSize, pageNumber });
+				const { data } = await api.post<PolisListRes<'filling'>>('/polaris/api-business-polaris/major/workbasket/filling', {
+					pageSize: props.pageSize ?? 10,
+					pageNumber: props.pageNumber ?? 1,
+					...props
+				});
 				return data;
 			}
 		});
 	},
 
-	flaggedList: ({ pageSize = 10, pageNumber = 1 }: { pageSize?: number; pageNumber?: number }) => {
+	flaggedList: (props: WorkbasketCommonParams) => {
 		return queryOptions({
-			queryKey: ['flagged', 'list', pageSize, pageNumber],
+			queryKey: ['flagged', 'list', props],
 			queryFn: async () => {
-				const { data } = await api.post<PolisListRes<'flagged'>>('/polaris/api-business-polaris/major/workbasket/flagged', { pageSize, pageNumber });
+				const { data } = await api.post<PolisListRes<'flagged'>>('/polaris/api-business-polaris/major/workbasket/flagged', {
+					pageSize: props.pageSize ?? 10,
+					pageNumber: props.pageNumber ?? 1,
+					...props
+				});
 				return data;
 			}
 		});
-	}
+	},
 };

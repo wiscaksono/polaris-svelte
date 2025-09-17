@@ -18,7 +18,7 @@ export interface Polis {
 	waiver: string;
 	loan: string;
 	banker_clause: string | null;
-	case_trx: string;
+	case_trx: TransactionType;
 	nama_user: string;
 	status_trx: string;
 	case_id: number;
@@ -49,3 +49,29 @@ export interface User {
 	pathfile_ceres: string;
 	user_nik: string;
 }
+
+
+export type TransactionType =
+	| "Auto Maturity Link"
+	| "Tolakan"
+	| "Refund UL"
+	| "Refund Trad"
+	| "Tolakan Trad"
+	| "Major Alteration"
+	| "Minor Alteration"
+	| "Withdrawal"
+	| "Surrender Link"
+	| "Switching"
+	| "Redirection"
+	| "Cancel Free Look Link"
+	| "Pinjaman"
+	| "Deduction"
+	| "Surrender Trad"
+	| "Maturity Trad"
+	| "Maturity Link"
+	| "Cancel Free Look Trad"
+	| "Auto Maturity Trad"
+	| "Top Up UL"
+	| "Churning Polaris"
+	| "Re-Alokasi Investasi"
+	| "Switching and Redirection";

@@ -8,12 +8,13 @@ export const csr = true;
 
 export const prerender = false;
 
-export const load: LayoutLoad = async () => {
+export const load: LayoutLoad = () => {
 	const queryClient = new QueryClient({
 		defaultOptions: {
 			queries: {
 				enabled: browser,
-				staleTime: 60 * 1000
+				staleTime: 60 * 1000,
+				refetchOnWindowFocus: false
 			}
 		}
 	});
