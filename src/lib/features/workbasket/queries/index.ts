@@ -6,7 +6,7 @@ import type { PolisListRes } from '$lib/utils/type';
 
 interface WorkbasketCommonParams {
 	pageSize?: number;
-	pageNumber?: number
+	pageNumber?: number;
 	caseId?: string;
 }
 
@@ -65,5 +65,5 @@ export const workbasketQueries = {
 				return data;
 			}
 		});
-	},
+	}
 };
