@@ -5,6 +5,11 @@ export interface BaseResponse<T> {
 	data: T;
 }
 
+export type IDLabel<T extends string | number> = {
+	id: T | null;
+	label: string;
+};
+
 export interface Polis {
 	reg_spaj: string;
 	nopol: string;
@@ -50,7 +55,6 @@ export interface User {
 	user_nik: string;
 }
 
-
 export type TransactionType =
 	| "Auto Maturity Link"
 	| "Tolakan"
@@ -75,3 +79,4 @@ export type TransactionType =
 	| "Churning Polaris"
 	| "Re-Alokasi Investasi"
 	| "Switching and Redirection";
+

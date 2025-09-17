@@ -8,7 +8,7 @@
 	{#await data.currentTaskFormTab.component}
 		<p>Loading...</p>
 	{:then { default: Component }}
-		<Component />
+		<Component {...data.policyDetail} />
 	{/await}
 {:else}
 	<div>Not found</div>

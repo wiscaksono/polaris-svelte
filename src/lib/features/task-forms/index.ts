@@ -1,10 +1,15 @@
-import type { TransactionType } from "$lib/utils/type";
+import type { Component } from "svelte";
 
-interface TaskForm {
+import type { TransactionType } from "$lib/utils/type";
+import type { SearchPolisListRes } from "../search-polis/queries/type";
+
+export interface TaskForm {
   title: string
   slug: string
-  component: Promise<typeof import("*.svelte")>
+  component: Promise<{ default: Component<SearchPolisListRes[number]> }>;
 }
+
+export type TaskFormComponentProps = SearchPolisListRes[number]
 
 export const majorAlterationTaskForms: TaskForm[] = [
   {
