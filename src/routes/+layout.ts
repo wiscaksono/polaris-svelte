@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { QueryClient } from '@tanstack/svelte-query';
+
 import type { LayoutLoad } from './$types';
 
 export const ssr = false;

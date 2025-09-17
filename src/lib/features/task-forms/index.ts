@@ -59,6 +59,14 @@ export const majorAlterationTaskForms: TaskForm[] = [
   }
 ];
 
+export const withdrawalTaskForms: TaskForm[] = [
+  {
+    title: 'Data Submission',
+    slug: 'data-submission',
+    component: import('./withdrawal/1.svelte')
+  }
+];
+
 export const taskForms: Record<TransactionType, TaskForm[]> = {
   "Major Alteration": majorAlterationTaskForms,
   "Minor Alteration": majorAlterationTaskForms,
@@ -70,7 +78,7 @@ export const taskForms: Record<TransactionType, TaskForm[]> = {
   // Financial Group
   "Switching and Redirection": majorAlterationTaskForms,
   Deduction: majorAlterationTaskForms,
-  Withdrawal: majorAlterationTaskForms,
+  Withdrawal: withdrawalTaskForms,
   "Surrender Link": majorAlterationTaskForms,
   Switching: majorAlterationTaskForms,
   Redirection: majorAlterationTaskForms,

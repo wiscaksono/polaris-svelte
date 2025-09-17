@@ -93,7 +93,7 @@
 											class={cn('overflow-hidden transition-all', sidebarCollapsed.current ? 'space-y-1 px-4 pb-3 ' : 'space-y-0.5 px-2 pb-2')}
 										>
 											{#each subMenu as { title, href, icon: Icon }, j (j)}
-												{@const isActive = href === page.url.pathname}
+												{@const isActive = page.url.pathname.startsWith(href)}
 												<Tooltip.Root disabled={sidebarCollapsed.current}>
 													<Tooltip.Trigger>
 														{#snippet child({ props })}
