@@ -6,7 +6,7 @@ export const ssr = false;
 
 export const csr = true;
 
-export const prerender = true;
+export const prerender = false;
 
 export const load: LayoutLoad = async () => {
 	const queryClient = new QueryClient({
