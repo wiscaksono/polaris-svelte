@@ -3,7 +3,7 @@ import * as icon from '@lucide/svelte';
 export const sideMenu = [
 	{
 		title: null,
-		child: [
+		subMenu: [
 			{
 				title: 'Dashboard',
 				href: '/',
@@ -33,7 +33,7 @@ export const sideMenu = [
 	},
 	{
 		title: 'Workbasket',
-		child: [
+		subMenu: [
 			{
 				title: 'New Submission',
 				href: '/workbasket/new-submission',
@@ -53,7 +53,7 @@ export const sideMenu = [
 	},
 	{
 		title: 'Approval',
-		child: [
+		subMenu: [
 			{
 				title: 'Detail',
 				href: '/approval/detail',
@@ -73,7 +73,7 @@ export const sideMenu = [
 	},
 	{
 		title: 'Data Entry',
-		child: [
+		subMenu: [
 			{
 				title: 'List Transaksi',
 				href: '/data-entry/list-transaction',
@@ -98,7 +98,7 @@ export const sideMenu = [
 	},
 	{
 		title: 'Administration',
-		child: [
+		subMenu: [
 			{
 				title: 'Re-assign Task',
 				href: '/administration/reassign-task',

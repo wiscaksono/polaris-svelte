@@ -38,7 +38,7 @@ export default ts.config(
 				{
 					mode: 'full',
 					type: 'shared',
-					pattern: ['src/lib/components/**/*', 'src/lib/queries/**/*', 'src/lib/stores/**/*', 'src/lib/assets/**/*', 'src/lib/utils/**/*']
+					pattern: ['src/lib/components/**/*', 'src/lib/queries/**/*', 'src/lib/stores/**/*', 'src/lib/assets/**/*', 'src/lib/utils/**/*', 'src/lib/hooks/**/*']
 				},
 				{
 					mode: 'full',

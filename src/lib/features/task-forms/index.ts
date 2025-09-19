@@ -1,4 +1,3 @@
-
 import type { TransactionType } from '$lib/utils/type';
 import type { SearchPolisListRes } from '../search-polis/queries/type';
 
@@ -7,7 +6,7 @@ export type TaskFormProps = { taskFormParams: SearchPolisListRes[number] };
 export interface TaskFormConfig {
 	title: string;
 	slug: string;
-	component: Promise<typeof import("*.svelte")>
+	component: Promise<typeof import('*.svelte')>;
 }
 
 export const majorAlterationTaskForms: TaskFormConfig[] = [

@@ -16,7 +16,7 @@ export const searchPolisQueries = {
 				if (typeof search === 'string' && search.length > 2) return true;
 				if (typeof search === 'number' && search > 0) return true;
 				return false;
-			},
+			}
 		});
 	}
 };
