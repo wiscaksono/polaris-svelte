@@ -126,9 +126,16 @@
 	* {
 		@apply border-border outline-ring/50;
 	}
+	
 	body {
 		@apply bg-background text-foreground;
 	}
+	
+	/* Temporary, until we have a proper input component */
+	input {
+		@apply border p-2
+	}
+	
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
 		@apply hidden;

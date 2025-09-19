@@ -1,25 +1,42 @@
 <script lang="ts">
 	import { Dialog } from 'bits-ui';
 	import { Pencil, X } from '@lucide/svelte';
-	import { createQuery } from '@tanstack/svelte-query';
+	import { createMutation, createQuery } from '@tanstack/svelte-query';
 
 	import { commonQuery } from '$lib/queries';
-	import type { MajorAlterationTab2Res } from '$lib/features/task-forms/major-alteration/type';
+	import { majorAlterationMutations } from '$lib/features/task-forms/major-alteration/queries';
 
-	type DataType = MajorAlterationTab2Res['pemegangPolis']['dataDiri']['after'];
+	import { getData } from '../state.svelte';
+	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	let { data, onSave }: { data: DataType; onSave: (data: DataType) => void } = $props();
-	let values = $state({ ...data });
+	const data = getData();
+	const taskFormParams = getTaskFormContext().taskFormParams;
 
-	let allSelectQuery = createQuery(commonQuery.allSelect());
+	let open = $state(false);
+	let values = $state(structuredClone($state.snapshot(data?.dataDiri.after)));
+
+	const allSelectQuery = createQuery(commonQuery.allSelect());
+	const mutation = createMutation(majorAlterationMutations.tab2());
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
-		onSave(values);
+		if (!data) return;
+
+		$mutation.mutate({
+			trxMajor: taskFormParams.no_trx,
+			regSpaj: taskFormParams.reg_spaj,
+			caseId: taskFormParams.case_id,
+			dataDiri: values,
+			infoPekerjaan: data.infoPekerjaan.after,
+			alamat: data.alamat.after,
+			financial: data.financial.after,
+			wajibPajakNegaraAsing: data.wajibPajakNegaraAsing.after
+		});
+		open = false;
 	}
 </script>
 
-<Dialog.Root open>
+<Dialog.Root bind:open>
 	<Dialog.Trigger>
 		<Pencil />
 	</Dialog.Trigger>
@@ -74,19 +91,18 @@
 				</div>
 				<div>
 					<label for="agama">Agama</label>
-					<select id="agama" class="w-full" bind:value={values.agama.id}>
-						{#if $allSelectQuery.isLoading}
-							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.agama as { id, label } (id)}
-								<option value={id}>{label}</option>
-							{/each}
-						{/if}
-					</select>
-				</div>
-				<div>
-					<label for="agama">Agama</label>
-					<select id="agama" class="w-full" bind:value={values.agama.id}>
+					<select
+						id="agama"
+						class="w-full"
+						value={values.agama.id}
+						onchange={(e) => {
+							const selected = $allSelectQuery.data?.agama.find(({ id }) => id === Number(e.currentTarget.value));
+							if (!selected) return;
+
+							values.agama.id = selected.id;
+							values.agama.label = selected.label;
+						}}
+					>
 						{#if $allSelectQuery.isLoading}
 							<option value="">Loading...</option>
 						{:else if $allSelectQuery.data}
@@ -98,7 +114,18 @@
 				</div>
 				<div>
 					<label for="kewarganegaraan">Kewarganegaraan</label>
-					<select id="kewarganegaraan" class="w-full" bind:value={values.kewarganegaraan.id}>
+					<select
+						id="kewarganegaraan"
+						class="w-full"
+						value={values.kewarganegaraan.id}
+						onchange={(e) => {
+							const selected = $allSelectQuery.data?.kewarganegaraan.find(({ id }) => id === Number(e.currentTarget.value));
+							if (!selected) return;
+
+							values.kewarganegaraan.id = selected.id;
+							values.kewarganegaraan.label = selected.label;
+						}}
+					>
 						{#if $allSelectQuery.isLoading}
 							<option value="">Loading...</option>
 						{:else if $allSelectQuery.data}
@@ -110,7 +137,18 @@
 				</div>
 				<div>
 					<label for="bukti-identitas">Bukti Identitas</label>
-					<select id="bukti-identitas" class="w-full" bind:value={values.buktiIdentitas.id}>
+					<select
+						id="bukti-identitas"
+						class="w-full"
+						value={values.buktiIdentitas.id}
+						onchange={(e) => {
+							const selected = $allSelectQuery.data?.bukti_identitas.find(({ id }) => id === Number(e.currentTarget.value));
+							if (!selected) return;
+
+							values.buktiIdentitas.id = selected.id;
+							values.buktiIdentitas.label = selected.label;
+						}}
+					>
 						{#if $allSelectQuery.isLoading}
 							<option value="">Loading...</option>
 						{:else if $allSelectQuery.data}
@@ -126,7 +164,7 @@
 				</div>
 				<div>
 					<label for="email">Email</label>
-					<input id="email" type="email" placeholder="Email" class="w-full" bind:value={values.email} />
+					<input id="email" type="text" placeholder="Email" class="w-full" bind:value={values.email} />
 				</div>
 				<div>
 					<label for="no-handphone">No. Handphone</label>
@@ -146,7 +184,18 @@
 				</div>
 				<div>
 					<label for="hubungan-dengan-tu">Hubungan Pemegang Polis Dengan Tertanggung</label>
-					<select id="hubungan-dengan-tu" class="w-full" bind:value={values.hubunganDenganTU.id}>
+					<select
+						id="hubungan-dengan-tu"
+						class="w-full"
+						value={values.hubunganDenganTU.id}
+						onchange={(e) => {
+							const selected = $allSelectQuery.data?.hubungan_pemegang_polis_dengan_tertanggung.find(({ id }) => id === Number(e.currentTarget.value));
+							if (!selected) return;
+
+							values.hubunganDenganTU.id = selected.id;
+							values.hubunganDenganTU.label = selected.label;
+						}}
+					>
 						{#if $allSelectQuery.isLoading}
 							<option value="">Loading...</option>
 						{:else if $allSelectQuery.data}
@@ -158,7 +207,18 @@
 				</div>
 				<div>
 					<label for="hobi-beresiko-tinggi">Hobi Beresiko Tinggi</label>
-					<select id="hobi-beresiko-tinggi" class="w-full" bind:value={values.hobiBeresikoTinggi.id}>
+					<select
+						id="hobi-beresiko-tinggi"
+						class="w-full"
+						value={values.hobiBeresikoTinggi.id}
+						onchange={(e) => {
+							const selected = $allSelectQuery.data?.hobi_beresiko_tinggi.find(({ id }) => id === Number(e.currentTarget.value));
+							if (!selected) return;
+
+							values.hobiBeresikoTinggi.id = selected.id;
+							values.hobiBeresikoTinggi.label = selected.label;
+						}}
+					>
 						{#if $allSelectQuery.isLoading}
 							<option value="">Loading...</option>
 						{:else if $allSelectQuery.data}
@@ -170,7 +230,7 @@
 				</div>
 
 				<div class="flex w-full justify-end">
-					<Dialog.Close>Save</Dialog.Close>
+					<button type="submit">Save</button>
 				</div>
 			</form>
 		</Dialog.Content>

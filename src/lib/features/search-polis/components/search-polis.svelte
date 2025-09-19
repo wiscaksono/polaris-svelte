@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { Dialog } from 'bits-ui';
+	import { useThrottle } from 'runed';
 	import { Search } from '@lucide/svelte';
 	import { slide } from 'svelte/transition';
+	import { createQuery } from '@tanstack/svelte-query';
 
 	import { cn } from '$lib/utils';
+	import { searchPolisQueries } from '../queries';
 
 	let { isSidebarOpen }: { isSidebarOpen: boolean } = $props();
 
+	let inputValue = $state('');
+	let inputValueThrottled = $state('');
 	let dialogOpen = $state(false);
+
+	const updateInput = useThrottle(() => (inputValueThrottled = inputValue), 500);
+	const query = $derived(createQuery(searchPolisQueries.list(inputValueThrottled)));
 
 	function handleKeydown(e: KeyboardEvent) {
 		if (e.key === 'p' && (e.metaKey || e.ctrlKey)) {
@@ -38,13 +46,33 @@
 			class="fixed inset-0 bg-black/80 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0"
 		/>
 		<Dialog.Content
-			class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
+			class="fixed top-1/2 left-1/2 max-h-[90dvh] -translate-x-1/2 -translate-y-1/2 overflow-y-auto bg-white data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95"
 		>
 			<Dialog.Title class="sr-only">Search Polis</Dialog.Title>
 			<Dialog.Description class="sr-only">Search for policies, and other resources.</Dialog.Description>
 			<div class="p-5">
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil incidunt debitis nobis a hic, fugit provident magni, velit delectus molestiae aspernatur
-				ipsa minus nam, earum minima culpa iusto eos nisi.
+				<!-- svelte-ignore a11y_autofocus -->
+				<input
+					type="text"
+					autofocus
+					bind:value={
+						() => inputValue,
+						(v) => {
+							inputValue = v;
+							updateInput();
+						}
+					}
+				/>
+
+				{#if $query.isLoading}
+					<div>Loading...</div>
+				{:else if $query.data}
+					<ul>
+						{#each $query.data as item (item.case_id)}
+							<li>{item.case_id}</li>
+						{/each}
+					</ul>
+				{/if}
 			</div>
 		</Dialog.Content>
 	</Dialog.Portal>

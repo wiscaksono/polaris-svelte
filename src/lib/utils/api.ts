@@ -118,14 +118,14 @@ class API {
 		return this.request<T>(path);
 	}
 
-	post<T>(path: string, body: FormData | Record<string, unknown>) {
+	post<T>(path: string, body: FormData | object) {
 		return this.request<T>(path, {
 			method: 'POST',
 			body: body instanceof FormData ? body : JSON.stringify(body)
 		});
 	}
 
-	put<T>(path: string, body: FormData | Record<string, unknown>) {
+	put<T>(path: string, body: FormData | object) {
 		return this.request<T>(path, {
 			method: 'PUT',
 			body: body instanceof FormData ? body : JSON.stringify(body)

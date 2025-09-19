@@ -6,11 +6,7 @@
 
 	import { majorAlterationQueries } from './queries';
 
-	import type { TaskFormComponentProps } from '$lib/features/task-forms';
-
-	let { case_id, reg_spaj }: TaskFormComponentProps = $props();
-
-	let query = createQuery(majorAlterationQueries.tab2({ caseId: case_id, regSpaj: reg_spaj }));
+	let query = createQuery(majorAlterationQueries.tab2());
 </script>
 
 {#if $query.isLoading}

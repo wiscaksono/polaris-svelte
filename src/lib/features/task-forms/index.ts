@@ -1,17 +1,16 @@
-import type { Component } from 'svelte';
 
 import type { TransactionType } from '$lib/utils/type';
 import type { SearchPolisListRes } from '../search-polis/queries/type';
 
-export interface TaskForm {
+export type TaskFormProps = { taskFormParams: SearchPolisListRes[number] };
+
+export interface TaskFormConfig {
 	title: string;
 	slug: string;
-	component: Promise<{ default: Component<SearchPolisListRes[number]> }>;
+	component: Promise<typeof import("*.svelte")>
 }
 
-export type TaskFormComponentProps = SearchPolisListRes[number];
-
-export const majorAlterationTaskForms: TaskForm[] = [
+export const majorAlterationTaskForms: TaskFormConfig[] = [
 	{
 		title: 'Data Submission',
 		slug: 'data-submission',
@@ -64,7 +63,7 @@ export const majorAlterationTaskForms: TaskForm[] = [
 	}
 ];
 
-export const withdrawalTaskForms: TaskForm[] = [
+export const withdrawalTaskForms: TaskFormConfig[] = [
 	{
 		title: 'Data Submission',
 		slug: 'data-submission',
@@ -72,7 +71,7 @@ export const withdrawalTaskForms: TaskForm[] = [
 	}
 ];
 
-export const taskForms: Record<TransactionType, TaskForm[]> = {
+export const taskForms: Record<TransactionType, TaskFormConfig[]> = {
 	'Major Alteration': majorAlterationTaskForms,
 	'Minor Alteration': majorAlterationTaskForms,
 	Tolakan: majorAlterationTaskForms,

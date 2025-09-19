@@ -116,3 +116,14 @@ export interface MajorAlterationTab2Res {
 		medicalRequirement: number | null;
 	};
 }
+
+export interface MajorAlterationTab2Payload {
+	trxMajor: string
+	regSpaj: string
+	caseId: number
+	dataDiri: MajorAlterationTab2Res['pemegangPolis']['dataDiri']['after'],
+	infoPekerjaan: MajorAlterationTab2Res['pemegangPolis']['infoPekerjaan']['after'],
+	alamat: MajorAlterationTab2Res['pemegangPolis']['alamat']['after'],
+	financial: MajorAlterationTab2Res['pemegangPolis']['financial']['after'],
+	wajibPajakNegaraAsing: MajorAlterationTab2Res['pemegangPolis']['wajibPajakNegaraAsing']['after']
+}

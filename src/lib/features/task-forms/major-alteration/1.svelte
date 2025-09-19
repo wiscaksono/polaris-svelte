@@ -8,13 +8,7 @@
 
 	import { majorAlterationQueries } from '$lib/features/task-forms/major-alteration/queries';
 
-	import type { TaskFormComponentProps } from '$lib/features/task-forms';
-
-	let { no_trx, reg_spaj }: TaskFormComponentProps = $props();
-
-	let query = createQuery(majorAlterationQueries.tab1({ noTrx: no_trx, regSpaj: reg_spaj }));
-
-	$inspect($query.data);
+	createQuery(majorAlterationQueries.tab1());
 </script>
 
 <ChecklistReunderwriting />

@@ -11,7 +11,12 @@ export const searchPolisQueries = {
 			queryFn: async () => {
 				const { data } = await api.get<SearchPolisListRes>(`/polaris/api-business-polaris/major/workbasket/search-polis?search=${search}`);
 				return data;
-			}
+			},
+			enabled: () => {
+				if (typeof search === 'string' && search.length > 2) return true;
+				if (typeof search === 'number' && search > 0) return true;
+				return false;
+			},
 		});
 	}
 };

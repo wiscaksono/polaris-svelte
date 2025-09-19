@@ -2,7 +2,6 @@
 	import { majorAlterationTaskForms } from '$lib/features/task-forms';
 
 	const filteredTaskForms = majorAlterationTaskForms.filter(({ slug }) => slug !== 'worksheet');
-	$inspect(filteredTaskForms);
 </script>
 
 {#each filteredTaskForms as { component, title } (title)}
