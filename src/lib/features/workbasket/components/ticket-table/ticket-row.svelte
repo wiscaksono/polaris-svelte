@@ -12,7 +12,7 @@
 	import { toTitleCase, type Polis } from '$lib/utils';
 	import { taskForms } from '$lib/features/task-forms';
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
-	import TicketHistory from './ticket-history.svelte';
+	import TicketSubRow from './ticket-sub-row.svelte';
 
 	let { item }: { item: Polis } = $props();
 	let openTicketHistory = $state(false);
@@ -89,7 +89,7 @@
 			{#snippet child({ props: childProps })}
 				<Table.Row {...childProps} class="hover:[&,&>svelte-css-wrapper]:[&>th,td]:bg-transparent">
 					<Table.Cell colspan={9} class="p-0">
-						<TicketHistory {item} open={openTicketHistory} />
+						<TicketSubRow {item} open={openTicketHistory} />
 					</Table.Cell>
 				</Table.Row>
 			{/snippet}
