@@ -1,6 +1,13 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
-	import AppSidebar from '$lib/components/app-sidebar.svelte';
+	import AppSidebar from '$lib/components/layout/app-sidebar.svelte';
+	import AppUserMenu from '$lib/components/layout/app-user-menu.svelte';
+	import AppBreadcrumb from '$lib/components/layout/app-breadcrumb.svelte';
+	import Notification from '$lib/components/layout/notification.svelte';
+	import DateTime from '$lib/components/layout/date-time.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import SidebarToggler from '$lib/components/layout/sidebar-toggler.svelte';
+	import ThemeSwitcher from '$lib/components/layout/theme-switcher.svelte';
 
 	let { children } = $props();
 </script>
@@ -8,8 +15,20 @@
 <Sidebar.Provider>
 	<AppSidebar />
 	<Sidebar.Inset>
-		<header class="relative flex h-16 shrink-0 items-center gap-2 border-b px-4">
-			<Sidebar.Trigger class="absolute -left-[14px] z-10 bg-background shadow-sm" />
+		<header class="relative flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 py-[14px]">
+			<div class="flex h-full items-center gap-4">
+				<SidebarToggler />
+				<AppBreadcrumb />
+			</div>
+			<div class="flex h-full gap-4">
+				<DateTime />
+				<Separator orientation="vertical" class="hidden h-full md:block" />
+				<div class="flex items-center gap-2">
+					<ThemeSwitcher />
+					<Notification />
+					<AppUserMenu />
+				</div>
+			</div>
 		</header>
 		{@render children?.()}
 	</Sidebar.Inset>

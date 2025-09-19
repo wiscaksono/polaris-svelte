@@ -4,6 +4,8 @@ import { api } from '$lib/utils/api';
 
 import type { PolisListRes } from '$lib/utils/type';
 
+import * as Type from './types';
+
 interface WorkbasketCommonParams {
 	pageSize?: number;
 	pageNumber?: number;
@@ -63,6 +65,21 @@ export const workbasketQueries = {
 					...props
 				});
 				return data;
+			}
+		});
+	},
+
+	statusTrxHistory: ({ trx_major, case_id, no_temp, id_doc_temp }: { trx_major: string; case_id: number; no_temp: string; id_doc_temp: string }) => {
+		return queryOptions({
+			queryKey: ['common', 'status-trx-history', trx_major, case_id, no_temp, id_doc_temp],
+			queryFn: async () => {
+				const { data } = await api.post<Type.StatusTrxHistoryRes>('/polaris/api-business-polaris/major/alteration/viewStatusTrx', {
+					trx_major,
+					case_id,
+					no_temp,
+					id_doc_temp
+				});
+				return data.status_transaksi;
 			}
 		});
 	}

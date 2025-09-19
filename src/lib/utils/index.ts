@@ -26,3 +26,16 @@ export const exclude = <Type, Key extends keyof Type>(obj: Type, keys: Key[]): O
 	for (const key of keys) delete obj[key];
 	return obj;
 };
+
+/**
+ * Convert a string to title case.
+ * @param str - The string to convert to title case.
+ * @returns The string converted to title case.
+ */
+export function toTitleCase(str: string) {
+	return str
+		.toLowerCase()
+		.split(' ')
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ');
+}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
+	import { ModeWatcher } from 'mode-watcher';
 
 	import { Tooltip } from 'bits-ui';
 	import { QueryClientProvider } from '@tanstack/svelte-query';
@@ -16,6 +17,8 @@
 <Tooltip.Provider delayDuration={100}>
 	<QueryClientProvider client={data.queryClient}>
 		{@render children?.()}
-		<SvelteQueryDevtools buttonPosition="bottom-left" />
+
+		<ModeWatcher />
+		<SvelteQueryDevtools buttonPosition="bottom-right" />
 	</QueryClientProvider>
 </Tooltip.Provider>
