@@ -7,7 +7,7 @@ RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
-RUN pnpm build
+RUN pnpm build --mode production
 RUN pnpm prune --prod
 
 # ==============================================================================

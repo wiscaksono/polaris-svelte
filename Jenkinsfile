@@ -1,15 +1,15 @@
 pipeline {
     agent any
-      environment {
-           PIPELINE_BUILD_IMAGE = "web-polaris"
-           PIPELINE_NAME_SPACE = "polaris"
-           PIPELINE_REPLICA = 1
-           PIPELINE_LOAD_BALANCER_IP= "172.20.60.125"
-           PIPELINE_LOAD_BALANCER_PORT=80
-           PIPELINE_IMAGE = "harbor-registry-uat.msiglife.co.id/${env.PIPELINE_NAME_SPACE}/${env.PIPELINE_BUILD_IMAGE}:${env.BUILD_NUMBER}"
-           def name_space = "${env.PIPELINE_NAME_SPACE}"
-           def build_image = "${env.PIPELINE_BUILD_IMAGE}"
-      }
+    environment {
+        PIPELINE_BUILD_IMAGE = "web-polaris"
+        PIPELINE_NAME_SPACE = "polaris"
+        PIPELINE_REPLICA = 1
+        PIPELINE_LOAD_BALANCER_IP= "172.20.60.125"
+        PIPELINE_LOAD_BALANCER_PORT=80
+        PIPELINE_IMAGE = "harbor-registry-uat.msiglife.co.id/${env.PIPELINE_NAME_SPACE}/${env.PIPELINE_BUILD_IMAGE}:${env.BUILD_NUMBER}"
+        def name_space = "${env.PIPELINE_NAME_SPACE}"
+        def build_image = "${env.PIPELINE_BUILD_IMAGE}"
+    }
 
     stages {
         stage('Checkout') {
@@ -19,21 +19,20 @@ pipeline {
         }
         
         stage('dockerized') {
-                steps{
-                    echo "Build Docker images ${env.PIPELINE_BUILD_IMAGE}"
-                    sh "docker build -t ${env.PIPELINE_BUILD_IMAGE} ."
-                
-                }
+            steps{
+                echo "Build Docker images ${env.PIPELINE_BUILD_IMAGE}"
+                sh "docker build -t ${env.PIPELINE_BUILD_IMAGE} ."
+            
+            }
     
         }
         
         stage('Deploy To Docker Registry') {
-                steps {
-                    echo "Docker Image Tag Name: ${env.PIPELINE_BUILD_IMAGE}"
-                    sh "docker tag ${env.PIPELINE_BUILD_IMAGE} ${env.PIPELINE_IMAGE}"
-                    sh "docker push ${env.PIPELINE_IMAGE}"
+            steps {
+                echo "Docker Image Tag Name: ${env.PIPELINE_BUILD_IMAGE}"
+                sh "docker tag ${env.PIPELINE_BUILD_IMAGE} ${env.PIPELINE_IMAGE}"
+                sh "docker push ${env.PIPELINE_IMAGE}"
             }
-            
         }
     
         stage("replace Env"){
@@ -48,16 +47,16 @@ pipeline {
         }
     
         stage('deploy to kubernetes') {
-                steps {
-                    sh "ls"
-                    sh '''
-                    ssh administrator@jenkins-gcp whoami
-                    scp k8s/deployment${name_space}${build_image}.yaml administrator@jenkins-gcp:~/.
-                    ssh administrator@jenkins-gcp kubectl apply -f deployment${name_space}${build_image}.yaml
-                    ssh administrator@jenkins-gcp kubectl -n ${name_space} rollout status deployment.app/${build_image}
-                    '''
-                    sh "docker rmi -f ${env.PIPELINE_IMAGE}"
-            }
+            steps {
+                sh "ls"
+                sh '''
+                ssh administrator@jenkins-gcp whoami
+                scp k8s/deployment${name_space}${build_image}.yaml administrator@jenkins-gcp:~/.
+                ssh administrator@jenkins-gcp kubectl apply -f deployment${name_space}${build_image}.yaml
+                ssh administrator@jenkins-gcp kubectl -n ${name_space} rollout status deployment.app/${build_image}
+                '''
+                sh "docker rmi -f ${env.PIPELINE_IMAGE}"
+        }
         }
   }
 }

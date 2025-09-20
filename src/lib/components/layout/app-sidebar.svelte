@@ -86,7 +86,7 @@
 								<Sidebar.MenuButton
 									{isActive}
 									tooltipContent={item.title}
-									class="after:absolute after:-right-2 after:hidden after:h-full after:w-1 after:rounded-l-md after:bg-destructive after:content-[''] data-[active=true]:after:block"
+									class={`transition-[width] after:absolute after:-right-2 after:hidden after:h-full after:rounded-l-md after:bg-destructive after:content-[''] data-[active=true]:after:block ${sidebar.open ? 'after:w-1' : 'after:w-0.5'}`}
 								>
 									{#snippet child({ props })}
 										<a {...props} href={item.href}>
