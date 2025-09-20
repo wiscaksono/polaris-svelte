@@ -43,7 +43,7 @@
 			<Table.Cell>
 				<Collapsible.Trigger onclick={(e) => e.stopPropagation()}>
 					{#snippet child({ props: childProps })}
-						<Button {...childProps} size="icon" variant="ghost" class="size-6 hover:border">
+						<Button {...childProps} size="icon" variant="ghost" class="size-6 hover:border" aria-label="Expand">
 							<ChevronRight />
 						</Button>
 					{/snippet}

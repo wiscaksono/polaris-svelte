@@ -31,6 +31,7 @@
 					{#snippet child({ props })}
 						<Button
 							{...props}
+							aria-label="Filter"
 							class="absolute top-1/2 right-3 size-6 -translate-y-1/2 rounded-sm text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground dark:data-[state=open]:bg-accent/50"
 							variant="ghost"
 							size="icon"
@@ -53,11 +54,11 @@
 		</Select.Root>
 
 		<div class="flex items-center">
-			<Button variant="outline" size="icon" class="rounded-r-none">
+			<Button variant="outline" size="icon" class="rounded-r-none" aria-label="Previous page">
 				<ChevronLeft />
 			</Button>
-			<Input class="w-14 rounded-none border-x-0 text-center" value="1" />
-			<Button variant="outline" size="icon" class="rounded-l-none">
+			<Input class="w-14 rounded-none border-x-0 text-center" value="1" aria-label="Page number" />
+			<Button variant="outline" size="icon" class="rounded-l-none" aria-label="Next page">
 				<ChevronRight />
 			</Button>
 		</div>
