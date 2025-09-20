@@ -4,6 +4,7 @@
 
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
+	import SearchPolis from '$lib/features/search-polis/components/search-polis.svelte';
 
 	import { sideMenu } from '$lib/utils';
 
@@ -75,7 +76,30 @@
 	</Sidebar.Header>
 	<Sidebar.Content class="divide-y divide-sidebar-border overflow-x-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 		{#each sideMenu as { title, subMenu }, i (i)}
-			{#if title}
+			{#if !title}
+				<Sidebar.Group>
+					<Sidebar.Menu>
+						<SearchPolis />
+						{#each subMenu as item (item.title)}
+							<Sidebar.MenuItem>
+								{@const isActive = item.href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(item.href)}
+								<Sidebar.MenuButton
+									{isActive}
+									tooltipContent={item.title}
+									class="after:absolute after:-right-2 after:hidden after:h-full after:w-1 after:rounded-l-md after:bg-destructive after:content-[''] data-[active=true]:after:block"
+								>
+									{#snippet child({ props })}
+										<a {...props} href={item.href}>
+											<item.icon />
+											<span>{item.title}</span>
+										</a>
+									{/snippet}
+								</Sidebar.MenuButton>
+							</Sidebar.MenuItem>
+						{/each}
+					</Sidebar.Menu>
+				</Sidebar.Group>
+			{:else}
 				<Sidebar.Group>
 					<Collapsible.Root open>
 						<Sidebar.GroupLabel class="group/label w-full text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
@@ -108,28 +132,6 @@
 							</Sidebar.Menu>
 						</Collapsible.Content>
 					</Collapsible.Root>
-				</Sidebar.Group>
-			{:else}
-				<Sidebar.Group>
-					<Sidebar.Menu>
-						{#each subMenu as item (item.title)}
-							<Sidebar.MenuItem>
-								{@const isActive = item.href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(item.href)}
-								<Sidebar.MenuButton
-									{isActive}
-									tooltipContent={item.title}
-									class="after:absolute after:-right-2 after:hidden after:h-full after:w-1 after:rounded-l-md after:bg-destructive after:content-[''] data-[active=true]:after:block"
-								>
-									{#snippet child({ props })}
-										<a {...props} href={item.href}>
-											<item.icon />
-											<span>{item.title}</span>
-										</a>
-									{/snippet}
-								</Sidebar.MenuButton>
-							</Sidebar.MenuItem>
-						{/each}
-					</Sidebar.Menu>
 				</Sidebar.Group>
 			{/if}
 		{/each}

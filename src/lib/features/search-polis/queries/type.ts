@@ -12,7 +12,7 @@ export type SearchPolisListRes = Array<{
 	from_app: string;
 	nama_prod: string;
 	case_trx: TransactionType;
-	kind: string;
+	kind: 'New Submission' | 'Further' | 'Filling' | (string & {});
 	create_at: string;
 	status_trx: string;
 	repricing: 'Yes' | 'No';

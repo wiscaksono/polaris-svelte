@@ -70,7 +70,7 @@
 	--sidebar-accent: oklch(0.269 0 0);
 	--sidebar-accent-foreground: oklch(0.985 0 0);
 	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.6567 0 0);
+	--sidebar-ring: oklch(0.8085 0.0694 232.17);
 }
 
 @theme inline {
@@ -128,4 +128,9 @@
 	::-webkit-scrollbar-thumb {
 		@apply rounded-full border-[1px] border-solid border-transparent bg-border bg-clip-padding;
 	}
+}
+
+
+.my-class {
+	
 }

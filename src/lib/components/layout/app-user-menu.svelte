@@ -1,9 +1,28 @@
 <script lang="ts">
 	import { Lock, LogOut } from '@lucide/svelte';
+	import { useQueryClient } from '@tanstack/svelte-query';
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
+	import { goto } from '$app/navigation';
+
+	const queryClient = useQueryClient();
+
+	const handleLogout = () => {
+		if ('caches' in window) caches.keys().then((names) => names.forEach((name) => caches.delete(name)));
+		if ('localStorage' in window) localStorage.clear();
+		if ('sessionStorage' in window) sessionStorage.clear();
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.getRegistrations().then((registrations) => {
+				registrations.forEach((registration) => registration.unregister());
+			});
+		}
+
+		queryClient.clear();
+
+		goto('/login', { replaceState: true });
+	};
 </script>
 
 <DropdownMenu.Root>
@@ -35,7 +54,7 @@
 			<Lock />
 			Change Password
 		</DropdownMenu.Item>
-		<DropdownMenu.Item>
+		<DropdownMenu.Item onSelect={handleLogout}>
 			<LogOut />
 			Log out
 		</DropdownMenu.Item>
