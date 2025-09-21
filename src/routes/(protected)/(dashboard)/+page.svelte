@@ -5,7 +5,6 @@
 	import ByCaseChart from '$lib/features/dashboard/components/by-case-chart/by-case-chart.svelte';
 
 	import * as Card from '$lib/components/ui/card/index.js';
-	import Button from '$lib/components/ui/button/button.svelte';
 
 	import type { PageProps } from './$types';
 

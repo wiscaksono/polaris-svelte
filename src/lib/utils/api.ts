@@ -1,8 +1,11 @@
 import { jwtDecode } from 'jwt-decode';
+import { browser } from '$app/environment';
+
 import { PUBLIC_BASE_POLARIS_API_URL } from '$env/static/public';
 
 import { goto } from '$app/navigation';
 import type { BaseResponse } from './type';
+import { resolve } from '$app/paths';
 
 class API {
 	private baseURL: string;
@@ -12,12 +15,12 @@ class API {
 
 	constructor(baseURL: string) {
 		this.baseURL = baseURL;
-		this.token = localStorage.getItem('api_token') ?? undefined;
+		this.token = browser ? localStorage.getItem('api_token') as string : undefined;
 	}
 
 	setToken(token: string) {
 		this.token = token;
-		localStorage.setItem('api_token', token);
+		if (browser) localStorage.setItem('api_token', token);
 	}
 
 	private async refreshToken(): Promise<void> {
@@ -110,8 +113,8 @@ class API {
 
 	private clearSession() {
 		this.token = undefined;
-		localStorage.removeItem('api_token');
-		goto('/');
+		if (browser) localStorage.removeItem('api_token');
+		goto(resolve("/"));
 	}
 
 	get<T>(path: string) {
