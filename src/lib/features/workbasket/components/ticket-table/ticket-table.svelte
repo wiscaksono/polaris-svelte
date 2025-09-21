@@ -48,7 +48,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $queryResult.isPending}
+		{#if $queryResult.isPending || $queryResult.isPlaceholderData}
 			{#each Array.from({ length: pageSize }, (_, i) => i) as i (i)}
 				<TicketRowSkeleton index={i} />
 			{/each}

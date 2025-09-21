@@ -128,6 +128,10 @@
 	::-webkit-scrollbar-thumb {
 		@apply rounded-full border-[1px] border-solid border-transparent bg-border bg-clip-padding;
 	}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    display: none;
+  }
 }
 
 

@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import { ModeWatcher, mode } from 'mode-watcher';
+	import { NuqsAdapter } from 'nuqs-svelte/adapters/svelte-kit';
 
 	import { Tooltip } from 'bits-ui';
 	import { QueryClientProvider } from '@tanstack/svelte-query';
@@ -35,11 +36,13 @@
 	<meta name="twitter:image" content={image} />
 </svelte:head>
 
-<Tooltip.Provider delayDuration={100}>
-	<QueryClientProvider client={data.queryClient}>
-		{@render children?.()}
+<NuqsAdapter>
+	<Tooltip.Provider delayDuration={100}>
+		<QueryClientProvider client={data.queryClient}>
+			{@render children?.()}
 
-		<ModeWatcher />
-		<SvelteQueryDevtools buttonPosition="bottom-right" />
-	</QueryClientProvider>
-</Tooltip.Provider>
+			<ModeWatcher />
+			<SvelteQueryDevtools buttonPosition="bottom-right" />
+		</QueryClientProvider>
+	</Tooltip.Provider>
+</NuqsAdapter>

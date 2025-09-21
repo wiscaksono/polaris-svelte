@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/svelte-query';
+import { queryOptions, keepPreviousData } from '@tanstack/svelte-query';
 
 import { api } from '$lib/utils/api';
 
@@ -23,7 +23,8 @@ export const workbasketQueries = {
 					...props
 				});
 				return data;
-			}
+			},
+			placeholderData: keepPreviousData
 		});
 	},
 
@@ -37,7 +38,8 @@ export const workbasketQueries = {
 					...props
 				});
 				return data;
-			}
+			},
+			placeholderData: keepPreviousData
 		});
 	},
 
@@ -51,7 +53,8 @@ export const workbasketQueries = {
 					...props
 				});
 				return data;
-			}
+			},
+			placeholderData: keepPreviousData
 		});
 	},
 
@@ -65,7 +68,8 @@ export const workbasketQueries = {
 					...props
 				});
 				return data;
-			}
+			},
+			placeholderData: keepPreviousData
 		});
 	},
 
