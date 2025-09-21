@@ -27,6 +27,8 @@
 		"@tailwindcss/vite": "^4.1.13",
 		"@tanstack/eslint-plugin-query": "^5.89.0",
 		"@types/jsonwebtoken": "^9.0.10",
+		"@types/d3-scale": "^4.0.9",
+		"@types/d3-shape": "^3.1.7",
 		"eslint": "^9.36.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-boundaries": "^5.0.1",
@@ -55,8 +57,6 @@
 	"dependencies": {
 		"@tanstack/svelte-query": "^5.89.0",
 		"@tanstack/svelte-query-devtools": "^5.89.0",
-		"@types/d3-scale": "^4.0.9",
-		"@types/d3-shape": "^3.1.7",
 		"bits-ui": "^2.11.0",
 		"clsx": "^2.1.1",
 		"d3-scale": "^4.0.2",
