@@ -13,7 +13,9 @@
 
 	const { data }: PageProps = $props();
 
-	const query = createQuery(workbasketQueries.fillingList({ pageSize: 200, pageNumber: 1 }));
+	const pageSize = 50;
+
+	const query = createQuery(workbasketQueries.fillingList({ pageSize, pageNumber: 1 }));
 </script>
 
 <svelte:head>
@@ -21,7 +23,7 @@
 </svelte:head>
 
 <header class="flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
-	<h1 class="w-full text-left text-xl font-medium">Filling</h1>
+	<h1 class="w-full text-left text-xl font-medium">Filling ({$query.data?.totalRecord ?? 0} items)</h1>
 	<div class="flex w-full shrink-0 items-center gap-2 md:w-1/2">
 		<div class="relative flex-1">
 			<Search class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -31,6 +33,7 @@
 					{#snippet child({ props })}
 						<Button
 							{...props}
+							aria-label="Filter"
 							class="absolute top-1/2 right-3 size-6 -translate-y-1/2 rounded-sm text-muted-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground dark:data-[state=open]:bg-accent/50"
 							variant="ghost"
 							size="icon"
@@ -43,8 +46,8 @@
 			</Popover.Root>
 		</div>
 
-		<Select.Root type="single" value="20">
-			<Select.Trigger class="w-18">200</Select.Trigger>
+		<Select.Root type="single" value={String(pageSize)}>
+			<Select.Trigger class="w-18">{pageSize}</Select.Trigger>
 			<Select.Content align="end">
 				{#each ['20', '50', '100'] as value (value)}
 					<Select.Item {value}>{value}</Select.Item>
@@ -53,15 +56,15 @@
 		</Select.Root>
 
 		<div class="flex items-center">
-			<Button variant="outline" size="icon" class="rounded-r-none">
+			<Button variant="outline" size="icon" class="rounded-r-none" aria-label="Previous page">
 				<ChevronLeft />
 			</Button>
-			<Input class="w-14 rounded-none border-x-0 text-center" value="1" />
-			<Button variant="outline" size="icon" class="rounded-l-none">
+			<Input class="w-14 rounded-none border-x-0 text-center" value="1" aria-label="Page number" />
+			<Button variant="outline" size="icon" class="rounded-l-none" aria-label="Next page">
 				<ChevronRight />
 			</Button>
 		</div>
 	</div>
 </header>
 
-<TicketTable queryResult={query} listKey="filling" />
+<TicketTable queryResult={query} listKey="filling" {pageSize} />

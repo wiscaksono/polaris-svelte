@@ -162,8 +162,7 @@
 </Dialog.Root>
 
 {#snippet skeleton()}
-	<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-	{#each Array(3) as _, i (i)}
+	{#each Array.from({ length: 3 }, (_, i) => i) as i (i)}
 		<div
 			data-slot="command-group"
 			class="animation-pulse overflow-hidden p-1 text-foreground [&_[data-slot=command-group-items]]:grid [&_[data-slot=command-group-items]]:gap-y-1"
@@ -174,8 +173,7 @@
 				<div class="h-[13.5px] w-9 rounded bg-muted"></div>
 			</div>
 			<div style="display: contents;" class="space-y-1">
-				<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-				{#each Array(5) as _, j (j)}
+				{#each Array.from({ length: 5 }, (_, j) => j) as j (j)}
 					<div data-slot="command-group-items" role="group" class="animation-pulse" style="animation-delay: {j * 0.1}s;">
 						<div style="display: contents;">
 							<div

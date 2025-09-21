@@ -6,7 +6,6 @@
 	import Notification from '$lib/components/layout/notification.svelte';
 	import DateTime from '$lib/components/layout/date-time.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import SidebarToggler from '$lib/components/layout/sidebar-toggler.svelte';
 	import ThemeSwitcher from '$lib/components/layout/theme-switcher.svelte';
 
 	let { children } = $props();
@@ -15,9 +14,10 @@
 <Sidebar.Provider>
 	<AppSidebar />
 	<Sidebar.Inset>
-		<header class="relative flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 py-[14px]">
+		<header class="sticky top-0 flex h-16 shrink-0 items-center justify-between gap-2 overflow-hidden border-b px-4 py-[14px]">
 			<div class="flex h-full items-center gap-4">
-				<SidebarToggler />
+				<Sidebar.Trigger class="-ml-1" />
+				<Separator orientation="vertical" class="mr-2 h-4" />
 				<AppBreadcrumb />
 			</div>
 			<div class="flex h-full gap-4">

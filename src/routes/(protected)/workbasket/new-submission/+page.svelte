@@ -13,15 +13,17 @@
 
 	const { data }: PageProps = $props();
 
-	const query = createQuery(workbasketQueries.newSubmissionList({ pageSize: 200, pageNumber: 1 }));
+	const pageSize = 50;
+
+	const query = createQuery(workbasketQueries.newSubmissionList({ pageSize, pageNumber: 1 }));
 </script>
 
 <svelte:head>
 	<title>{data.title}</title>
 </svelte:head>
 
-<header class="flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
-	<h1 class="w-full text-left text-xl font-medium">New Submission</h1>
+<section class="sticky top-0 flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
+	<h1 class="w-full text-left text-xl font-medium">New Submission ({$query.data?.totalRecord ?? 0} items)</h1>
 	<div class="flex w-full shrink-0 items-center gap-2 md:w-1/2">
 		<div class="relative flex-1">
 			<Search class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -44,8 +46,8 @@
 			</Popover.Root>
 		</div>
 
-		<Select.Root type="single" value="20">
-			<Select.Trigger class="w-18">200</Select.Trigger>
+		<Select.Root type="single" value={String(pageSize)}>
+			<Select.Trigger class="w-18">{pageSize}</Select.Trigger>
 			<Select.Content align="end">
 				{#each ['20', '50', '100'] as value (value)}
 					<Select.Item {value}>{value}</Select.Item>
@@ -63,6 +65,6 @@
 			</Button>
 		</div>
 	</div>
-</header>
+</section>
 
-<TicketTable queryResult={query} listKey="newSubmission" />
+<TicketTable queryResult={query} listKey="newSubmission" {pageSize} />

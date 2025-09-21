@@ -1,15 +1,19 @@
 <script lang="ts" generics="T extends string">
-	import type { CreateBaseQueryResult } from '@tanstack/svelte-query';
 	import * as Table from '$lib/components/ui/table/index.js';
-	import type { PolisListRes } from '$lib/utils';
+
 	import TicketRow from './ticket-row.svelte';
+	import TicketRowSkeleton from './ticket-row-skeleton.svelte';
+
+	import type { CreateBaseQueryResult } from '@tanstack/svelte-query';
+	import type { PolisListRes } from '$lib/utils';
 
 	interface $$Props {
 		queryResult: CreateBaseQueryResult<PolisListRes<T>, Error>;
 		listKey: T;
+		pageSize: number;
 	}
 
-	let { queryResult, listKey }: $$Props = $props();
+	let { queryResult, listKey, pageSize }: $$Props = $props();
 </script>
 
 <Table.Root>
@@ -41,20 +45,19 @@
 				<div>Last Update</div>
 			</Table.Head>
 			<Table.Head>SLA</Table.Head>
-			<Table.Head />
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
 		{#if $queryResult.isPending}
-			<Table.Row>
-				<Table.Cell colspan={9} class="text-center">Loading...</Table.Cell>
-			</Table.Row>
+			{#each Array.from({ length: pageSize }, (_, i) => i) as i (i)}
+				<TicketRowSkeleton index={i} />
+			{/each}
 		{:else if $queryResult.isError}
 			<Table.Row>
 				<Table.Cell colspan={9} class="text-center">Error: {$queryResult.error.message}</Table.Cell>
 			</Table.Row>
 		{:else}
-			{#each $queryResult.data[listKey] as item (item.case_id)}
+			{#each $queryResult.data[listKey] as item, i (i)}
 				<TicketRow {item} />
 			{/each}
 		{/if}
