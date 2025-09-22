@@ -1,11 +1,35 @@
-<script lang="ts">
-	import type { HTMLTableAttributes } from 'svelte/elements';
+<script lang="ts" module>
+	import { type VariantProps, tv } from 'tailwind-variants';
+	import type { HTMLAnchorAttributes, HTMLTableAttributes } from 'svelte/elements';
+
 	import { cn, type WithElementRef } from '$lib/utils';
 
-	let { ref = $bindable(null), class: className, children, ...restProps }: WithElementRef<HTMLTableAttributes> = $props();
+	export const tableVariants = tv({
+		base: 'relative w-full overflow-x-auto',
+		variants: {
+			variant: {
+				default: '',
+				outline: 'rounded-lg border'
+			}
+		},
+		defaultVariants: {
+			variant: 'default'
+		}
+	});
+
+	export type TableVariant = VariantProps<typeof tableVariants>['variant'];
+
+	export type TableProps = WithElementRef<HTMLTableAttributes> &
+		WithElementRef<HTMLAnchorAttributes> & {
+			variant?: TableVariant;
+		};
 </script>
 
-<div data-slot="table-container" class="relative w-full overflow-x-auto">
+<script lang="ts">
+	let { ref = $bindable(null), class: className, variant = 'default', children, ...restProps }: TableProps = $props();
+</script>
+
+<div data-slot="table-container" class={cn(tableVariants({ variant }))}>
 	<table bind:this={ref} data-slot="table" class={cn('w-full caption-bottom text-sm', className)} {...restProps}>
 		{@render children?.()}
 	</table>
