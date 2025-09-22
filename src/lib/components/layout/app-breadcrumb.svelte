@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import type { ResolvedPathname } from '$app/types';
 
 	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 
 	type Segment = {
 		name: string;
-		href: string;
+		href: ResolvedPathname;
 		isLast: boolean;
 	};
 
@@ -21,7 +22,7 @@
 			const name = part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' ');
 			return {
 				name,
-				href: currentPath,
+				href: currentPath as ResolvedPathname,
 				isLast
 			};
 		});
