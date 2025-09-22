@@ -15,7 +15,7 @@ class API {
 
 	constructor(baseURL: string) {
 		this.baseURL = baseURL;
-		this.token = browser ? localStorage.getItem('api_token') as string : undefined;
+		this.token = browser ? (localStorage.getItem('api_token') as string) : undefined;
 	}
 
 	setToken(token: string) {
@@ -114,7 +114,7 @@ class API {
 	private clearSession() {
 		this.token = undefined;
 		if (browser) localStorage.removeItem('api_token');
-		goto(resolve("/"));
+		goto(resolve('/'));
 	}
 
 	get<T>(path: string) {

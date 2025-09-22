@@ -49,7 +49,7 @@
 	});
 </script>
 
-<Card.Root class="col-span-2 rounded-none border-0 shadow-none">
+<Card.Root class="rounded-none border-0 shadow-none md:col-span-2">
 	<Card.Header>
 		<Card.Title class="flex items-center gap-2">
 			<div>SLA Performance</div>

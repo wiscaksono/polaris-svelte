@@ -39,3 +39,13 @@ export function toTitleCase(str: string) {
 		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 		.join(' ');
 }
+
+/**
+ * Converts a camelCase or PascalCase identifier into Title Case words.
+ * @param str - The identifier to convert (e.g., "cancelFreeLook", "parseHTTP2Response").
+ * @returns The title-cased phrase with spaces between words.
+ */
+export function camelToTitle(str: string): string {
+	const words = str.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g) ?? [];
+	return words.map((w) => w.slice(0, 1).toUpperCase() + w.slice(1)).join(' ');
+}

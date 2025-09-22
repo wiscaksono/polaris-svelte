@@ -7,6 +7,7 @@
 	import { Tooltip } from 'bits-ui';
 	import { QueryClientProvider } from '@tanstack/svelte-query';
 	import { SvelteQueryDevtools } from '@tanstack/svelte-query-devtools';
+	import ResponsiveIndicator from '$lib/components/responsive-indicator.svelte';
 
 	let { children, data } = $props();
 
@@ -46,3 +47,5 @@
 		</QueryClientProvider>
 	</Tooltip.Provider>
 </NuqsAdapter>
+
+<ResponsiveIndicator />

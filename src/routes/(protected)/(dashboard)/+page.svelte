@@ -11,7 +11,7 @@
 	import TrxStatusChart from '$lib/features/dashboard/components/trx-status-chart';
 	import SlaPerformance from '$lib/features/dashboard/components/sla-performance';
 	import TotalCaseDiffChart from '$lib/features/dashboard/components/total-case-diff-chart.svelte';
-	import ByCaseChart from '$lib/features/dashboard/components/by-case-chart/by-case-chart.svelte';
+	import ByCaseChart from '$lib/features/dashboard/components/by-case-chart';
 
 	import type { PageProps } from './$types';
 
@@ -19,6 +19,7 @@
 
 	const tab = useQueryState<TrxType | 'reconcile'>('tab', parseAsStringLiteral(['alteration', 'financial', 'reconcile']).withDefault('alteration'));
 	const totalCaseQuery = $derived(createQuery(dashboardQueries.totalCase(tab.current === 'alteration' ? 'alteration' : 'financial')));
+	const totalCaseDiffQuery = $derived(createQuery(dashboardQueries.totalCaseDiff(tab.current === 'alteration' ? 'alteration' : 'financial')));
 </script>
 
 <svelte:head>
@@ -43,10 +44,10 @@
 	</RadioGroup.Root>
 </section>
 
-<section class="grid grid-cols-4 gap-px bg-border">
+<section class="grid grid-cols-1 gap-px bg-border md:grid-cols-2 lg:grid-cols-4">
 	<TrxStatusChart data={$totalCaseQuery.data?.allTime} title="All Time" description="Data case masuk selama ini" />
 	<TrxStatusChart data={$totalCaseQuery.data?.today} title="Today" description="Data case masuk hari ini" />
 	<SlaPerformance />
+	<TotalCaseDiffChart data={$totalCaseDiffQuery.data} />
 	<ByCaseChart />
-	<TotalCaseDiffChart />
 </section>

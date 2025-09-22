@@ -10,14 +10,14 @@ const config = {
 	kit: {
 		adapter: process.env.VERCEL ? adapterVercel() : adapterNode(),
 		experimental: { remoteFunctions: true }
-	},
-	vitePlugin: {
-		inspector: {
-			toggleKeyCombo: 'meta-shift',
-			showToggleButton: 'always',
-			toggleButtonPos: 'bottom-right'
-		}
 	}
+	// vitePlugin: {
+	// 	inspector: {
+	// 		toggleKeyCombo: 'meta-shift',
+	// 		showToggleButton: 'always',
+	// 		toggleButtonPos: 'bottom-right'
+	// 	}
+	// }
 };
 
 export default config;
