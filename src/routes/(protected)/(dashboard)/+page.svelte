@@ -15,7 +15,7 @@
 	<title>{data.title}</title>
 </svelte:head>
 
-<section class="sticky top-0 flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
+<section class="sticky top-(--header-height) z-50 flex flex-col items-center justify-between gap-2 border-b bg-background px-4 py-[14px] md:flex-row">
 	<h1 class="w-full text-left text-xl font-medium">Dashboard</h1>
 	<ToggleGroup.Root type="single">
 		<ToggleGroup.Item value="a">Alteration</ToggleGroup.Item>

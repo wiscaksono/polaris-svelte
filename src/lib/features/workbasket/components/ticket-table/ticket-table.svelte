@@ -17,7 +17,7 @@
 </script>
 
 <Table.Root>
-	<Table.Header>
+	<Table.Header class="sticky top-0 z-10 bg-background">
 		<Table.Row>
 			<Table.Head class="w-px" />
 			<Table.Head>
