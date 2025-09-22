@@ -41,7 +41,7 @@
 		</div>
 		<div class="flex flex-1 items-center justify-center">
 			<div class="w-full max-w-xs">
-				<form class="flex flex-col gap-6" onsubmit={handleLogin}>
+				<form class="flex flex-col gap-6" onsubmit={handleLogin} data-testid="login-form">
 					<div class="flex flex-col items-center gap-2 text-center">
 						<h1 class="text-2xl font-bold">Login to your account</h1>
 						<p class="text-sm text-balance text-muted-foreground">Enter your username below to login to your account</p>
@@ -49,16 +49,16 @@
 					<div class="grid gap-6">
 						<div class="grid gap-3">
 							<Label for="username">Username</Label>
-							<Input id="username" required bind:value={payload.username} />
+							<Input id="username" required bind:value={payload.username} data-testid="username-input" />
 						</div>
 						<div class="grid gap-3">
 							<Label for="password">Password</Label>
-							<Input id="password" type="password" required bind:value={payload.password} />
+							<Input id="password" type="password" required bind:value={payload.password} data-testid="password-input" />
 						</div>
-						<Button type="submit" class="w-full" disabled={$mutation.isPending}
-							>Login
+						<Button type="submit" class="w-full" disabled={$mutation.isPending} data-testid="login-button">
+							Login
 							{#if $mutation.isPending}
-								<LoaderCircle class="h-4 w-4 animate-spin" />
+								<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
 							{/if}
 						</Button>
 					</div>

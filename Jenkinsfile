@@ -17,6 +17,27 @@ pipeline {
                 git branch:'cloud-prod' ,credentialsId: 'biznetgio1', url: 'http://gitlab-prd.msiglife.co.id:8888/polaris/web-polaris-ts'  
             }
         }
+
+        stage('Install Dependencies') {
+            steps {
+                // TODO: Confirm pnpm availibility
+                sh 'pnpm install --frozen-lockfile'
+            }
+        }
+
+        stage('Install Playwright Browsers') {
+            steps {
+                sh 'npx playwright install --with-deps'
+            }
+        }
+
+        stage('Run E2E Tests') {
+            steps {
+                // This command will automatically start your dev server,
+                // run tests, and then shut it down.
+                sh 'npx playwright test'
+            }
+        }
         
         stage('dockerized') {
             steps{
@@ -24,7 +45,6 @@ pipeline {
                 sh "docker build -t ${env.PIPELINE_BUILD_IMAGE} ."
             
             }
-    
         }
         
         stage('Deploy To Docker Registry') {
@@ -34,7 +54,7 @@ pipeline {
                 sh "docker push ${env.PIPELINE_IMAGE}"
             }
         }
-    
+
         stage("replace Env"){
             steps{
         	    sh "printenv"
@@ -45,7 +65,7 @@ pipeline {
                 sh "pwd"
             }
         }
-    
+
         stage('deploy to kubernetes') {
             steps {
                 sh "ls"
@@ -56,8 +76,16 @@ pipeline {
                 ssh administrator@jenkins-gcp kubectl -n ${name_space} rollout status deployment.app/${build_image}
                 '''
                 sh "docker rmi -f ${env.PIPELINE_IMAGE}"
+            }
         }
+    }
+
+    post {
+        always {
+            echo 'Archiving test results...'
+            junit 'test-results/results.xml'
+            archiveArtifacts artifacts: 'test-results/', allowEmptyArchive: true
         }
-  }
+    }
 }
 
