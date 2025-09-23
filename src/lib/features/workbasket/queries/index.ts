@@ -1,26 +1,21 @@
 import { queryOptions, keepPreviousData } from '@tanstack/svelte-query';
-
 import { api } from '$lib/utils/api';
 
+import type * as Type from './types';
 import type { PolisListRes } from '$lib/utils/type';
 
-import * as Type from './types';
 
-interface WorkbasketCommonParams {
-	pageSize?: number;
-	pageNumber?: number;
-	caseId?: string;
-}
+const cleanProps = (props: Type.WorkbasketReq) => Object.fromEntries(Object.entries(props).filter(([, value]) => value !== ''));
 
 export const workbasketQueries = {
-	newSubmissionList: (props: WorkbasketCommonParams) => {
+	newSubmissionList: (props: Type.WorkbasketReq) => {
 		return queryOptions({
 			queryKey: ['new-submission', 'list', props],
 			queryFn: async () => {
 				const { data } = await api.post<PolisListRes<'newSubmission'>>('/polaris/api-business-polaris/major/workbasket/filterSubmission', {
 					pageSize: props.pageSize ?? 10,
 					pageNumber: props.pageNumber ?? 1,
-					...props
+					...cleanProps(props)
 				});
 				return data;
 			},
@@ -28,14 +23,14 @@ export const workbasketQueries = {
 		});
 	},
 
-	furtherList: (props: WorkbasketCommonParams) => {
+	furtherList: (props: Type.WorkbasketReq) => {
 		return queryOptions({
 			queryKey: ['further', 'list', props],
 			queryFn: async () => {
 				const { data } = await api.post<PolisListRes<'further'>>('/polaris/api-business-polaris/major/workbasket/further', {
 					pageSize: props.pageSize ?? 10,
 					pageNumber: props.pageNumber ?? 1,
-					...props
+					...cleanProps(props)
 				});
 				return data;
 			},
@@ -43,14 +38,14 @@ export const workbasketQueries = {
 		});
 	},
 
-	fillingList: (props: WorkbasketCommonParams) => {
+	fillingList: (props: Type.WorkbasketReq) => {
 		return queryOptions({
 			queryKey: ['filling', 'list', props],
 			queryFn: async () => {
 				const { data } = await api.post<PolisListRes<'filling'>>('/polaris/api-business-polaris/major/workbasket/filling', {
 					pageSize: props.pageSize ?? 10,
 					pageNumber: props.pageNumber ?? 1,
-					...props
+					...cleanProps(props)
 				});
 				return data;
 			},
@@ -58,14 +53,14 @@ export const workbasketQueries = {
 		});
 	},
 
-	flaggedList: (props: WorkbasketCommonParams) => {
+	flaggedList: (props: Type.WorkbasketReq) => {
 		return queryOptions({
 			queryKey: ['flagged', 'list', props],
 			queryFn: async () => {
 				const { data } = await api.post<PolisListRes<'flagged'>>('/polaris/api-business-polaris/major/workbasket/flagged', {
 					pageSize: props.pageSize ?? 10,
 					pageNumber: props.pageNumber ?? 1,
-					...props
+					...cleanProps(props)
 				});
 				return data;
 			},

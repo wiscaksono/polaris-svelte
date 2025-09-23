@@ -21,3 +21,17 @@ export interface ListAllSelectRes {
 		tujuan_membeli_asuransi: IDLabel<number>[];
 	};
 }
+
+export interface ListJenisTRXRes {
+	jenis_transaksi: {
+		TRX_ID: number
+		DESCRIPTION: string
+	}[]
+}
+
+export interface ListUserRes {
+	user_assign: {
+		LUS_ID: number
+		LUS_FULL_NAME: string
+	}[]
+}

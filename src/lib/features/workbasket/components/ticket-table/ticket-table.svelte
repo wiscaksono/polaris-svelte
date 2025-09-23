@@ -56,10 +56,14 @@
 			<Table.Row>
 				<Table.Cell colspan={9} class="text-center">Error: {$queryResult.error.message}</Table.Cell>
 			</Table.Row>
-		{:else}
+		{:else if $queryResult.data[listKey].length}
 			{#each $queryResult.data[listKey] as item, i (i)}
 				<TicketRow {item} />
 			{/each}
+		{:else}
+			<Table.Row>
+				<Table.Cell colspan={9} class="h-16 text-center">No tickets found</Table.Cell>
+			</Table.Row>
 		{/if}
 	</Table.Body>
 </Table.Root>

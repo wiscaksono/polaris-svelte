@@ -11,7 +11,7 @@
 	$inspect('parent', data.dataDiri.after.agama.label);
 </script>
 
-<div class="space-y-2 border p-2">
+<div class="space-y-2 p-2">
 	<div>Data Diri Pemegang Polis</div>
 	<DataDiri />
 </div>

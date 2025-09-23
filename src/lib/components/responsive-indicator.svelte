@@ -3,7 +3,7 @@
 </script>
 
 {#if !isProd}
-	<div class="fixed right-16 bottom-3 z-[999999999] flex h-6 w-6 items-center justify-center rounded-full bg-destructive p-3 font-mono text-xs text-foreground">
+	<div class="fixed right-16 bottom-3 z-[999999999] flex h-6 w-6 items-center justify-center rounded-full bg-destructive p-3 font-mono text-[10px] text-white">
 		<div class="block sm:hidden">xs</div>
 		<div class="hidden sm:block md:hidden">sm</div>
 		<div class="hidden md:block lg:hidden">md</div>
