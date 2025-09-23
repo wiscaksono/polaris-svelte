@@ -4,7 +4,6 @@ import { api } from '$lib/utils/api';
 import type * as Type from './types';
 import type { PolisListRes } from '$lib/utils/type';
 
-
 const cleanProps = (props: Type.WorkbasketReq) => Object.fromEntries(Object.entries(props).filter(([, value]) => value !== ''));
 
 export const workbasketQueries = {
