@@ -10,10 +10,6 @@
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import TicketTable from '$lib/features/workbasket/components/ticket-table/ticket-table.svelte';
 
-	import type { PageProps } from './$types';
-
-	const { data }: PageProps = $props();
-
 	const queryParams = useQueryStates({
 		pageSize: parseAsInteger.withDefault(50),
 		pageNumber: parseAsInteger.withDefault(1),
@@ -32,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.title}</title>
+	<title>New Submission</title>
 </svelte:head>
 
 <section class="sticky top-0 flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">

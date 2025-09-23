@@ -13,17 +13,13 @@
 	import TotalCaseDiffChart from '$lib/features/dashboard/components/total-case-diff-chart.svelte';
 	import ByCaseChart from '$lib/features/dashboard/components/by-case-chart';
 
-	import type { PageProps } from './$types';
-
-	let { data }: PageProps = $props();
-
 	const tab = useQueryState<TrxType | 'reconcile'>('tab', parseAsStringLiteral(['alteration', 'financial', 'reconcile']).withDefault('alteration'));
 	const totalCaseQuery = $derived(createQuery(dashboardQueries.totalCase(tab.current === 'alteration' ? 'alteration' : 'financial')));
 	const totalCaseDiffQuery = $derived(createQuery(dashboardQueries.totalCaseDiff(tab.current === 'alteration' ? 'alteration' : 'financial')));
 </script>
 
 <svelte:head>
-	<title>{data.title}</title>
+	<title>Dashboard</title>
 </svelte:head>
 
 <section class="sticky top-(--header-height) z-50 flex flex-col items-center justify-between gap-2 border-b bg-background px-4 py-[14px] md:flex-row">

@@ -9,17 +9,13 @@
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import TicketTable from '$lib/features/workbasket/components/ticket-table/ticket-table.svelte';
 
-	import type { PageProps } from './$types';
-
-	const { data }: PageProps = $props();
-
 	const pageSize = 50;
 
 	const query = createQuery(workbasketQueries.fillingList({ pageSize, pageNumber: 1 }));
 </script>
 
 <svelte:head>
-	<title>{data.title}</title>
+	<title>Filling</title>
 </svelte:head>
 
 <header class="flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
