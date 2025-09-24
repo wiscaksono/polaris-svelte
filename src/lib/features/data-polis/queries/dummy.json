@@ -1,0 +1,79 @@
+{
+	"result": "OK",
+	"error": false,
+	"message": "Found Data Polis",
+	"data": [
+		{
+			"reg_spaj": "37202354302",
+			"produk": "SMiLe PRO INFINITE 75 (MPP 10)",
+			"lsbs_id": 230,
+			"lsdbs_number": 2,
+			"peserta": [
+				{
+					"nama": "CISPI 270923 002",
+					"umur": 53,
+					"jenis_tertanggung": "TERTANGGUNG UTAMA",
+					"beg_date": "2023-09-26T17:00:00.000+00:00",
+					"end_date": "2045-09-25T17:00:00.000+00:00",
+					"up": 2.5e9,
+					"extra_rate": 0,
+					"status": "Active"
+				}
+			]
+		},
+		{
+			"reg_spaj": "37202354302",
+			"produk": "SMiLe TERM EXTRA",
+			"lsbs_id": 851,
+			"lsdbs_number": 1,
+			"peserta": [
+				{
+					"nama": "CISPI 270923 002",
+					"umur": 53,
+					"jenis_tertanggung": "TERTANGGUNG UTAMA",
+					"beg_date": "2023-09-26T17:00:00.000+00:00",
+					"end_date": "2045-09-25T17:00:00.000+00:00",
+					"up": 1.0e8,
+					"extra_rate": 0,
+					"status": "Active"
+				}
+			]
+		},
+		{
+			"reg_spaj": "37202354302",
+			"produk": "SMiLe PRO CRITICAL ILLNESS Comprehensive Plan ",
+			"lsbs_id": 853,
+			"lsdbs_number": 1,
+			"peserta": [
+				{
+					"nama": "CISPI 270923 002",
+					"umur": 53,
+					"jenis_tertanggung": "TERTANGGUNG UTAMA",
+					"beg_date": "2023-09-26T17:00:00.000+00:00",
+					"end_date": "2045-09-25T17:00:00.000+00:00",
+					"up": 2.5e9,
+					"extra_rate": 0,
+					"status": "Active"
+				}
+			]
+		},
+		{
+			"reg_spaj": "37202354302",
+			"produk": "SMiLe PRO WAIVER Plan 2",
+			"lsbs_id": 854,
+			"lsdbs_number": 1,
+			"peserta": [
+				{
+					"nama": "CISPI 270923 003",
+					"umur": 30,
+					"jenis_tertanggung": "PEMEGANG POLIS",
+					"beg_date": "2023-09-26T17:00:00.000+00:00",
+					"end_date": "2033-09-25T17:00:00.000+00:00",
+					"up": 2.060114e8,
+					"extra_rate": 0,
+					"status": "Active"
+				}
+			]
+		}
+	]
+}

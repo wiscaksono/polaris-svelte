@@ -1,5 +1,6 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import { useQueryClient } from '@tanstack/svelte-query';
 	import { CalendarArrowDown, User, Box, CircleUserRound, CalendarSync, Flag } from '@lucide/svelte';
@@ -21,13 +22,19 @@
 		const isCached = queryClient.getQueryData(toPrefetch.queryKey);
 		if (!isCached) queryClient.prefetchQuery(toPrefetch);
 	}
+
+	// TODO: Handle for another WB
+	function handleClick() {
+		goto(
+			resolve('/(protected)/workbasket/new-submission/[caseID]/[tab]', {
+				caseID: String(item.case_id),
+				tab: taskForms[item.case_trx][0].slug
+			})
+		);
+	}
 </script>
 
-<Table.Row
-	class="cursor-pointer"
-	onclick={() => goto(`/workbasket/new-submission/${item.case_id}/${taskForms[item.case_trx][0].slug}`)}
-	onpointerenter={() => handlePrefetch(item)}
->
+<Table.Row class="cursor-pointer" onclick={handleClick} onpointerenter={() => handlePrefetch(item)}>
 	<Table.Cell>
 		<Button size="icon" variant="ghost" class="size-6 hover:border" onclick={(e) => e.stopPropagation()}>
 			<Flag />

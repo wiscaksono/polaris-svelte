@@ -82,7 +82,11 @@
 		</div>
 
 		<div class="relative flex flex-1 flex-col gap-3.5 overflow-y-auto pr-4 pb-3.5">
-			<div class="sticky top-0 h-14 shrink-0 bg-red-500 pt-4">HEADER HERE</div>
+			<div class="sticky top-0 flex h-14 shrink-0 items-center border-b pt-4">
+				<p class="text-xl">
+					{tabs.find(({ id }) => id === rightTab)?.title}
+				</p>
+			</div>
 
 			{#if rightTab === 'history'}
 				<Table.Root class="bg-background" variant="outline">
