@@ -78,10 +78,10 @@
 			{:else if $queries.products}
 				{#each $queries.products as item, i (i)}
 					<Table.Row>
-						<Table.Cell colspan={7}>{item.produk}</Table.Cell>
+						<Table.Cell colspan={7} class="font-medium">{item.produk}</Table.Cell>
 					</Table.Row>
 					{#each item.peserta as peserta, j (j)}
-						<Table.Row>
+						<Table.Row class="text-muted-foreground">
 							<Table.Cell class="pl-10">{peserta.nama}</Table.Cell>
 							<Table.Cell>{peserta.beg_date ? dayjs(peserta.beg_date).format('DD MMMM YYYY') : '-'}</Table.Cell>
 							<Table.Cell>{peserta.end_date ? dayjs(peserta.end_date).format('DD MMMM YYYY') : '-'}</Table.Cell>
