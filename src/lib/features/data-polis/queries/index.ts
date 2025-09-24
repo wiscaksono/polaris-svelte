@@ -4,6 +4,7 @@ import { queryOptions } from '@tanstack/svelte-query';
 import type { DataPolisListRes } from './type';
 
 export * from './summary';
+export * from './client-roles';
 
 export const dataPolisQueries = {
 	list: ({ pageSize = 10, pageNumber = 1, noPolis }: { pageSize?: number; pageNumber?: number; noPolis?: string }) => {

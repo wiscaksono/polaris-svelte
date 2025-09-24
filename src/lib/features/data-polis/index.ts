@@ -18,7 +18,7 @@ export const dataPolisTabs: DataPolisTabsConfig[] = [
 	{
 		title: 'Client Roles',
 		slug: 'client-roles',
-		component: import('./components/client-roles.svelte')
+		component: import('./components/client-roles')
 	},
 	{
 		title: 'Due Diligence',

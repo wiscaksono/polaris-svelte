@@ -4,4 +4,4 @@
 	let { regSpaj, tab }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 </script>
 
-Churning
+<div class="">hehehe</div>

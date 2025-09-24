@@ -49,3 +49,23 @@ export function camelToTitle(str: string): string {
 	const words = str.match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g) ?? [];
 	return words.map((w) => w.slice(0, 1).toUpperCase() + w.slice(1)).join(' ');
 }
+
+/**
+ * Formats a number into a currency string.
+ * @param amount The number to format.
+ * @param currency The ISO 4217 currency code (e.g., 'USD', 'IDR').
+ * @param locale The BCP 47 language tag (e.g., 'en-US', 'id-ID').
+ * @returns The formatted currency string.
+ */
+export function formatCurrency(amount: number, currency: string, locale: string, options?: Omit<Intl.NumberFormatOptions, 'style' | 'currency'>) {
+	const formatter = new Intl.NumberFormat(locale, {
+		style: 'currency',
+		currency: currency,
+		// You can add more options here if needed
+		// minimumFractionDigits: 2, 
+		...options
+	});
+
+	return formatter.format(amount);
+}
+

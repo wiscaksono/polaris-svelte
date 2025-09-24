@@ -69,7 +69,7 @@
 <Sidebar.SidebarMenuItem>
 	<Sidebar.SidebarMenuButton variant="outline" onclick={() => (open = true)}>
 		<Search />
-		<span class="flex-1 whitespace-nowrap">Quick Search Polis...</span>
+		<span class="flex-1 whitespace-nowrap">Quick Search Polis …</span>
 		<Sidebar.SidebarMenuBadge class="right-2 rounded-sm bg-sidebar-border p-1 whitespace-nowrap">⌘ + P</Sidebar.SidebarMenuBadge>
 	</Sidebar.SidebarMenuButton>
 </Sidebar.SidebarMenuItem>
