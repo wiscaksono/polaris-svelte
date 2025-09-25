@@ -1,7 +1,7 @@
 import { api } from '$lib/utils/api';
 import { queryOptions } from '@tanstack/svelte-query';
 
-import type { DataPolisListRes } from './type';
+import type * as Type from './type';
 
 export * from './summary';
 export * from './client-roles';
@@ -11,7 +11,16 @@ export const dataPolisQueries = {
 		return queryOptions({
 			queryKey: ['data-polis', 'list', pageSize, pageNumber, noPolis],
 			queryFn: async () => {
-				const { data } = await api.post<DataPolisListRes>('/polaris/api-business-polaris/major/workbasket/dataMajor', { pageSize, pageNumber, noPolis });
+				const { data } = await api.post<Type.DataPolisListRes>('/polaris/api-business-polaris/major/workbasket/dataMajor', { pageSize, pageNumber, noPolis });
+				return data;
+			}
+		});
+	},
+	dueDiligence: (regSpaj: string) => {
+		return queryOptions({
+			queryKey: ['data-polis', 'due-diligence', regSpaj],
+			queryFn: async () => {
+				const { data } = await api.get<Type.DataPolisDueDiligenceRes>(`/polaris/api-summary-polaris/summary/due-diligent?regSpaj=${regSpaj}`);
 				return data;
 			}
 		});

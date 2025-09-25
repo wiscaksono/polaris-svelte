@@ -1,14 +1,14 @@
 import { api } from '$lib/utils/api';
 import { queryOptions } from '@tanstack/svelte-query';
 
-import type { DataPolisClientRolesDataPPdanTURes, DataPolisPertanggunganRes } from './type';
+import type * as Type from './type';
 
 export const dataPolisClientRolesQueries = {
   dataPPdanTU: (regSpaj: string) => {
     return queryOptions({
       queryKey: ['data-polis', 'data-pp-tu', regSpaj],
       queryFn: async () => {
-        const { data } = await api.get<DataPolisClientRolesDataPPdanTURes>(`/polaris/api-summary-polaris/summary/client-roles?regSpaj=${regSpaj}`);
+        const { data } = await api.get<Type.DataPolisClientRolesDataPPdanTURes>(`/polaris/api-summary-polaris/summary/client-roles?regSpaj=${regSpaj}`);
         return data;
       }
     });
@@ -17,9 +17,18 @@ export const dataPolisClientRolesQueries = {
     return queryOptions({
       queryKey: ['data-polis', 'data-pertanggungan', regSpaj],
       queryFn: async () => {
-        const { data } = await api.get<DataPolisPertanggunganRes>(`/polaris/api-summary-polaris/summary/data-pertanggungan?regSpaj=${regSpaj}`);
+        const { data } = await api.get<Type.DataPolisPertanggunganRes>(`/polaris/api-summary-polaris/summary/data-pertanggungan?regSpaj=${regSpaj}`);
         return data;
       }
     });
-  }
+  },
+  dataPembayaranPremi: (regSpaj: string) => {
+    return queryOptions({
+      queryKey: ['data-polis', 'data-pembayaran-premi', regSpaj],
+      queryFn: async () => {
+        const { data } = await api.get<Type.DataPolisPembayaranPremiRes>(`/polaris/api-summary-polaris/summary/data-pembayar-premi?regSpaj=${regSpaj}`);
+        return data;
+      }
+    });
+  },
 };

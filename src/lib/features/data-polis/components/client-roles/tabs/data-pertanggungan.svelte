@@ -3,6 +3,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { dataPolisClientRolesQueries } from '../../../queries';
 
+	import DetailItem from '../../detail-item.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
 	import type { RouteParams } from '$app/types';
@@ -10,6 +11,7 @@
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
 	const query = $derived(createQuery(dataPolisClientRolesQueries.dataPertanggungan(regSpaj)));
+	const isLoading = $derived($query.isLoading);
 	const dataTU = $derived($query.data?.dataTU);
 	const dataPeserta = $derived($query.data?.dataPeserta);
 </script>
@@ -18,52 +20,42 @@
 	<section id="data-tertanggung-utama" aria-labelledby="data-tertanggung-utama-heading" class="scroll-m-2">
 		<div class="relative">
 			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p
-					id="data-tertanggung-utama-heading"
-					class="text-md relative font-medium before:absolute before:-left-4 before:font-normal before:opacity-0 before:transition-opacity before:content-['#'] hover:before:opacity-30 md:text-xl"
-				>
-					Data Tertanggung Utama
-				</p>
+				<p id="data-tertanggung-utama-heading" class="text-md relative font-medium md:text-xl">Data Tertanggung Utama</p>
 				<p class="text-sm text-muted-foreground md:text-base">Review the key personal and policy data for the main insured person here.</p>
 			</div>
 		</div>
 		<div class="grid divide-y md:grid-cols-2 md:gap-4 md:divide-y-0">
 			<div class="divide-y">
-				{@render field('Plan Asuransi', dataTU?.plan_asuransi)}
-				{@render field('Uang Pertanggungan', dataTU?.uang_pertanggungan)}
-				{@render field('Premi', dataTU?.basic_premium)}
-				{@render field('Top Up Berkala', dataTU?.topup_premium)}
-				{@render field('Medis', dataTU?.medis)}
-				{@render field('Masa Pertanggungan', dataTU?.masa_pertanggungan)}
-				{@render field('Billing Account', dataTU?.billing_account)}
-				{@render field('Cuti Premi Setelah Tahun Ke', dataTU?.cuti_premi)}
-				{@render field('Khusus Eka Sehat', dataTU?.eka_sehat)}
-				{@render field('MIG Pertama', dataTU?.mig_pertama)}
+				<DetailItem label="Plan Asuransi" value={dataTU?.plan_asuransi} {isLoading} />
+				<DetailItem label="Uang Pertanggungan" value={dataTU?.uang_pertanggungan} {isLoading} />
+				<DetailItem label="Premi" value={dataTU?.basic_premium} {isLoading} />
+				<DetailItem label="Top Up Berkala" value={dataTU?.topup_premium} {isLoading} />
+				<DetailItem label="Medis" value={dataTU?.medis} {isLoading} />
+				<DetailItem label="Masa Pertanggungan" value={dataTU?.masa_pertanggungan} {isLoading} />
+				<DetailItem label="Billing Account" value={dataTU?.billing_account} {isLoading} />
+				<DetailItem label="Cuti Premi Setelah Tahun Ke" value={dataTU?.cuti_premi} {isLoading} />
+				<DetailItem label="Khusus Eka Sehat" value={dataTU?.eka_sehat} {isLoading} />
+				<DetailItem label="MIG Pertama" value={dataTU?.mig_pertama} {isLoading} />
 			</div>
-			<div class="divide-y">
-				{@render field('Lama Pembayaran', dataTU?.lama_bayar)}
-				{@render field('Cara Pembayaran', dataTU?.cara_pembayaran)}
-				{@render field('Alamat Penagihan', dataTU?.alamat_penagihan)}
-				{@render field('Kode Pos', dataTU?.kode_pos)}
-				{@render field('Wilayah', dataTU?.wilayah)}
-				{@render field('Regional Penagihan', dataTU?.regional_penagihan)}
-				{@render field('Email', dataTU?.email)}
-				{@render field('Telepon', dataTU?.area_telp)}
-				{@render field('No HP 1', dataTU?.no_hp)}
-				{@render field('No HP 2', dataTU?.no_hp2)}
-			</div>
+			<dl class="divide-y">
+				<DetailItem label="Lama Pembayaran" value={dataTU?.lama_bayar} {isLoading} />
+				<DetailItem label="Cara Pembayaran" value={dataTU?.cara_pembayaran} {isLoading} />
+				<DetailItem label="Alamat Penagihan" value={dataTU?.alamat_penagihan} {isLoading} />
+				<DetailItem label="Kode Pos" value={dataTU?.kode_pos} {isLoading} />
+				<DetailItem label="Wilayah" value={dataTU?.wilayah} {isLoading} />
+				<DetailItem label="Regional Penagihan" value={dataTU?.regional_penagihan} {isLoading} />
+				<DetailItem label="Email" value={dataTU?.email} {isLoading} />
+				<DetailItem label="Telepon" value={dataTU?.area_telp} {isLoading} />
+				<DetailItem label="No HP 1" value={dataTU?.no_hp} {isLoading} />
+				<DetailItem label="No HP 2" value={dataTU?.no_hp2} {isLoading} />
+			</dl>
 		</div>
 	</section>
 
 	<section id="data-peserta" aria-labelledby="data-peserta-heading" class="scroll-m-2">
 		<div class="relative">
 			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p
-					id="data-peserta-heading"
-					class="text-md relative font-medium before:absolute before:-left-4 before:font-normal before:opacity-0 before:transition-opacity before:content-['#'] hover:before:opacity-30 md:text-xl"
-				>
-					Data Peserta
-				</p>
+				<p id="data-peserta-heading" class="text-md relative font-medium md:text-xl">Data Peserta</p>
 				<p class="text-sm text-muted-foreground md:text-base">Below is the participant information related to this policy.</p>
 			</div>
 		</div>
@@ -125,14 +117,3 @@
 		</Table.Root>
 	</section>
 </div>
-
-{#snippet field(label?: string, value?: string | number | null)}
-	<div class="flex min-h-8 items-start justify-between gap-4 py-1 text-sm">
-		<p class="shrink-0 text-muted-foreground">{label}</p>
-		{#if $query.isLoading}
-			<div class="h-5 w-20 animate-pulse rounded bg-muted"></div>
-		{:else}
-			<p class="text-right">{value ?? '-'}</p>
-		{/if}
-	</div>
-{/snippet}

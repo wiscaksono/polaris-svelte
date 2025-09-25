@@ -32,6 +32,7 @@ export interface DataPolisSummaryRes {
 	lastPayment: string | null;
 	attentionNotes: string;
 	statusPolis: string;
+	flagging: unknown | null
 	productCode: string;
 	periodeCutiPremi: string | null;
 }
@@ -176,4 +177,93 @@ export interface DataPolisPertanggunganRes {
 		persentase: string
 		jenis_kelamin: string
 	}
+}
+
+export interface DataPolisPembayaranPremiRes {
+	calon_pembayar_premi: string
+	nama_pihak_ketiga: string | null
+	bukti_identitas: number
+	alamat_perusahaan: string
+	kd_pos_perusahaan: number
+	kota_perusahaan: string | null
+	no_telpon_perusahaan: string | null
+	bidang_usaha: string
+	tempat_berdiri: string | null
+	tanggal_berdiri: string | null
+	penghasilan_calon_pp: string
+	jumlah_total_rpb: string | null
+	jumlah_total_nrpt: string | null
+	sumber_pendapatan_rpb: string | null
+	sumber_pendapatan_nrpt: string | null
+	tujuan_pengajuan_asuransi: string
+}
+
+export type DataPolisTransactionHistoryEditRes = Array<{
+	reg_spaj: string
+	tanggal: string
+	jenis: string
+	status_polis: string
+	nama_user: string
+	keterangan: string
+}> | null
+
+export type DataPolisTransactionHistorySuratRes = Array<{
+	tgl_print: string
+	jenis_surat: string
+	kode_matrix: string
+	jatuh_tempo: string
+	transaction_no: string
+	dob: string
+	url: string
+	filename: string
+}> | null
+
+export type DataPolisHistoryStatusPolisRes = Array<{
+	tgl_update: string
+	status_from: string
+	status_to: string
+	osuser: string
+	machine: string
+	program: string
+}> | null
+
+export type DataPolisHistoryNotifikasiRes = Array<{
+	tipe: string
+	reg_spaj: string
+	nopol: string
+	jenis: string
+	create_date: string
+	sent_date: string
+	status: string
+	keterangan: string
+	key: string
+	periode: string
+	no_trx: string
+	category_name: string
+}> | null
+
+export type DataPolisPositionSPAJRes = Array<{
+	tanggal: string
+	posisi_dokumen: string
+	status_polis: string
+	status_accept: string
+	nama_user: string
+	keterangan_1: string
+	keterangan_2: string
+}> | null
+
+export interface DataPolisDueDiligenceRes {
+	Tertanggung_Utama: Array<{
+		client: string
+		cif: string | null
+		nama: string
+		pekerjaan: string
+		rincianPekerjaan: string
+		negara: string
+		riskCustomer: string
+		remarkRisk: string
+		politicalExpose: string
+		remarkPoliticalExpose: string
+	}>
+	Pemegang_Polis: DataPolisDueDiligenceRes['Tertanggung_Utama']
 }

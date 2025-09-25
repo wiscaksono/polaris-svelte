@@ -38,6 +38,6 @@ export const dataPolisTabs: DataPolisTabsConfig[] = [
 	{
 		title: 'Transaction History',
 		slug: 'transaction-history',
-		component: import('./components/transaction-history.svelte')
+		component: import('./components/transaction-history')
 	}
 ] as const;
