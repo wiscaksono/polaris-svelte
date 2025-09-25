@@ -1,8 +1,14 @@
 {
-	"name": "svelte-playground",
+	"name": "polaris-web",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"author": {
+		"name": "Wisnu Wicaksono",
+		"email": "wiscaksono96@gmail.com",
+		"url": "https://wiscaksono.com"
+	},
+	"description": "Internal web app for MSIG Life",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build --mode development",
