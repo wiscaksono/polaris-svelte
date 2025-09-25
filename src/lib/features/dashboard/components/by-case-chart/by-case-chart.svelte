@@ -8,6 +8,7 @@
 	import DynamicChart from './dynamic-chart.svelte';
 
 	import { dashboardQueries, type TrxType } from '../../queries';
+	import { cn } from '$lib/utils';
 
 	const timeRanges = { '7': 'Last 7 days', '14': 'Last 14 days', '30': 'Last 30 days' };
 
@@ -25,7 +26,7 @@
 	const byJenisTransaksiQuery = $derived(createQuery(dashboardQueries.byTransactionType(payload)));
 </script>
 
-<Card.Root class="flex flex-col gap-0 rounded-none border-0 shadow-none md:col-span-2 lg:col-span-4">
+<Card.Root class="flex flex-col gap-0 rounded-none border-0 bg-transparent pb-0 shadow-none md:col-span-2 lg:col-span-4">
 	<Card.Header class="flex items-center gap-2 space-y-0 border-b sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-left">
 			<Card.Title>Case Summary</Card.Title>
@@ -41,16 +42,23 @@
 					{/each}
 				</Select.Content>
 			</Select.Root>
-			<div class="flex items-center">
+			<div class="flex h-9 gap-0.5 rounded-lg border border-input bg-transparent p-0.5 shadow-xs dark:bg-input/30">
 				{#each ['New Case', 'Pending Case'] as view, i (view)}
-					<Button onclick={() => (activeView = i + 1)} class={`${i === 0 ? 'rounded-r-none' : ''} ${i === 1 ? 'rounded-l-none' : ''}`}>
+					{@const isActive = activeView === i + 1}
+					<button
+						data-active={isActive}
+						onclick={() => (activeView = i + 1)}
+						class={cn(
+							'h-full rounded-md px-3 text-sm transition-all hover:bg-background/80 data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:shadow'
+						)}
+					>
 						{view}
-					</Button>
+					</button>
 				{/each}
 			</div>
 		</div>
 	</Card.Header>
-	<Card.Content class="grid gap-px bg-border p-0 md:grid-cols-2">
+	<Card.Content class="grid p-0 md:grid-cols-2">
 		<DynamicChart data={$byDistributionQuery.data} title="By Distribution Channel" />
 		<DynamicChart data={$byJenisTransaksiQuery.data} title="By Jenis Transaksi" />
 	</Card.Content>

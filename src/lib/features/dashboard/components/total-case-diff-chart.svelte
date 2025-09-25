@@ -19,7 +19,7 @@
 	let context = $state<ChartContextValue>();
 </script>
 
-<Card.Root class="flex flex-col rounded-none border-0 shadow-none md:col-span-2 lg:col-span-4">
+<Card.Root class="flex flex-col rounded-none border-0 bg-transparent shadow-none md:col-span-2 lg:col-span-4">
 	<Card.Header>
 		<Card.Title>Total Case Difference</Card.Title>
 		<Card.Description>Perbandingan total case dengan bulan lalu</Card.Description>

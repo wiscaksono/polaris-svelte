@@ -14,8 +14,6 @@
 	import { dashboardQueries, type TrxType } from '../../queries';
 
 	let height = $state(300);
-
-	const ratingEmojis = ['🥇', '🥈', '🥉'];
 	const tab = useQueryState<TrxType | 'reconcile'>('tab', parseAsStringLiteral(['alteration', 'financial', 'reconcile']).withDefault('alteration'));
 	const query = $derived(createQuery(dashboardQueries.slaPerformance(tab.current === 'alteration' ? 'alteration' : 'financial')));
 
@@ -49,7 +47,7 @@
 	});
 </script>
 
-<Card.Root class="rounded-none border-0 shadow-none md:col-span-2">
+<Card.Root class="rounded-none border-0 bg-transparent shadow-none md:col-span-2">
 	<Card.Header>
 		<Card.Title class="flex items-center gap-2">
 			<div>SLA Performance</div>
@@ -73,9 +71,8 @@
 			{:else if $query.data.length}
 				{#each $query.data as item, i (i)}
 					<li class="flex items-center gap-x-4">
-						<p class="hidden md:flex md:w-10 md:justify-end md:gap-x-1.5">
-							{ratingEmojis[i]}
-							<span class="font-medium">{i + 1}.</span>
+						<p>
+							{i + 1}.
 						</p>
 						<Avatar.Root class="size-10">
 							<Avatar.Image src={item.image} alt={item.fullName} />
@@ -90,9 +87,6 @@
 							<p class="text-sm font-medium">{item.fullName}</p>
 							<p class="text-sm text-muted-foreground">{item.jabatan}</p>
 						</div>
-						<time datetime="P5DT1H" class="font-mono text-sm font-medium tracking-tighter">
-							{item.avgTotalSeconds ? formatDuration(item.avgTotalSeconds) : 'N/A'}
-						</time>
 						<SlaPerformanceDetail
 							lusId={item.lusId}
 							fullName={item.fullName}

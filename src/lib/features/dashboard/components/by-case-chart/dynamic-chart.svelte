@@ -22,8 +22,8 @@
 	const legendItemsWidth = $derived(footerWidth / series.length - 40);
 </script>
 
-<Card.Root class="flex flex-col rounded-none border-0 shadow-none">
-	<Card.Header class="flex items-center gap-2 space-y-0 border-b sm:flex-row">
+<Card.Root class="flex flex-col rounded-none border-0 bg-transparent shadow-none">
+	<Card.Header class="flex items-center gap-2 space-y-0 sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-left">
 			<Card.Title>{title}</Card.Title>
 		</div>
