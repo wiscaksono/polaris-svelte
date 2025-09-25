@@ -4,6 +4,7 @@
 	import { dataPolisClientRolesQueries } from '../../../queries';
 
 	import { formatCurrency } from '$lib/utils';
+	import Heading from '$lib/components/heading.svelte';
 	import DetailItem from '../../detail-item.svelte';
 	import type { RouteParams } from '$app/types';
 
@@ -15,13 +16,8 @@
 </script>
 
 <div class="space-y-5">
-	<section id="data-diri" aria-labelledby="data-diri-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<h2 id="data-diri-heading" class="text-md relative font-medium md:text-xl">Data Diri</h2>
-				<p class="text-sm text-muted-foreground md:text-base">Basic personal and policy details of the policyholder.</p>
-			</div>
-		</div>
+	<section class="scroll-m-2">
+		<Heading title="Data Diri" description="Basic personal and policy details of the policyholder." />
 		<div class="grid md:grid-cols-2 md:gap-4">
 			<dl class="divide-y">
 				<DetailItem label="Polis Owner" value={data?.dataDiriPp.pemegangPolis} {isLoading} />
@@ -60,13 +56,8 @@
 		</div>
 	</section>
 
-	<section id="alamat" aria-labelledby="alamat-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<h2 id="alamat-heading" class="text-md relative font-medium md:text-xl">Alamat</h2>
-				<p class="text-sm text-muted-foreground md:text-base">Residential and office address details of the policyholder.</p>
-			</div>
-		</div>
+	<section class="scroll-m-2">
+		<Heading title="Alamat" description="Residential and office address details of the policyholder." />
 		<div class="grid md:grid-cols-2 md:gap-4">
 			<dl class="divide-y">
 				<DetailItem label="Alamat Rumah" value={data?.alamatPp.alamatRumah} {isLoading} />
@@ -85,13 +76,8 @@
 		</div>
 	</section>
 
-	<section id="pekerjaan-dan-tujuan-asuransi" aria-labelledby="pekerjaan-dan-tujuan-asuransi-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<h2 id="pekerjaan-dan-tujuan-asuransi-heading" class="text-md relative font-medium md:text-xl">Pekerjaan dan Tujuan Asuransi</h2>
-				<p class="text-sm text-muted-foreground md:text-base">Occupation, insurance purpose, and funding source of the policy</p>
-			</div>
-		</div>
+	<section class="scroll-m-2">
+		<Heading title="Pekerjaan dan Tujuan Asuransi" description="Occupation, insurance purpose, and funding source of the policy" />
 		<div class="grid md:grid-cols-2 md:gap-4">
 			<dl class="divide-y">
 				<DetailItem label="Pekerjaan" value={data?.pekerjaanPp.pekerjaan} {isLoading} />
@@ -108,13 +94,8 @@
 		</div>
 	</section>
 
-	<section id="data-rekening" aria-labelledby="data-rekening-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<h2 id="data-rekening-heading" class="text-md relative font-medium md:text-xl">Data Rekening</h2>
-				<p class="text-sm text-muted-foreground md:text-base">Bank account information for premium payment and benefits.</p>
-			</div>
-		</div>
+	<section class="scroll-m-2">
+		<Heading title="Data Rekening" description="Bank account information for premium payment and benefits." />
 		<div class="grid md:grid-cols-2 md:gap-4">
 			<div>
 				<h3 class="h-8 border-b font-medium">Data Rekening Manfaat</h3>

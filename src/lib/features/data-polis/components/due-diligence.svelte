@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
 
+	import Heading from '$lib/components/heading.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { dataPolisQueries } from '$lib/features/data-polis/queries';
 
@@ -12,12 +13,7 @@
 </script>
 
 <section>
-	<div class="relative">
-		<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-			<h2 class="text-xl font-medium">Due Diligence</h2>
-			<p class="text-muted-foreground">Due diligence data for client background and risk assessment.</p>
-		</div>
-	</div>
+	<Heading title="Due Diligence" description="Due diligence data for client background and risk assessment." />
 	<Table.Root variant="outline">
 		<Table.Header class="sticky top-0 z-10 bg-background">
 			<Table.Row>

@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.currentTab.title} - Data Polis</title>
+	<title>{data.currentTab.title} - Reports</title>
 </svelte:head>
 
 {#if data.currentTab}

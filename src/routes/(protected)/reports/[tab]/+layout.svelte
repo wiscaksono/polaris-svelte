@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { dataPolisTabs } from '$lib/features/data-polis';
+	import { reportTabs } from '$lib/features/reports';
 
-	import { cn } from '$lib/utils';
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import type { LayoutProps } from './$types';
+	import { cn } from '$lib/utils';
 
 	let { children, params }: LayoutProps = $props();
 </script>
@@ -14,8 +14,8 @@
 	<nav class="mt-4 border-b">
 		<ul class="-mb-0.5 flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 			<li class="sticky left-0 z-10 h-10 w-3 shrink-0 bg-gradient-to-r from-background to-transparent"></li>
-			{#each dataPolisTabs as { title, slug } (slug)}
-				{@const isActive = slug === params.tab}
+			{#each reportTabs as { title, slug } (slug)}
+				{@const isActive = params.tab === slug}
 				<li
 					{@attach (el) => {
 						if (isActive) el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
@@ -26,7 +26,7 @@
 						data-active={isActive}
 						variant="outline"
 						size="lg"
-						href={resolve('/(protected)/data-polis/[regSpaj]/[tab]', { regSpaj: params.regSpaj, tab: slug })}
+						href={resolve('/(protected)/reports/[tab]', { tab: slug })}
 						class={cn(
 							// Base
 							'relative overflow-hidden rounded-b-none border-b-0 transition-colors',

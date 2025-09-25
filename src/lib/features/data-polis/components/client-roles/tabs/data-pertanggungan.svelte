@@ -4,6 +4,7 @@
 	import { dataPolisClientRolesQueries } from '../../../queries';
 
 	import DetailItem from '../../detail-item.svelte';
+	import Heading from '$lib/components/heading.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
 	import type { RouteParams } from '$app/types';
@@ -18,12 +19,7 @@
 
 <div class="space-y-5">
 	<section id="data-tertanggung-utama" aria-labelledby="data-tertanggung-utama-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p id="data-tertanggung-utama-heading" class="text-md relative font-medium md:text-xl">Data Tertanggung Utama</p>
-				<p class="text-sm text-muted-foreground md:text-base">Review the key personal and policy data for the main insured person here.</p>
-			</div>
-		</div>
+		<Heading title="Data Tertanggung Utama" description="Review the key personal and policy data for the main insured person here." />
 		<div class="grid divide-y md:grid-cols-2 md:gap-4 md:divide-y-0">
 			<div class="divide-y">
 				<DetailItem label="Plan Asuransi" value={dataTU?.plan_asuransi} {isLoading} />
@@ -53,12 +49,7 @@
 	</section>
 
 	<section id="data-peserta" aria-labelledby="data-peserta-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p id="data-peserta-heading" class="text-md relative font-medium md:text-xl">Data Peserta</p>
-				<p class="text-sm text-muted-foreground md:text-base">Below is the participant information related to this policy.</p>
-			</div>
-		</div>
+		<Heading title="Data Peserta" description="Below is the participant information related to this policy." />
 		<Table.Root variant="outline">
 			<Table.Header class="sticky top-0 z-10 bg-background">
 				<Table.Row>

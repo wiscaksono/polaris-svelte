@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { createQuery } from '@tanstack/svelte-query';
-	import DetailItem from '../../detail-item.svelte';
-	import type { RouteParams } from '$app/types';
 
+	import DetailItem from '../../detail-item.svelte';
+	import Heading from '$lib/components/heading.svelte';
 	import { dataPolisClientRolesQueries } from '$lib/features/data-polis/queries';
+
+	import type { RouteParams } from '$app/types';
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
@@ -14,12 +16,7 @@
 
 <div class="space-y-5">
 	<section id="alamat-penagihan" aria-labelledby="alamat-penagihan-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p id="alamat-penagihan-heading" class="text-md relative font-medium md:text-xl">Alamat Penagihan</p>
-				<p class="text-sm text-muted-foreground md:text-base">Please provide accurate billing address details. These will be used for policy correspondence.</p>
-			</div>
-		</div>
+		<Heading title="Alamat Penagihan" description="Please provide accurate billing address details. These will be used for policy correspondence." />
 		<div class="grid divide-y md:grid-cols-2 md:gap-4 md:divide-y-0">
 			<div class="divide-y">
 				<DetailItem label="Region" value={data?.region} {isLoading} />

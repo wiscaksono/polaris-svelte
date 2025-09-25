@@ -4,6 +4,7 @@
 	import { dataPolisClientRolesQueries } from '../../../queries';
 
 	import DetailItem from '../../detail-item.svelte';
+	import Heading from '$lib/components/heading.svelte';
 	import type { RouteParams } from '$app/types';
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
@@ -15,12 +16,7 @@
 
 <div class="space-y-5">
 	<section id="data-diri" aria-labelledby="data-diri-heading" class="scroll-m-2">
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<h2 id="data-diri-heading" class="text-md relative font-medium md:text-xl">Data Diri</h2>
-				<p class="text-sm text-muted-foreground md:text-base">This section contains detailed personal information about the insured individual.</p>
-			</div>
-		</div>
+		<Heading title="Data Diri" description="This section contains detailed personal information about the insured individual." />
 		<div class="grid md:grid-cols-2 md:gap-4">
 			<dl class="divide-y">
 				<DetailItem label="Nama Lengkap" value={data?.namaLengkap} {isLoading} />

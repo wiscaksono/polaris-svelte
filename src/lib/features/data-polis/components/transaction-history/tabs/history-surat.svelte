@@ -3,6 +3,7 @@
 	import { Book } from '@lucide/svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 
+	import Heading from '$lib/components/heading.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import { dataPolisTransactionHistoryQueries } from '$lib/features/data-polis/queries/transaction-history';
@@ -15,12 +16,7 @@
 </script>
 
 <section>
-	<div class="relative">
-		<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-			<h2 class="text-xl font-medium">History Surat</h2>
-			<p class="text-muted-foreground">This page displays the complete letter history related to this policy.</p>
-		</div>
-	</div>
+	<Heading title="History Surat" description="This page displays the complete letter history related to this policy." />
 	<Table.Root variant="outline">
 		<Table.Header class="sticky top-0 z-10 bg-background">
 			<Table.Row>

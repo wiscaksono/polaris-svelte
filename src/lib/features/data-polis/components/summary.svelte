@@ -4,6 +4,7 @@
 	import { dataPolisSummaryQueries } from '$lib/features/data-polis/queries';
 
 	import DetailItem from './detail-item.svelte';
+	import Heading from '$lib/components/heading.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 
 	import type { RouteParams } from '$app/types';
@@ -25,12 +26,7 @@
 
 <div class="space-y-5">
 	<section>
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p class="text-xl font-medium">Policy Main Details</p>
-				<p class="text-muted-foreground">Key information including policy number, status, premium, and issue date.</p>
-			</div>
-		</div>
+		<Heading title="Policy Main Details" description="Key information including policy number, status, premium, and issue date." />
 		<div class="grid divide-y md:grid-cols-2 md:gap-4 md:divide-y-0">
 			<div class="divide-y">
 				<DetailItem label="Polis Owner" value={$queries.summary?.namaPP} {isLoading} />
@@ -57,12 +53,7 @@
 	</section>
 
 	<section>
-		<div class="relative">
-			<div class="mb-3.5 pl-6 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
-				<p class="text-xl font-medium">Policy Product Details</p>
-				<p class="text-muted-foreground">List of products and benefits in this policy, along with coverage period and status.</p>
-			</div>
-		</div>
+		<Heading title="Policy Product Details" description="List of products and benefits in this policy, along with coverage period and status." />
 		<Table.Root variant="outline">
 			<Table.Header class="sticky top-0 z-10 bg-background">
 				<Table.Row>
