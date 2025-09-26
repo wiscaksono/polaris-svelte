@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { Search } from '@lucide/svelte';
 	import { Select as SelectPrimitive } from 'bits-ui';
 	import SelectScrollUpButton from './select-scroll-up-button.svelte';
 	import SelectScrollDownButton from './select-scroll-down-button.svelte';
 	import { cn, type WithoutChild } from '$lib/utils';
+	import Input from '../input/input.svelte';
 
 	let {
 		ref = $bindable(null),
@@ -10,9 +12,13 @@
 		sideOffset = 4,
 		portalProps,
 		children,
+		withSearch,
+		searchValue = $bindable(''),
 		...restProps
 	}: WithoutChild<SelectPrimitive.ContentProps> & {
 		portalProps?: SelectPrimitive.PortalProps;
+		withSearch?: boolean;
+		searchValue?: string;
 	} = $props();
 </script>
 
@@ -27,6 +33,12 @@
 		)}
 		{...restProps}
 	>
+		{#if withSearch}
+			<div class="relative border-b p-1">
+				<Search class="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
+				<Input class="border-0 !bg-transparent pl-10 !ring-0" placeholder="Search …" bind:value={searchValue} />
+			</div>
+		{/if}
 		<SelectScrollUpButton />
 		<SelectPrimitive.Viewport class={cn('h-(--bits-select-anchor-height) w-full min-w-(--bits-select-anchor-width) scroll-my-1 p-1')}>
 			{@render children?.()}

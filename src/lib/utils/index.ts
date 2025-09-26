@@ -69,3 +69,51 @@ export function formatCurrency(amount: number, currency: string, locale: string,
 	return formatter.format(amount);
 }
 
+/**
+ * Formats a number with locale-specific group separators (e.g., 1000000 -> '1.000.000' in id-ID).
+ * @param number The number to format.
+ * @param locale The BCP 47 language tag (e.g., 'en-US', 'id-ID').
+ * @param options Additional options for Intl.NumberFormat.
+ * @returns The formatted number string.
+ */
+export function formatNumber(number: number, locale: string, options?: Intl.NumberFormatOptions) {
+	const formatter = new Intl.NumberFormat(locale, options);
+	return formatter.format(number);
+}
+
+
+/**
+ * Converts a string into a URL-friendly "slug".
+ * This function handles various edge cases, including:
+ * - Trimming whitespace from the start and end.
+ * - Converting the string to lowercase.
+ * - Replacing spaces and special characters with hyphens.
+ * - Removing diacritics/accents (e.g., café -> cafe).
+ * - Collapsing multiple consecutive hyphens into a single one.
+ * - Removing leading and trailing hyphens.
+ * - Handling empty or whitespace-only strings.
+ *
+ * @param text The string to convert into a slug.
+ * @returns The slugified string.
+ */
+export function slugify(text: string | null | undefined) {
+	// 1. Handle null, undefined, or empty string input
+	if (!text) return "";
+
+
+	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
+	const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
+	const p = new RegExp(a.split('').join('|'), 'g')
+
+	return text.toString()
+		// 2. Convert to lower case
+		.toLowerCase()
+		// 3. Replace special characters with their basic Latin equivalents
+		.replace(p, c => b.charAt(a.indexOf(c)))
+		// 4. Replace characters that are not word characters, digits, or hyphens with a hyphen
+		.replace(/[^\w\d-]+/g, '-')
+		// 5. Collapse consecutive hyphens into a single hyphen
+		.replace(/-+/g, '-')
+		// 6. Remove leading and trailing hyphens
+		.replace(/^-+|-+$/g, '');
+};
