@@ -4,7 +4,6 @@
 
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import DynamicChart from './dynamic-chart.svelte';
 
 	import { dashboardQueries, type TrxType } from '../../queries';

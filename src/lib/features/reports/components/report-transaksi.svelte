@@ -40,7 +40,7 @@
 	);
 	const reportResultQuery = $derived(
 		createQuery(
-			reportQueries.trxReportResult({
+			reportQueries.reportTransaksi({
 				ltId: selectedTrxSubTypes.map(({ trxId }) => trxId),
 				fromDate: queryParams.from.current,
 				toDate: queryParams.until.current
@@ -62,7 +62,7 @@
 
 <Heading title="Report Transksi" description="Lorem ipsum dolor sit amet consectetur adipisicing elit." />
 
-<div class="mb-3.5 flex w-full flex-col items-end justify-between gap-2 lg:flex-row">
+<div class="mb-3.5 flex w-full flex-col items-end justify-between gap-2 border-t pt-3.5 lg:flex-row">
 	<div class="grid w-full max-w-full gap-2 md:grid-cols-2 lg:max-w-[80%] lg:grid-cols-5">
 		<div class="w-full space-y-1">
 			<Label for="start-date">Start Periode</Label>
@@ -198,8 +198,99 @@
 	</Table.Header>
 	<Table.Body>
 		{#if $reportResultQuery.isLoading}
-			{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}
-				TODO LOADER
+			{#each Array.from({ length: queryParams.perPage.current }, (_, i) => i) as i (i)}
+				<Table.Row class="animate-pulse">
+					<Table.Cell>
+						<div class="h-5 w-28 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-20 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-32 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-16 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-26 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-26 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-26 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-26 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-40 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-26 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell><Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell><Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell><Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell><Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell><Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+					<Table.Cell>
+						<div class="h-5 w-22 p-px">
+							<div class="h-full w-full rounded bg-muted"></div>
+						</div>
+					</Table.Cell>
+				</Table.Row>
 			{/each}
 		{:else if paginatedData.length}
 			{#each paginatedData as item, i (i)}
@@ -227,7 +318,10 @@
 			{/each}
 		{:else}
 			<Table.Row>
-				<Table.Cell colspan={18} class="h-16 text-center">No Data Found</Table.Cell>
+				<Table.Cell colspan={18} class="h-16 text-center">
+					<div>No Data Found.</div>
+					<div>Maybe try to change the filters?</div>
+				</Table.Cell>
 			</Table.Row>
 		{/if}
 	</Table.Body>

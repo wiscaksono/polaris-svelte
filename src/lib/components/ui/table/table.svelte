@@ -22,14 +22,16 @@
 	export type TableProps = WithElementRef<HTMLTableAttributes> &
 		WithElementRef<HTMLAnchorAttributes> & {
 			variant?: TableVariant;
+			wrapperStyle?: string;
+			wrapperClassName?: string;
 		};
 </script>
 
 <script lang="ts">
-	let { ref = $bindable(null), class: className, variant = 'default', children, ...restProps }: TableProps = $props();
+	let { ref = $bindable(null), class: className, variant = 'default', children, wrapperClassName, wrapperStyle, ...restProps }: TableProps = $props();
 </script>
 
-<div data-slot="table-container" class={cn(tableVariants({ variant }))}>
+<div data-slot="table-container" class={cn(tableVariants({ variant, className: wrapperClassName }))} style={wrapperStyle}>
 	<table bind:this={ref} data-slot="table" class={cn('w-full caption-bottom text-sm', className)} {...restProps}>
 		{@render children?.()}
 	</table>

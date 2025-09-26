@@ -62,7 +62,7 @@ export function formatCurrency(amount: number, currency: string, locale: string,
 		style: 'currency',
 		currency: currency,
 		// You can add more options here if needed
-		// minimumFractionDigits: 2, 
+		// minimumFractionDigits: 2,
 		...options
 	});
 
@@ -81,7 +81,6 @@ export function formatNumber(number: number, locale: string, options?: Intl.Numb
 	return formatter.format(number);
 }
 
-
 /**
  * Converts a string into a URL-friendly "slug".
  * This function handles various edge cases, including:
@@ -98,22 +97,24 @@ export function formatNumber(number: number, locale: string, options?: Intl.Numb
  */
 export function slugify(text: string | null | undefined) {
 	// 1. Handle null, undefined, or empty string input
-	if (!text) return "";
+	if (!text) return '';
 
+	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
+	const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
+	const p = new RegExp(a.split('').join('|'), 'g');
 
-	const a = 'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;'
-	const b = 'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------'
-	const p = new RegExp(a.split('').join('|'), 'g')
-
-	return text.toString()
-		// 2. Convert to lower case
-		.toLowerCase()
-		// 3. Replace special characters with their basic Latin equivalents
-		.replace(p, c => b.charAt(a.indexOf(c)))
-		// 4. Replace characters that are not word characters, digits, or hyphens with a hyphen
-		.replace(/[^\w\d-]+/g, '-')
-		// 5. Collapse consecutive hyphens into a single hyphen
-		.replace(/-+/g, '-')
-		// 6. Remove leading and trailing hyphens
-		.replace(/^-+|-+$/g, '');
-};
+	return (
+		text
+			.toString()
+			// 2. Convert to lower case
+			.toLowerCase()
+			// 3. Replace special characters with their basic Latin equivalents
+			.replace(p, (c) => b.charAt(a.indexOf(c)))
+			// 4. Replace characters that are not word characters, digits, or hyphens with a hyphen
+			.replace(/[^\w\d-]+/g, '-')
+			// 5. Collapse consecutive hyphens into a single hyphen
+			.replace(/-+/g, '-')
+			// 6. Remove leading and trailing hyphens
+			.replace(/^-+|-+$/g, '')
+	);
+}

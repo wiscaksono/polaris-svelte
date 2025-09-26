@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { RouteParams } from '$app/types';
+	// import type { RouteParams } from '$app/types';
 
 	import Heading from '$lib/components/heading.svelte';
-	let { regSpaj, tab }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
+	// let { regSpaj, tab }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 </script>
 
 <div>

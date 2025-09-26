@@ -1,5 +1,6 @@
-import { queryOptions, keepPreviousData } from '@tanstack/svelte-query';
-import { api } from '$lib/utils/api';
+import { queryOptions, keepPreviousData, useQueryClient } from '@tanstack/svelte-query';
+
+import { mutationOptions, api } from '$lib/utils';
 
 import type * as Type from './types';
 import type { PolisListRes } from '$lib/utils/type';
@@ -78,6 +79,26 @@ export const workbasketQueries = {
 					id_doc_temp
 				});
 				return data.status_transaksi;
+			}
+		});
+	},
+
+	toggleFlag: () => {
+		const queryClient = useQueryClient();
+		return mutationOptions({
+			mutationFn: async ({ idDoc, lusId }: { idDoc: number; lusId: number }) => {
+				const { data: result } = await api.post<boolean>('/polaris/api-business-polaris/v1/general/updateFlag', { idDoc, lusId });
+				// result = true means flagged
+				// result = false means unflagged
+				return result;
+			},
+			onSuccess: async () => {
+				await Promise.all([
+					queryClient.invalidateQueries({ queryKey: ['flagged', 'list'] }),
+					queryClient.invalidateQueries({ queryKey: ['new-submission', 'list'] }),
+					queryClient.invalidateQueries({ queryKey: ['filling', 'list'] }),
+					queryClient.invalidateQueries({ queryKey: ['further', 'list'] })
+				]);
 			}
 		});
 	}

@@ -2,25 +2,32 @@
 	import dayjs from 'dayjs';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
-	import { useQueryClient } from '@tanstack/svelte-query';
-	import { CalendarArrowDown, User, Box, CircleUserRound, CalendarSync, Flag } from '@lucide/svelte';
+	import { useQueryClient, createMutation } from '@tanstack/svelte-query';
+	import { CalendarArrowDown, User, Box, CircleUserRound, CalendarSync, Flag, LoaderCircle } from '@lucide/svelte';
 
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	import { toTitleCase, type Polis } from '$lib/utils';
+	import { toTitleCase, cn, type Polis } from '$lib/utils';
 	import { taskForms } from '$lib/features/task-forms';
+	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import { searchPolisQueries } from '$lib/features/search-polis/queries';
 
 	let { item }: { item: Polis } = $props();
 
 	const queryClient = useQueryClient();
+	const mutation = createMutation(workbasketQueries.toggleFlag());
 
 	function handlePrefetch(item: Polis) {
 		const toPrefetch = searchPolisQueries.list(item.case_id);
 		const isCached = queryClient.getQueryData(toPrefetch.queryKey);
 		if (!isCached) queryClient.prefetchQuery(toPrefetch);
+	}
+
+	function handleFlag(e: Event, item: Polis) {
+		e.stopPropagation();
+		$mutation.mutate({ idDoc: item.case_id, lusId: 3557 });
 	}
 
 	// TODO: Handle for another WB
@@ -36,8 +43,12 @@
 
 <Table.Row class="cursor-pointer" onclick={handleClick} onpointerenter={() => handlePrefetch(item)}>
 	<Table.Cell>
-		<Button size="icon" variant="ghost" class="size-6 hover:border" onclick={(e) => e.stopPropagation()}>
-			<Flag />
+		<Button size="icon" variant="ghost" class="size-6 hover:border" onclick={(e) => handleFlag(e, item)} disabled={$mutation.isPending}>
+			{#if $mutation.isPending}
+				<LoaderCircle class="animate-spin" />
+			{:else}
+				<Flag class={cn({ 'fill-destructive text-destructive': item.flagged })} />
+			{/if}
 		</Button>
 	</Table.Cell>
 	<Table.Cell>
