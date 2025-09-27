@@ -1,11 +1,11 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { Download, LoaderCircle } from '@lucide/svelte';
 	import customParseFormat from 'dayjs/plugin/customParseFormat';
-	import { createMutation, createQuery } from '@tanstack/svelte-query';
-	import { parseAsString, useQueryStates, parseAsInteger } from 'nuqs-svelte';
-
 	dayjs.extend(customParseFormat);
+
+	import { createQuery, createMutation } from '@tanstack/svelte-query';
+	import { useQueryStates, parseAsString, parseAsInteger } from 'nuqs-svelte';
+	import { ChevronLeft, ChevronRight, Download, LoaderCircle } from '@lucide/svelte';
 
 	import { Input } from '$lib/components/ui/input';
 	import Heading from '$lib/components/heading.svelte';
@@ -15,14 +15,55 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 
-	import { reportQueries } from '$lib/features/reports/queries';
-	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+	import { cn } from '$lib/utils';
+	import { reportQueries } from '../queries';
+
+	const tabs = [
+		{ title: 'All Trx (Polis Base)', slug: 'all-trx' },
+		{ title: 'Switching (Fund Base)', slug: 'switching' },
+		{ title: 'Redirection', slug: 'redirection' }
+	] as const;
+
+	const tableHeader = [
+		'No. Polis',
+		'Polis Status',
+		'Pemegang Polis',
+		'Tanggal Lahir',
+		'Product',
+		'Beg Date',
+		'End Date',
+		'Transaction Type',
+		'Transaction Date',
+		'Incoming Trx',
+		'Case ID',
+		'Transaction No',
+		'Posisi',
+		'Validation Date',
+		'User',
+		'Amount Redempt',
+		'Unit Redempt',
+		'Biaya',
+		'Send Aqua',
+		'Send Pandora',
+		'NAV Date',
+		'Kurs',
+		'Transfer Date',
+		'Bank Name',
+		'Account Number',
+		'Account Name',
+		'Servicing Account Code',
+		'Servicing Account Name',
+		'Region',
+		'Jalur Distribusi',
+		'Reason Withdraw'
+	] as const;
 
 	const queryParams = useQueryStates({
-		perPage: parseAsInteger.withDefault(20),
-		pageNumber: parseAsInteger.withDefault(1),
+		tab: parseAsString.withDefault(tabs[0].slug),
 		from: parseAsString.withDefault(dayjs().subtract(1, 'month').format('DD MM YYYY')),
-		until: parseAsString.withDefault(dayjs().format('DD MM YYYY'))
+		until: parseAsString.withDefault(dayjs().format('DD MM YYYY')),
+		perPage: parseAsInteger.withDefault(20),
+		pageNumber: parseAsInteger.withDefault(1)
 	});
 
 	const payload = $derived({
@@ -51,7 +92,7 @@
 	}
 </script>
 
-<Heading title="Switching (Fund Base)" description="Here is the latest financial report summary." />
+<Heading title="Report Financial" description="Lorem ipsum dolor sit amet consectetur adipisicing elit." />
 
 <div class="mb-3.5 flex w-full flex-col items-end justify-between gap-2 border-t pt-3.5 lg:flex-row">
 	<div class="grid w-full max-w-full gap-2 md:grid-cols-2 lg:max-w-[80%] lg:grid-cols-5">
@@ -99,6 +140,21 @@
 		</div>
 	</div>
 	<div class="flex items-center gap-2">
+		<div class="flex h-9 gap-0.5 rounded-md border border-input bg-transparent p-0.5 shadow-xs dark:bg-input/30">
+			{#each tabs as { slug, title } (slug)}
+				{@const isActive = queryParams.tab.current === slug}
+				<button
+					onclick={() => (queryParams.tab.current = slug)}
+					data-active={isActive}
+					class={cn(
+						'h-full rounded-sm px-3 text-sm whitespace-nowrap transition-all hover:bg-background/80 data-[active=true]:bg-primary data-[active=true]:text-primary-foreground data-[active=true]:shadow'
+					)}
+				>
+					{title}
+				</button>
+			{/each}
+		</div>
+
 		<Tooltip.Provider>
 			<Tooltip.Root>
 				<Tooltip.Trigger>
@@ -117,6 +173,7 @@
 				</Tooltip.Content>
 			</Tooltip.Root>
 		</Tooltip.Provider>
+
 		<div class="flex items-center">
 			<Button
 				variant="outline"
@@ -154,48 +211,22 @@
 <Table.Root variant="outline">
 	<Table.Header>
 		<Table.Row>
-			<Table.Head>No. Polis</Table.Head>
-			<Table.Head>Polis Status</Table.Head>
-			<Table.Head>Pemegang Polis</Table.Head>
-			<Table.Head>Tanggal Lahir</Table.Head>
-			<Table.Head>Product</Table.Head>
-			<Table.Head>Beg Date</Table.Head>
-			<Table.Head>End Date</Table.Head>
-			<Table.Head>Transaction Type</Table.Head>
-			<Table.Head>Transaction Date</Table.Head>
-			<Table.Head>Incoming Trx</Table.Head>
-			<Table.Head>Case ID</Table.Head>
-			<Table.Head>Transaction No</Table.Head>
-			<Table.Head>Posisi</Table.Head>
-			<Table.Head>Validation Date</Table.Head>
-			<Table.Head>User</Table.Head>
-			<Table.Head>Amount Redempt</Table.Head>
-			<Table.Head>Unit Redempt</Table.Head>
-			<Table.Head>Biaya</Table.Head>
-			<Table.Head>Send Aqua</Table.Head>
-			<Table.Head>Send Pandora</Table.Head>
-			<Table.Head>NAV Date</Table.Head>
-			<Table.Head>Kurs</Table.Head>
-			<Table.Head>Transfer Date</Table.Head>
-			<Table.Head>Bank Name</Table.Head>
-			<Table.Head>Account Number</Table.Head>
-			<Table.Head>Account Name</Table.Head>
-			<Table.Head>Servicing Account Code</Table.Head>
-			<Table.Head>Servicing Account Name</Table.Head>
-			<Table.Head>Region</Table.Head>
-			<Table.Head>Jalur Distribusi</Table.Head>
-			<Table.Head>Reason Withdraw</Table.Head>
+			{#each tableHeader as header (header)}
+				<Table.Head>{header}</Table.Head>
+			{/each}
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
 		{#if $query.isLoading}
 			{#each Array.from({ length: queryParams.perPage.current }, (_, i) => i) as i (i)}
 				<Table.Row>
-					<Table.Cell>
-						<div class="h-5 w-22 p-px">
-							<div class="h-full w-full rounded bg-muted"></div>
-						</div>
-					</Table.Cell>
+					{#each tableHeader.map((_, j) => j) as j (j)}
+						<Table.Cell>
+							<div class="h-5 w-16 p-px">
+								<div class="h-full w-full rounded bg-muted"></div>
+							</div>
+						</Table.Cell>
+					{/each}
 				</Table.Row>
 			{/each}
 		{:else if paginatedData.length}

@@ -13,7 +13,7 @@ export const reportTabs: ReportTabsConfig[] = [
 	{
 		title: 'Report Financial',
 		slug: 'report-financial',
-		component: import('./components/report-financial')
+		component: import('./components/report-financial.svelte')
 	},
 	{
 		title: 'Report Reconcile',
