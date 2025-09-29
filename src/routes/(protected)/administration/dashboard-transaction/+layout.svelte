@@ -58,7 +58,7 @@
 			<Card.Title class="text-lg text-primary">Overview</Card.Title>
 			<Card.Description>A summary of the dashboard transaction</Card.Description>
 		</Card.Header>
-		<Card.Content class="gap-px border-y border-b-2 px-0">
+		<Card.Content class="gap-px border-t px-0">
 			<div class="grid gap-px bg-border md:mx-6 md:grid-cols-2 lg:grid-cols-4">
 				<Summary title="Total Transactions" value={data.transactionData.overview.totalTransaction} icon={FileText} className="p-4 md:pl-0" />
 				<Summary
@@ -73,6 +73,10 @@
 			</div>
 		</Card.Content>
 	</Card.Root>
+
+	<div
+		class="h-5 border-y bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:block dark:[--pattern-fg:var(--color-white)]/10"
+	></div>
 
 	<Card.Root class="flex flex-col rounded-none border-0 bg-transparent pb-0 shadow-none">
 		<Card.Header>
