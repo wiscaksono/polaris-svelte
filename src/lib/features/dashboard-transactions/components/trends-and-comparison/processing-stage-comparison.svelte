@@ -5,34 +5,31 @@
 	import { curveMonotoneX } from 'd3-shape';
 	import { LoaderCircle } from '@lucide/svelte';
 
-	import { camelToTitle } from '$lib/utils';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Chart from '$lib/components/ui/chart/index.js';
-	import TruncatedLegend from '../truncated-legend.svelte';
 
-	import type { DynamicData } from '../../queries/type';
+	import { camelToTitle, formatDuration } from '$lib/utils';
 
-	let { data, title }: { data?: DynamicData; title: string } = $props();
+	import type { DashboardTransactionsRes } from '../../queries/type';
 
-	let footerWidth = $state(0);
+	let { data }: { data: DashboardTransactionsRes['trendsAndComparison']['stage'] } = $props();
 
-	const objKeys = $derived(Object.keys(data?.[0] ?? {}).filter((item) => item !== 'date'));
+	const formattedData = $derived(data.map((item) => ({ ...item, date: dayjs(item.date).toDate() })));
+	const objKeys = $derived(Object.keys(formattedData[0] ?? {}).filter((item) => item !== 'date'));
 	const config = $derived<Chart.ChartConfig>(Object.fromEntries(objKeys.map((key, i) => [key, { label: camelToTitle(key), color: `var(--chart-${i + 1})` }])));
 	const series = $derived(objKeys.map((key) => ({ key, label: camelToTitle(key), color: config[key].color ?? '' })));
-	const legendItemsWidth = $derived(footerWidth / series.length - 40);
 </script>
 
-<Card.Root class="flex flex-col rounded-none border-0 bg-transparent shadow-none">
-	<Card.Header class="flex items-center gap-2 space-y-0 sm:flex-row">
-		<div class="grid flex-1 gap-1 text-center sm:text-left">
-			<Card.Title>{title}</Card.Title>
-		</div>
+<Card.Root class="flex flex-col rounded-none border-0 border-b bg-transparent shadow-none">
+	<Card.Header>
+		<Card.Title class="text-primary">Processing Stage Comparison</Card.Title>
+		<Card.Description>Compare processing times across different stages</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<Chart.ChartContainer {config} class="aspect-auto h-[250px] w-full">
 			{#if data}
 				<LineChart
-					data={data ?? []}
+					data={formattedData ?? []}
 					x="date"
 					xScale={scaleUtc()}
 					axis="x"
@@ -46,7 +43,7 @@
 					}}
 				>
 					{#snippet tooltip()}
-						<Chart.Tooltip labelFormatter={(v) => dayjs(v as Date).format('DD MMM')} indicator="dashed" />
+						<Chart.Tooltip labelFormatter={(v) => dayjs(v as Date).format('DD MMM')} indicator="line" valueFormatter={(v) => formatDuration(v as number)} />
 					{/snippet}
 				</LineChart>
 			{:else}
@@ -56,17 +53,4 @@
 			{/if}
 		</Chart.ChartContainer>
 	</Card.Content>
-	<Card.Footer
-		class="grid place-items-center"
-		{@attach (el) => {
-			const { width } = el.getBoundingClientRect();
-			footerWidth = width;
-		}}
-	>
-		{#if series.length}
-			<TruncatedLegend items={series} maxItems={8} maxLabelWidthPx={legendItemsWidth} />
-		{:else}
-			<div class="h-4"></div>
-		{/if}
-	</Card.Footer>
 </Card.Root>

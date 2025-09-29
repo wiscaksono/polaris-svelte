@@ -19,6 +19,7 @@
 		label,
 		labelFormatter = defaultFormatter,
 		labelClassName,
+		valueFormatter,
 		formatter,
 		nameKey,
 		color,
@@ -32,6 +33,7 @@
 		hideIndicator?: boolean;
 		labelClassName?: string;
 		labelFormatter?: ((value: unknown, payload: TooltipPayload[]) => string | number | Snippet) | null;
+		valueFormatter?: (value: unknown) => string | number | Snippet;
 		formatter?: Snippet<
 			[
 				{
@@ -124,11 +126,15 @@
 									{itemConfig?.label || item.name}
 								</span>
 							</div>
-							{#if item.value !== undefined}
-								<span class="font-mono font-medium text-foreground tabular-nums">
-									{item.value.toLocaleString()}
-								</span>
-							{/if}
+							<span class="ml-2 font-mono font-medium text-foreground tabular-nums">
+								{#if item.value !== undefined}
+									{#if valueFormatter}
+										{valueFormatter ? valueFormatter(item.value) : item.value.toLocaleString()}
+									{:else}
+										{item.value.toLocaleString()}
+									{/if}
+								{/if}
+							</span>
 						</div>
 					{/if}
 				</div>

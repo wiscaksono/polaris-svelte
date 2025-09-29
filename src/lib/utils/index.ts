@@ -118,3 +118,61 @@ export function slugify(text: string | null | undefined) {
 			.replace(/^-+|-+$/g, '')
 	);
 }
+
+/**
+ * Formats a total number of seconds into a human-readable string.
+ *
+ * The function breaks down the total seconds into days, hours, minutes, and seconds.
+ * It intelligently omits larger units that are zero. For instance, 70 seconds
+ * becomes '1m 10s', not '0d 0h 1m 10s'.
+ *
+ * @param totalSeconds - The total number of seconds to format. Should be a non-negative number.
+ * @returns A formatted time string like '1d 2h 3m 4s', '0s' if the input is 0,
+ * or an error message for negative input.
+ *
+ * @example
+ * ```typescript
+ * console.log(formatTime(90061)); // "1d 1h 1m 1s"
+ * console.log(formatTime(3661));  // "1h 1m 1s"
+ * console.log(formatTime(65));    // "1m 5s"
+ * console.log(formatTime(59));    // "59s"
+ * console.log(formatTime(0));     // "0s"
+ * ```
+ */
+export function formatDuration(totalSeconds: number): string {
+	if (totalSeconds === 0) return '0s';
+	if (totalSeconds < 0) return 'Invalid input: seconds cannot be negative.';
+
+	const secondsInMinute = 60;
+	const secondsInHour = 60 * secondsInMinute; // 3600
+	const secondsInDay = 24 * secondsInHour; // 86400
+
+	const days = Math.floor(totalSeconds / secondsInDay);
+	let remainingSeconds = totalSeconds % secondsInDay;
+
+	const hours = Math.floor(remainingSeconds / secondsInHour);
+	remainingSeconds %= secondsInHour;
+
+	const minutes = Math.floor(remainingSeconds / secondsInMinute);
+	const seconds = remainingSeconds % secondsInMinute;
+
+	const parts: string[] = [];
+
+	if (days > 0) {
+		parts.push(`${days}d`);
+		parts.push(`${hours}h`);
+		parts.push(`${minutes}m`);
+		parts.push(`${seconds}s`);
+	} else if (hours > 0) {
+		parts.push(`${hours}h`);
+		parts.push(`${minutes}m`);
+		parts.push(`${seconds}s`);
+	} else if (minutes > 0) {
+		parts.push(`${minutes}m`);
+		parts.push(`${seconds}s`);
+	} else {
+		parts.push(`${seconds}s`);
+	}
+
+	return parts.join(' ');
+}
