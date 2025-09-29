@@ -7,8 +7,8 @@
 
 	let { data }: { data: DashboardTransactionsRes['processingTime']['heatmap'] } = $props();
 
-	const maxProcessingTime = Math.max(...data.map((d) => d.value));
-	const maxProcessingTimeIndex = data.findIndex((d) => d.value === maxProcessingTime);
+	const maxProcessingTime = $derived(Math.max(...data.map((d) => d.value)));
+	const maxProcessingTimeIndex = $derived(data.findIndex((d) => d.value === maxProcessingTime));
 
 	function getBackgroundStyle(timeInSeconds: number) {
 		const normalizedValue = (timeInSeconds / maxProcessingTime + 0.1).toFixed(2);
@@ -45,10 +45,10 @@
 							index === maxProcessingTimeIndex && 'rounded outline-2 outline-offset-2 outline-chart-1'
 						)}
 					>
-						<span class="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-center" style={getTextStyle(value)}>
+						<span class="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-center transition-all" style={getTextStyle(value)}>
 							{index}
 						</span>
-						<div class="absolute top-0 left-0 z-10 h-full w-full" style={getBackgroundStyle(value)}></div>
+						<div class="absolute top-0 left-0 z-10 h-full w-full transition-all" style={getBackgroundStyle(value)}></div>
 					</Tooltip.Trigger>
 					<Tooltip.Content side="top" class="space-y-1">
 						<div class="flex items-center justify-between gap-2">

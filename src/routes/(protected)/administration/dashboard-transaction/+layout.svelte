@@ -7,18 +7,12 @@
 	import Summary from '$lib/features/dashboard-transactions/components/summary.svelte';
 
 	import { cn, formatDuration } from '$lib/utils';
+	import { timeRanges } from '$lib/features/dashboard-transactions/queries';
 
 	import type { ResolvedPathname } from '$app/types';
 	import type { LayoutProps } from './$types';
 
 	let { children, data }: LayoutProps = $props();
-
-	const timeRanges = [
-		{ label: 'Today', value: 'today' },
-		{ label: 'Week', value: 'week' },
-		{ label: 'Month', value: 'month' },
-		{ label: 'Year', value: 'year' }
-	] as const;
 
 	const tabs: Array<{ label: string; value: ResolvedPathname }> = [
 		{ label: 'Processing Time', value: '/administration/dashboard-transaction/processing-time' },
@@ -27,7 +21,12 @@
 		{ label: 'details', value: '/administration/dashboard-transaction/details' }
 	];
 
-	const timeRangeParams = useQueryState('timeRange', parseAsStringLiteral(timeRanges.map((item) => item.value)).withDefault('year'));
+	const timeRangeParams = useQueryState(
+		'timeRange',
+		parseAsStringLiteral(timeRanges.map((item) => item.value))
+			.withDefault('week')
+			.withOptions({ shallow: false })
+	);
 	const currentUrl = $derived(page.url.pathname);
 </script>
 

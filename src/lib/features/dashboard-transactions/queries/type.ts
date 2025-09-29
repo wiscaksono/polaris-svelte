@@ -22,16 +22,16 @@ export interface DashboardTransactionsRes {
 
 export interface DashboardTransactionsDetailRes {
 	transaction: Array<{
-		transaksi: string
-		no_polis: string
-		no_trx: string
-		tgl_submit: string
-		etl: number | null
-		aml: number | null
-		spica: number | null
-		pending_spica: number | null
-		task_distribution: number | null
-		redemption: number | null
-		payment: number | null
-	}>
+		transaksi: string;
+		no_polis: string;
+		no_trx: string;
+		tgl_submit: string;
+		etl: number | null;
+		aml: number | null;
+		spica: number | null;
+		pending_spica: number | null;
+		task_distribution: number | null;
+		redemption: number | null;
+		payment: number | null;
+	}>;
 }

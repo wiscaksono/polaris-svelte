@@ -12,7 +12,7 @@
 
 	let { data }: { data: DashboardTransactionsRes['processingTime']['trend'] } = $props();
 
-	const chartData = data.map(({ key, value }) => ({ key: dayjs(key).toDate(), value }));
+	const chartData = $derived(data.map(({ key, value }) => ({ key: dayjs(key).toDate(), value })));
 
 	const chartConfig = {
 		value: { label: 'Time:', color: 'var(--chart-1)' }

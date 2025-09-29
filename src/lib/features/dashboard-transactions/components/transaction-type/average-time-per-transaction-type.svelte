@@ -14,6 +14,7 @@
 	const chartConfig = {
 		value: { label: 'Time:', color: 'var(--chart-1)' }
 	} satisfies Chart.ChartConfig;
+
 	let context = $state<ChartContextValue>();
 </script>
 
