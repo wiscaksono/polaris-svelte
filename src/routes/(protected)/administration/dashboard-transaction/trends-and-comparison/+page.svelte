@@ -7,7 +7,7 @@
 	let { data }: PageProps = $props();
 </script>
 
-<div class="grid grid-cols-2 !divide-x">
+<div class="grid !divide-x lg:grid-cols-2">
 	<ProcessingStageComparison data={data.transactionData.trendsAndComparison.stage} />
 	<IssueDistribution data={data.transactionData.trendsAndComparison.issue} />
 </div>

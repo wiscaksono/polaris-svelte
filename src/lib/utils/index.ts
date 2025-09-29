@@ -28,6 +28,21 @@ export const exclude = <Type, Key extends keyof Type>(obj: Type, keys: Key[]): O
 };
 
 /**
+ * Pick keys from object
+ * @param obj
+ * @param keys
+ */
+export const pick = <Type extends object, Key extends keyof Type>(obj: Type, keys: Key[]): Pick<Type, Key> => {
+	const result = {} as Pick<Type, Key>;
+	for (const key of keys) {
+		if (key in obj) {
+			result[key] = obj[key];
+		}
+	}
+	return result;
+};
+
+/**
  * Convert a string to title case.
  * @param str - The string to convert to title case.
  * @returns The string converted to title case.

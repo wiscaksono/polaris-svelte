@@ -75,7 +75,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<Card.Root class="flex flex-col rounded-none border-0 bg-transparent shadow-none">
+	<Card.Root class="flex flex-col rounded-none border-0 bg-transparent pb-0 shadow-none">
 		<Card.Header>
 			<Card.Title class="text-lg text-primary">Transaction Analytics</Card.Title>
 			<Card.Description>Essential insights for monitoring and improving transaction performance.</Card.Description>
@@ -98,7 +98,7 @@
 				</div>
 			</Card.Action>
 		</Card.Header>
-		<Card.Content class="border-y p-0">
+		<Card.Content class="border-t p-0">
 			{@render children()}
 		</Card.Content>
 	</Card.Root>

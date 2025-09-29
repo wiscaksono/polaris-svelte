@@ -29,7 +29,7 @@
 
 <div class={cn('flex items-center gap-4 bg-background', className)}>
 	<div class="grid aspect-square size-14 shrink-0 place-items-center rounded-lg bg-muted">
-		<Icon class="size-8 text-muted-foreground" />
+		<Icon class="size-8 text-primary" />
 	</div>
 	<div class="flex-1 truncate">
 		<p class="text-sm text-muted-foreground">{title}</p>
