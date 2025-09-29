@@ -25,6 +25,10 @@
 	const byJenisTransaksiQuery = $derived(createQuery(dashboardQueries.byTransactionType(payload)));
 </script>
 
+<div
+	class="h-5 border-y bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:col-span-2 md:block lg:col-span-4 dark:[--pattern-fg:var(--color-white)]/10"
+></div>
+
 <Card.Root class="flex flex-col gap-0 rounded-none border-0 bg-transparent pb-0 shadow-none md:col-span-2 lg:col-span-4">
 	<Card.Header class="flex items-center gap-2 space-y-0 border-b sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-left">
