@@ -28,7 +28,7 @@
 </svelte:head>
 
 <section class="sticky top-(--header-height) z-50 flex flex-col items-center justify-between gap-2 border-b bg-background px-4 py-[14px] md:flex-row">
-	<h1 class="w-full text-left text-xl font-medium">Dashboard</h1>
+	<h1 class="w-full text-left text-xl font-medium text-primary">Dashboard</h1>
 	<div class="flex h-9 gap-0.5 rounded-lg border border-input bg-transparent p-0.5 shadow-xs dark:bg-input/30">
 		{#each mainTabs as { value, label } (value)}
 			{@const isActive = tab.current === value}

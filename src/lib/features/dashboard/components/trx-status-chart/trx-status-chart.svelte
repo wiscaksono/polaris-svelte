@@ -41,7 +41,7 @@
 <Card.Root id={title} class="flex aspect-square flex-col rounded-none border-0 bg-transparent shadow-none">
 	<Card.Header class="items-center">
 		<Card.Title class="flex items-center gap-2">
-			<div>
+			<div class="text-primary">
 				{title}
 			</div>
 			<Tooltip.Root>

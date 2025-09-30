@@ -19,7 +19,7 @@
 </svelte:head>
 
 <header class="flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
-	<h1 class="w-full text-left text-xl font-medium">Filling ({$query.data?.totalRecord ?? 0} items)</h1>
+	<h1 class="w-full text-left text-xl font-medium text-primary">Filling ({$query.data?.totalRecord ?? 0} items)</h1>
 	<div class="flex w-full shrink-0 items-center gap-2 md:w-1/2">
 		<div class="relative flex-1">
 			<Search class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />

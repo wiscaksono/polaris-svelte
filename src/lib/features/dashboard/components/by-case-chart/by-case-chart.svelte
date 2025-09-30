@@ -32,7 +32,7 @@
 <Card.Root class="flex flex-col gap-0 rounded-none border-0 bg-transparent pb-0 shadow-none md:col-span-2 lg:col-span-4">
 	<Card.Header class="flex items-center gap-2 space-y-0 border-b sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-left">
-			<Card.Title>Case Summary</Card.Title>
+			<Card.Title class="text-primary">Case Summary</Card.Title>
 		</div>
 		<div class="flex items-center justify-center gap-2">
 			<Select.Root type="single" bind:value={timeRange}>

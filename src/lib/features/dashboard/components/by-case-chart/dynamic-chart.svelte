@@ -25,7 +25,7 @@
 <Card.Root class="flex flex-col rounded-none border-0 bg-transparent shadow-none">
 	<Card.Header class="flex items-center gap-2 space-y-0 sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-left">
-			<Card.Title>{title}</Card.Title>
+			<Card.Title class="text-primary">{title}</Card.Title>
 		</div>
 	</Card.Header>
 	<Card.Content>

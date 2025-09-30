@@ -50,7 +50,7 @@
 <Card.Root class="rounded-none border-0 bg-transparent shadow-none md:col-span-2">
 	<Card.Header>
 		<Card.Title class="flex items-center gap-2">
-			<div>SLA Performance</div>
+			<div class="text-primary">SLA Performance</div>
 			<Tooltip.Root>
 				<Tooltip.Trigger>
 					<Info size={16} />

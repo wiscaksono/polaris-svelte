@@ -14,7 +14,7 @@
 <Sidebar.Provider>
 	<AppSidebar />
 	<Sidebar.Inset class="overscroll-none">
-		<header class="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-2 overflow-hidden border-b bg-background px-4 py-[14px]">
+		<header class="sticky top-0 z-50 flex h-16 shrink-0 items-center justify-between gap-2 overflow-hidden border-b bg-background px-4 py-[14px] select-none">
 			<div class="flex h-full items-center gap-4">
 				<Sidebar.Trigger class="-ml-1" />
 				<Separator orientation="vertical" class="mr-2 h-4" />
