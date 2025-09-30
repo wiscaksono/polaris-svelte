@@ -29,8 +29,8 @@
 	);
 </script>
 
-<div class="grid grid-cols-2 overflow-hidden bg-muted">
-	<section class="flex h-[calc(100svh-var(--header-height))] flex-col border-r bg-background shadow-sm">
+<div class="grid grid-cols-2 overflow-hidden">
+	<section class="flex h-[calc(100svh-var(--header-height))] flex-col border-r bg-background">
 		<nav class="mt-4 border-b">
 			<ul class="flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<li class="sticky left-0 h-10 w-3 shrink-0 bg-gradient-to-r from-background to-transparent"></li>

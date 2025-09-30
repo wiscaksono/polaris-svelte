@@ -6,7 +6,7 @@
 
 	let {
 		ref = $bindable(null),
-		open = $bindable(true),
+		open = localStorage.getItem(SIDEBAR_COOKIE_NAME) === 'true',
 		onOpenChange = () => {},
 		class: className,
 		style,
@@ -25,6 +25,7 @@
 
 			// This sets the cookie to keep the sidebar state.
 			document.cookie = `${SIDEBAR_COOKIE_NAME}=${open}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+			localStorage.setItem(SIDEBAR_COOKIE_NAME, open.toString());
 		}
 	});
 </script>
