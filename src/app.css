@@ -145,5 +145,5 @@
 }
 
 ::selection {
-  @apply bg-ring/50 text-foreground;
+	@apply bg-ring/50 text-foreground;
 }

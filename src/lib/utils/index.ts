@@ -198,5 +198,5 @@ export function formatDuration(totalSeconds: number): string {
  * @returns Promise that resolves after the given number of milliseconds.
  */
 export function sleep(ms: number) {
-	return new Promise(resolve => setTimeout(resolve, ms))
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
