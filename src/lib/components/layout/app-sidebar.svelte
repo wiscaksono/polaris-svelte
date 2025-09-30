@@ -136,7 +136,5 @@
 			{/if}
 		{/each}
 	</Sidebar.Content>
-
-	<Sidebar.Footer>TODO</Sidebar.Footer>
 	<Sidebar.Rail />
 </Sidebar.Root>
