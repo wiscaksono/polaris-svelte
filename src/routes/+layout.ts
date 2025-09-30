@@ -16,6 +16,9 @@ export const load: LayoutLoad = () => {
 				enabled: browser,
 				staleTime: 60 * 1000,
 				refetchOnWindowFocus: false
+			},
+			mutations: {
+				onError: error => console.error("🚨 Error in mutation", error)
 			}
 		}
 	});
