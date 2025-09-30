@@ -191,3 +191,12 @@ export function formatDuration(totalSeconds: number): string {
 
 	return parts.join(' ');
 }
+
+/**
+ * Wait for a number of milliseconds.
+ * @param ms - Number of milliseconds to wait.
+ * @returns Promise that resolves after the given number of milliseconds.
+ */
+export function sleep(ms: number) {
+	return new Promise(resolve => setTimeout(resolve, ms))
+}

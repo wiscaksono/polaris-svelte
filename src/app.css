@@ -144,5 +144,6 @@
 	}
 }
 
-.my-class {
+::selection {
+  @apply bg-ring/50 text-foreground;
 }

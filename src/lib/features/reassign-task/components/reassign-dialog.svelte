@@ -79,7 +79,7 @@
 		</div>
 
 		<Dialog.Footer>
-			<Button type="submit" onclick={handleAssign} disabled={$mutation.isPending}>
+			<Button onclick={handleAssign} disabled={$mutation.isPending}>
 				Assign
 				{#if $mutation.isPending}
 					<LoaderCircle class="animate-spin" />
