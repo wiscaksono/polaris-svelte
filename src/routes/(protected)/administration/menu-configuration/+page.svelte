@@ -125,13 +125,7 @@
 						</div>
 					</Table.Head>
 				{/each}
-			{:else if $queryListRole.isError}
-				<Table.Row>
-					<Table.Cell colspan={12} class="h-16 text-center">
-						{$queryListRole.error.message}
-					</Table.Cell>
-				</Table.Row>
-			{:else if $queryListRole.data.length}
+			{:else if $queryListRole.data?.length}
 				{#each $queryListRole.data as { name, role_id } (role_id)}
 					{#if columnVisibility[role_id]}
 						<Table.Head>
@@ -173,7 +167,9 @@
 				</Table.Row>
 			{/each}
 		{:else if $queryListConfiguration.isError}
-			TODO IS ERROR
+			<Table.Row>
+				<Table.Cell colspan={12} class="h-16 text-center">{$queryListConfiguration.error.message}</Table.Cell>
+			</Table.Row>
 		{:else if searchResult.filteredData.length}
 			{#each searchResult.filteredData as { id: menuID, name, roleId, sub } (menuID)}
 				<Collapsible.Root open={openStates[menuID] ?? searchResult.initiallyOpen.has(menuID)} onOpenChange={(open) => (openStates[menuID] = open)}>
