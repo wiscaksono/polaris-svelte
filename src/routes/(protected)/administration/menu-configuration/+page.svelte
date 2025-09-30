@@ -111,7 +111,7 @@
 	</div>
 </section>
 
-<Table.Root>
+<Table.Root wrapperClassName="border-b">
 	<Table.Header class="sticky top-0 z-10 bg-background">
 		<Table.Row>
 			<Table.Head class="sticky left-0 z-20 w-[200px] !bg-background" style="box-shadow: -4px 0 4px -6px var(--muted-foreground) inset">
