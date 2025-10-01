@@ -113,7 +113,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="status-pernikahan" class="w-full">{values.statusPernikahan.label}</Select.Trigger>
+					<Select.Trigger id="status-pernikahan" class="w-full" loading={query.isLoading}>{values.statusPernikahan.label}</Select.Trigger>
 					<Select.Content>
 						{#if query.data}
 							{#each query.data?.status_pernikahan as item (item.id)}
@@ -140,7 +140,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="agama" class="w-full">{values.agama.label}</Select.Trigger>
+					<Select.Trigger id="agama" class="w-full" loading={query.isLoading}>{values.agama.label}</Select.Trigger>
 					<Select.Content>
 						{#if query.data}
 							{#each query.data?.agama as item (item.id)}
@@ -168,7 +168,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="kewarganegaraan" class="w-full">{values.kewarganegaraan.label}</Select.Trigger>
+					<Select.Trigger id="kewarganegaraan" class="w-full" loading={query.isLoading}>{values.kewarganegaraan.label}</Select.Trigger>
 					<Select.Content withSearch bind:searchValue={kewarganegaraanSearch}>
 						{#if filteredKewarganegaraan}
 							{#each filteredKewarganegaraan as item (item.id)}
@@ -195,7 +195,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="bukti-identitas" class="w-full">{values.buktiIdentitas.label}</Select.Trigger>
+					<Select.Trigger id="bukti-identitas" class="w-full" loading={query.isLoading}>{values.buktiIdentitas.label}</Select.Trigger>
 					<Select.Content>
 						{#if query.data}
 							{#each query.data.bukti_identitas as item (item.id)}
@@ -246,7 +246,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="hubungan-dengan-tu" class="w-full">{values.hubunganDenganTU.label}</Select.Trigger>
+					<Select.Trigger id="hubungan-dengan-tu" class="w-full" loading={query.isLoading}>{values.hubunganDenganTU.label}</Select.Trigger>
 					<Select.Content>
 						{#if query.data}
 							{#each query.data.hubungan_pemegang_polis_dengan_tertanggung as item (item.id)}
@@ -273,7 +273,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="hobi-beresiko-tinggi" class="w-full">{values.hobiBeresikoTinggi.label}</Select.Trigger>
+					<Select.Trigger id="hobi-beresiko-tinggi" class="w-full" loading={query.isLoading}>{values.hobiBeresikoTinggi.label}</Select.Trigger>
 					<Select.Content>
 						{#if query.data}
 							{#each query.data.hobi_beresiko_tinggi as item (item.id)}

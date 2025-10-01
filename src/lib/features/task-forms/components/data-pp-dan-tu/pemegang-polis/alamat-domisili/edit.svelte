@@ -16,7 +16,7 @@
 
 	import type { DataPPdanTURes } from '../../type';
 
-	let { data }: { data: DataPPdanTURes['pemegangPolis']['alamat']['after']['rumah'] } = $props();
+	let { data }: { data: DataPPdanTURes['pemegangPolis']['alamat']['after']['domisili'] } = $props();
 
 	let open = $state(false);
 	let values = $state(data);
@@ -94,7 +94,7 @@
 				caseId: taskFormParams.case_id,
 				regSpaj: taskFormParams.reg_spaj,
 				trxMajor: taskFormParams.no_trx,
-				alamat: { rumah: values }
+				alamat: { domisili: values }
 			},
 			{
 				onSuccess: async (queryKey) => {
@@ -116,7 +116,7 @@
 	</Dialog.Trigger>
 	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt} class="max-h-[95svh] overflow-y-auto">
 		<Dialog.Header>
-			<Dialog.Title>Edit Info Alamat Rumah Pemegang Polis</Dialog.Title>
+			<Dialog.Title>Edit Domisili Pemegang Polis</Dialog.Title>
 			<Dialog.Description>Make sure you fill it right</Dialog.Description>
 		</Dialog.Header>
 		<div class="-mx-6 max-h-[75svh] space-y-4 overflow-y-auto px-6">

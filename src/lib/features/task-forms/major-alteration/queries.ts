@@ -35,7 +35,7 @@ export const majorAlterationQueries = {
 };
 
 export const majorAlterationMutations = {
-	tab1: () => { },
+	tab1: () => {},
 
 	tab2: () => {
 		const queryClient = useQueryClient();

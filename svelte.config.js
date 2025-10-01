@@ -17,10 +17,10 @@ const config = {
 			showToggleButton: 'always',
 			toggleButtonPos: 'bottom-right',
 			navKeys: {
-				parent: "ArrowUp",
-				child: "ArrowDown",
-				sibling: "ArrowRight",
-				prev: "ArrowLeft",
+				parent: 'ArrowUp',
+				child: 'ArrowDown',
+				sibling: 'ArrowRight',
+				prev: 'ArrowLeft'
 			}
 		}
 	}

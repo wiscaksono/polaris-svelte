@@ -1,2 +1,2 @@
-import InfoPekerjaan from './info-pekerjaan.svelte'
-export default InfoPekerjaan
+import InfoPekerjaan from './info-pekerjaan.svelte';
+export default InfoPekerjaan;

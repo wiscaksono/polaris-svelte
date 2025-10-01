@@ -1,45 +1,5 @@
 <script lang="ts">
 	import DataPPdanTU from '$lib/features/task-forms/components/data-pp-dan-tu';
-	// const alamatRumahPP = $derived({ before: $query.data?.pemegangPolis.alamat.before.rumah, after: $query.data?.pemegangPolis.alamat.after.rumah });
-	// const alamatRumahPPMap = $derived([
-	// 	{ label: 'Detail Alamat', before: alamatRumahPP?.before?.detailAlamat, after: alamatRumahPP?.after?.detailAlamat },
-	// 	{ label: 'Negara', before: alamatRumahPP?.before?.negara.label, after: alamatRumahPP?.after?.negara.label },
-	// 	{ label: 'Provinsi', before: alamatRumahPP?.before?.provinsi.label, after: alamatRumahPP?.after?.provinsi.label },
-	// 	{ label: 'Kota / Kabupaten', before: alamatRumahPP?.before?.kotaKabupaten.label, after: alamatRumahPP?.after?.kotaKabupaten.label },
-	// 	{ label: 'Kecamatan', before: alamatRumahPP?.before?.kelurahan.label, after: alamatRumahPP?.after?.kelurahan.label },
-	// 	{ label: 'Kelurahan', before: alamatRumahPP?.before?.kelurahan.label, after: alamatRumahPP?.after?.kelurahan.label },
-	// 	{ label: 'Kode Pos', before: alamatRumahPP?.before?.kodePos, after: alamatRumahPP?.after?.kodePos }
-	// ]);
-	//
-	// const alamatPekerjaanPP = $derived({ before: $query.data?.pemegangPolis.alamat.before.pekerjaan, after: $query.data?.pemegangPolis.alamat.after.pekerjaan });
-	// const alamatPekerjaanPPMap = $derived([
-	// 	{ label: 'Detail Alamat', before: alamatPekerjaanPP?.before?.detailAlamat, after: alamatPekerjaanPP?.after?.detailAlamat },
-	// 	{ label: 'Negara', before: alamatPekerjaanPP?.before?.negara.label, after: alamatPekerjaanPP?.after?.negara.label },
-	// 	{ label: 'Provinsi', before: alamatPekerjaanPP?.before?.provinsi.label, after: alamatPekerjaanPP?.after?.provinsi.label },
-	// 	{ label: 'Kota / Kabupaten', before: alamatPekerjaanPP?.before?.kotaKabupaten.label, after: alamatPekerjaanPP?.after?.kotaKabupaten.label },
-	// 	{ label: 'Kecamatan', before: alamatPekerjaanPP?.before?.kelurahan.label, after: alamatPekerjaanPP?.after?.kelurahan.label },
-	// 	{ label: 'Kelurahan', before: alamatPekerjaanPP?.before?.kelurahan.label, after: alamatPekerjaanPP?.after?.kelurahan.label },
-	// 	{ label: 'Kode Pos', before: alamatPekerjaanPP?.before?.kodePos, after: alamatPekerjaanPP?.after?.kodePos }
-	// ]);
-	//
-	// const alamatDomisiliPP = $derived({ before: $query.data?.pemegangPolis.alamat.before.domisili, after: $query.data?.pemegangPolis.alamat.after.domisili });
-	// const alamatDomisiliPPMap = $derived([
-	// 	{ label: 'Detail Alamat', before: alamatDomisiliPP?.before?.detailAlamat, after: alamatDomisiliPP?.after?.detailAlamat },
-	// 	{ label: 'Negara', before: alamatDomisiliPP?.before?.negara.label, after: alamatDomisiliPP?.after?.negara.label },
-	// 	{ label: 'Provinsi', before: alamatDomisiliPP?.before?.provinsi.label, after: alamatDomisiliPP?.after?.provinsi.label },
-	// 	{ label: 'Kota / Kabupaten', before: alamatDomisiliPP?.before?.kotaKabupaten.label, after: alamatDomisiliPP?.after?.kotaKabupaten.label },
-	// 	{ label: 'Kecamatan', before: alamatDomisiliPP?.before?.kelurahan.label, after: alamatDomisiliPP?.after?.kelurahan.label },
-	// 	{ label: 'Kelurahan', before: alamatDomisiliPP?.before?.kelurahan.label, after: alamatDomisiliPP?.after?.kelurahan.label },
-	// 	{ label: 'Kode Pos', before: alamatDomisiliPP?.before?.kodePos, after: alamatDomisiliPP?.after?.kodePos }
-	// ]);
-	//
-	// const alamatKorespondensiPP = $derived({
-	// 	before: $query.data?.pemegangPolis.alamat.before.rumah.alamatKorespondensi,
-	// 	after: $query.data?.pemegangPolis.alamat.after.rumah.alamatKorespondensi
-	// });
-	// const alamatKorespondensiPPMap = $derived([
-	// 	{ label: 'Alamat Korespondensi', before: alamatKorespondensiPP?.before?.label, after: alamatKorespondensiPP?.after?.label }
-	// ]);
 	//
 	// const finansialPP = $derived($query.data?.pemegangPolis.financial);
 	// const finansialPPMap = $derived([

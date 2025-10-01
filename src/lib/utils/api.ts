@@ -119,21 +119,29 @@ class API {
 	}
 
 	get<T>(path: string, signal?: AbortSignal) {
-		return this.request<T>(path, { method: "GET" }, signal);
+		return this.request<T>(path, { method: 'GET' }, signal);
 	}
 
 	post<T>(path: string, body: FormData | object, signal?: AbortSignal) {
-		return this.request<T>(path, {
-			method: 'POST',
-			body: body instanceof FormData ? body : JSON.stringify(body)
-		}, signal);
+		return this.request<T>(
+			path,
+			{
+				method: 'POST',
+				body: body instanceof FormData ? body : JSON.stringify(body)
+			},
+			signal
+		);
 	}
 
 	put<T>(path: string, body: FormData | object, signal?: AbortSignal) {
-		return this.request<T>(path, {
-			method: 'PUT',
-			body: body instanceof FormData ? body : JSON.stringify(body)
-		}, signal);
+		return this.request<T>(
+			path,
+			{
+				method: 'PUT',
+				body: body instanceof FormData ? body : JSON.stringify(body)
+			},
+			signal
+		);
 	}
 
 	delete<T>(path: string, signal?: AbortSignal) {

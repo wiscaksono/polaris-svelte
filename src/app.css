@@ -152,5 +152,5 @@
 }
 
 #svelte-inspector-toggle {
-	@apply !bottom-16 !right-3;
+	@apply !right-3 !bottom-16;
 }

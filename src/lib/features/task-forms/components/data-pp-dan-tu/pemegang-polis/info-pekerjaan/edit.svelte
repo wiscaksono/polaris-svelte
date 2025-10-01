@@ -102,7 +102,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="jenis-usaha" class="w-full">{values.jenisUsaha.label}</Select.Trigger>
+					<Select.Trigger id="jenis-usaha" class="w-full" loading={query.isLoading}>{values.jenisUsaha.label}</Select.Trigger>
 					<Select.Content withSearch bind:searchValue={jenisUsahaSearch}>
 						{#if filteredJenisUsaha}
 							{#each filteredJenisUsaha as item (item.id)}
@@ -129,7 +129,7 @@
 						}
 					}
 				>
-					<Select.Trigger id="pekerjaan-atau-jabatan" class="w-full">{values.pekerjaan}</Select.Trigger>
+					<Select.Trigger id="pekerjaan-atau-jabatan" class="w-full" loading={query.isLoading}>{values.pekerjaan}</Select.Trigger>
 					<Select.Content withSearch bind:searchValue={pekerjaanSearch}>
 						{#if filteredPekerjaan}
 							{#each filteredPekerjaan as item (item.id)}
