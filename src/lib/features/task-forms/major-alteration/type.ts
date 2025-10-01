@@ -6,7 +6,17 @@ type TrackedData<T> = {
 };
 
 export interface MajorAlterationTab1Res {
-	todo: true;
+	keterangan: string
+	tertanggung_tambahan_1: string
+	tertanggung_utama: string
+	dokumen_lainnya: string
+	dokumen_kuesioner: string
+	dokumen_laboratorium: string
+	nama_tertanggung: {
+		tertanggung_tambahan_1: string
+		tertanggung_utama: string
+	}
+	dokumen_kesehatan: string
 }
 
 export interface MajorAlterationTab2Res {

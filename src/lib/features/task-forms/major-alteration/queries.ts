@@ -12,7 +12,7 @@ export const majorAlterationQueries = {
 		return queryOptions({
 			queryKey: ['major-alteration', 'tab-1', taskFormParams.no_trx, taskFormParams.reg_spaj],
 			queryFn: async () => {
-				const { data } = await api.get(
+				const { data } = await api.get<Types.MajorAlterationTab1Res>(
 					`/polaris/api-business-polaris/major/alteration/getDataReunderwriting?noTrx=${taskFormParams.no_trx}&regSpaj=${taskFormParams.reg_spaj}`
 				);
 				return data;
@@ -35,7 +35,7 @@ export const majorAlterationQueries = {
 };
 
 export const majorAlterationMutations = {
-	tab1: () => {},
+	tab1: () => { },
 
 	tab2: () => {
 		const queryClient = useQueryClient();
