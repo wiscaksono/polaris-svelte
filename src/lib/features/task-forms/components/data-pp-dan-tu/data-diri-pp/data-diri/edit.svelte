@@ -13,16 +13,16 @@
 	const taskFormParams = getTaskFormContext().taskFormParams;
 
 	let open = $state(false);
-	let values = $state(structuredClone($state.snapshot(data?.dataDiri.after)));
+	let values = $state(data!.dataDiri.after);
 
-	const allSelectQuery = createQuery(commonQuery.allSelect());
-	const mutation = createMutation(majorAlterationMutations.tab2());
+	const allSelectQuery = createQuery(() => commonQuery.allSelect());
+	const mutation = createMutation(() => majorAlterationMutations.tab2());
 
 	function handleSubmit(e: Event) {
 		e.preventDefault();
-		if (!data) return;
+		if (!data || !values) return;
 
-		$mutation.mutate({
+		mutation.mutate({
 			trxMajor: taskFormParams.no_trx,
 			regSpaj: taskFormParams.reg_spaj,
 			caseId: taskFormParams.case_id,
@@ -80,10 +80,10 @@
 				<div>
 					<label for="status-pernikahan">Status Pernikahan</label>
 					<select id="status-pernikahan" class="w-full" bind:value={values.statusPernikahan.id}>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.status_pernikahan as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.status_pernikahan as { id, label } (id)}
 								<option value={String(id)}>{label}</option>
 							{/each}
 						{/if}
@@ -96,17 +96,17 @@
 						class="w-full"
 						value={values.agama.id}
 						onchange={(e) => {
-							const selected = $allSelectQuery.data?.agama.find(({ id }) => id === Number(e.currentTarget.value));
+							const selected = allSelectQuery.data?.agama.find(({ id }) => id === Number(e.currentTarget.value));
 							if (!selected) return;
 
 							values.agama.id = selected.id;
 							values.agama.label = selected.label;
 						}}
 					>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.agama as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.agama as { id, label } (id)}
 								<option value={id}>{label}</option>
 							{/each}
 						{/if}
@@ -119,17 +119,17 @@
 						class="w-full"
 						value={values.kewarganegaraan.id}
 						onchange={(e) => {
-							const selected = $allSelectQuery.data?.kewarganegaraan.find(({ id }) => id === Number(e.currentTarget.value));
+							const selected = allSelectQuery.data?.kewarganegaraan.find(({ id }) => id === Number(e.currentTarget.value));
 							if (!selected) return;
 
 							values.kewarganegaraan.id = selected.id;
 							values.kewarganegaraan.label = selected.label;
 						}}
 					>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.kewarganegaraan as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.kewarganegaraan as { id, label } (id)}
 								<option value={id}>{label}</option>
 							{/each}
 						{/if}
@@ -142,17 +142,17 @@
 						class="w-full"
 						value={values.buktiIdentitas.id}
 						onchange={(e) => {
-							const selected = $allSelectQuery.data?.bukti_identitas.find(({ id }) => id === Number(e.currentTarget.value));
+							const selected = allSelectQuery.data?.bukti_identitas.find(({ id }) => id === Number(e.currentTarget.value));
 							if (!selected) return;
 
 							values.buktiIdentitas.id = selected.id;
 							values.buktiIdentitas.label = selected.label;
 						}}
 					>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.bukti_identitas as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.bukti_identitas as { id, label } (id)}
 								<option value={id}>{label}</option>
 							{/each}
 						{/if}
@@ -189,17 +189,17 @@
 						class="w-full"
 						value={values.hubunganDenganTU.id}
 						onchange={(e) => {
-							const selected = $allSelectQuery.data?.hubungan_pemegang_polis_dengan_tertanggung.find(({ id }) => id === Number(e.currentTarget.value));
+							const selected = allSelectQuery.data?.hubungan_pemegang_polis_dengan_tertanggung.find(({ id }) => id === Number(e.currentTarget.value));
 							if (!selected) return;
 
 							values.hubunganDenganTU.id = selected.id;
 							values.hubunganDenganTU.label = selected.label;
 						}}
 					>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.hubungan_pemegang_polis_dengan_tertanggung as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.hubungan_pemegang_polis_dengan_tertanggung as { id, label } (id)}
 								<option value={id}>{label}</option>
 							{/each}
 						{/if}
@@ -212,17 +212,17 @@
 						class="w-full"
 						value={values.hobiBeresikoTinggi.id}
 						onchange={(e) => {
-							const selected = $allSelectQuery.data?.hobi_beresiko_tinggi.find(({ id }) => id === Number(e.currentTarget.value));
+							const selected = allSelectQuery.data?.hobi_beresiko_tinggi.find(({ id }) => id === Number(e.currentTarget.value));
 							if (!selected) return;
 
 							values.hobiBeresikoTinggi.id = selected.id;
 							values.hobiBeresikoTinggi.label = selected.label;
 						}}
 					>
-						{#if $allSelectQuery.isLoading}
+						{#if allSelectQuery.isLoading}
 							<option value="">Loading...</option>
-						{:else if $allSelectQuery.data}
-							{#each $allSelectQuery.data.hobi_beresiko_tinggi as { id, label } (id)}
+						{:else if allSelectQuery.data}
+							{#each allSelectQuery.data.hobi_beresiko_tinggi as { id, label } (id)}
 								<option value={id}>{label}</option>
 							{/each}
 						{/if}

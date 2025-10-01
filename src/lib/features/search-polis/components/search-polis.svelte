@@ -19,16 +19,14 @@
 
 	const queryClient = useQueryClient();
 	const updateInput = useThrottle(() => (inputValueThrottled = inputValue), 500);
-	const query = $derived(
-		createQuery({
-			...searchPolisQueries.list(inputValueThrottled),
-			select: (data) => {
-				const cleanData = data.filter((item) => item.kind !== 'ERROR');
-				const grouped = Object.groupBy(cleanData, ({ kind }) => kind);
-				return Object.entries(grouped).map(([kind, items]) => ({ kind, items }));
-			}
-		})
-	);
+	const query = createQuery(() => ({
+		...searchPolisQueries.list(inputValueThrottled),
+		select: (data) => {
+			const cleanData = data.filter((item) => item.kind !== 'ERROR');
+			const grouped = Object.groupBy(cleanData, ({ kind }) => kind);
+			return Object.entries(grouped).map(([kind, items]) => ({ kind, items }));
+		}
+	}));
 
 	function getHref(kind: SearchPolisListRes[number]['kind'], caseID: string) {
 		switch (kind) {
@@ -100,10 +98,10 @@
 				}
 			/>
 			<Command.List class="h-[70dvh] max-h-[70dvh] min-h-[70dvh]">
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					{@render skeleton()}
-				{:else if $query?.data && $query.data?.length}
-					{#each $query.data as group (group.kind)}
+				{:else if query?.data && query.data?.length}
+					{#each query.data as group (group.kind)}
 						<Command.Group heading={group.kind} class="[&_[data-slot=command-group-items]]:grid [&_[data-slot=command-group-items]]:gap-y-1">
 							{#if group.items}
 								{#each group.items as item (item.case_id)}

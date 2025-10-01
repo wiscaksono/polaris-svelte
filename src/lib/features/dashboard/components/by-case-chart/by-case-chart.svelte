@@ -21,8 +21,8 @@
 		dateRange: Number(timeRange)
 	});
 
-	const byDistributionQuery = $derived(createQuery(dashboardQueries.byDistributionChannel(payload)));
-	const byJenisTransaksiQuery = $derived(createQuery(dashboardQueries.byTransactionType(payload)));
+	const byDistributionQuery = createQuery(() => dashboardQueries.byDistributionChannel(payload));
+	const byJenisTransaksiQuery = createQuery(() => dashboardQueries.byTransactionType(payload));
 </script>
 
 <div
@@ -62,7 +62,7 @@
 		</div>
 	</Card.Header>
 	<Card.Content class="grid p-0 md:grid-cols-2">
-		<DynamicChart data={$byDistributionQuery.data} title="By Distribution Channel" />
-		<DynamicChart data={$byJenisTransaksiQuery.data} title="By Jenis Transaksi" />
+		<DynamicChart data={byDistributionQuery.data} title="By Distribution Channel" />
+		<DynamicChart data={byJenisTransaksiQuery.data} title="By Jenis Transaksi" />
 	</Card.Content>
 </Card.Root>

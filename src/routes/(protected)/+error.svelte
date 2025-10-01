@@ -1,7 +1,5 @@
 <script>
 	import { page } from '$app/state';
-
-	$inspect(page);
 </script>
 
 <div class="grid size-full place-items-center">

@@ -19,7 +19,7 @@
 	let { children, data } = $props();
 	let rightTab = $state<(typeof tabs)[number]['id']>('document-trx');
 
-	const query = createQuery(
+	const query = createQuery(() =>
 		taskFormQueries.transactionHistories({
 			case_id: data.taskFormParams.case_id,
 			id_doc_temp: data.taskFormParams.id_doc_tmp,
@@ -98,18 +98,18 @@
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
-						{#if $query.isPending || $query.isPlaceholderData}
+						{#if query.isPending || query.isPlaceholderData}
 							{#each Array.from({ length: 10 }, (_, i) => i) as i (i)}
 								<Table.Row>
 									<Table.Head colspan={3}>TODO LOADER</Table.Head>
 								</Table.Row>
 							{/each}
-						{:else if $query.isError}
+						{:else if query.isError}
 							<Table.Row>
-								<Table.Cell colspan={9} class="text-center">Error: {$query.error.message}</Table.Cell>
+								<Table.Cell colspan={9} class="text-center">Error: {query.error.message}</Table.Cell>
 							</Table.Row>
-						{:else if $query.data}
-							{#each $query.data as item, i (i)}
+						{:else if query.data}
+							{#each query.data as item, i (i)}
 								<Table.Row>
 									<Table.Head>{dayjs(item.created_date).format('DD MMM YYYY')}</Table.Head>
 									<Table.Head>{item.status_transaksi}</Table.Head>

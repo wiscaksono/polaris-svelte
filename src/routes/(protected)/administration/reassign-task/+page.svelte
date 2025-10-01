@@ -20,14 +20,12 @@
 		caseId: parseAsInteger.withOptions({ throttleMs: 500 })
 	});
 
-	const query = $derived(
-		createQuery(
-			reassignTaskQueries.list({
-				pageSize: queryParams.pageSize.current,
-				pageNumber: queryParams.pageNumber.current,
-				caseId: queryParams.caseId.current
-			})
-		)
+	const query = createQuery(() =>
+		reassignTaskQueries.list({
+			pageSize: queryParams.pageSize.current,
+			pageNumber: queryParams.pageNumber.current,
+			caseId: queryParams.caseId.current
+		})
 	);
 </script>
 
@@ -36,7 +34,7 @@
 </svelte:head>
 
 <section class="sticky top-0 flex flex-col items-center justify-between gap-2 border-b px-4 py-[14px] md:flex-row">
-	<h1 class="w-full text-left text-xl font-medium text-primary">Reassign Task ({$query.data?.totalRecord ?? 0} items)</h1>
+	<h1 class="w-full text-left text-xl font-medium text-primary">Reassign Task ({query.data?.totalRecord ?? 0} items)</h1>
 	<div class="flex w-full shrink-0 items-center gap-2 md:w-1/2">
 		<div class="relative flex-1">
 			<Search class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -78,7 +76,7 @@
 				class="rounded-l-none"
 				aria-label="Next page"
 				onclick={() => (queryParams.pageNumber.current += 1)}
-				disabled={($query.data?.totalPage ?? 1) <= queryParams.pageNumber.current}
+				disabled={(query.data?.totalPage ?? 1) <= queryParams.pageNumber.current}
 			>
 				<ChevronRight />
 			</Button>
@@ -102,7 +100,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $query.isPending || $query.isPlaceholderData}
+		{#if query.isPending || query.isPlaceholderData}
 			{#each Array.from({ length: queryParams.pageSize.current }, (_, i) => i) as i (i)}
 				<Table.Row class="animate-pulse" style="animation-delay: {i * 0.1}s">
 					<Table.Cell>
@@ -147,12 +145,12 @@
 					</Table.Cell>
 				</Table.Row>
 			{/each}
-		{:else if $query.isError}
+		{:else if query.isError}
 			<Table.Row>
-				<Table.Cell colspan={7} class="text-center">Error: {$query.error.message}</Table.Cell>
+				<Table.Cell colspan={7} class="text-center">Error: {query.error.message}</Table.Cell>
 			</Table.Row>
-		{:else if $query.data.listTransaksi.length}
-			{#each $query.data.listTransaksi as item, i (i)}
+		{:else if query.data.listTransaksi.length}
+			{#each query.data.listTransaksi as item, i (i)}
 				<Table.Row>
 					<Table.Cell>
 						<Checkbox />

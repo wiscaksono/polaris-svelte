@@ -34,24 +34,20 @@
 	});
 
 	const selectedTrxType = $derived(trxTypeOptions.find(({ slug }) => slug === queryParams.trxType.current));
-	const trxTypeListQuery = $derived(createQuery(reportQueries.trxTypeList(selectedTrxType?.value)));
-	const selectedTrxSubTypes = $derived(
-		$trxTypeListQuery.data?.filter(({ description }) => queryParams.trxSubType.current.includes(slugify(description))) ?? []
+	const trxTypeListQuery = createQuery(() => reportQueries.trxTypeList(selectedTrxType?.value));
+	const selectedTrxSubTypes = $derived(trxTypeListQuery.data?.filter(({ description }) => queryParams.trxSubType.current.includes(slugify(description))) ?? []);
+	const reportResultQuery = createQuery(() =>
+		reportQueries.reportTransaksi({
+			ltId: selectedTrxSubTypes.map(({ trxId }) => trxId),
+			fromDate: queryParams.from.current,
+			toDate: queryParams.until.current
+		})
 	);
-	const reportResultQuery = $derived(
-		createQuery(
-			reportQueries.reportTransaksi({
-				ltId: selectedTrxSubTypes.map(({ trxId }) => trxId),
-				fromDate: queryParams.from.current,
-				toDate: queryParams.until.current
-			})
-		)
-	);
-	const totalItems = $derived($reportResultQuery.data?.length ?? 0);
+	const totalItems = $derived(reportResultQuery.data?.length ?? 0);
 	const totalPages = $derived(Math.ceil(totalItems / queryParams.perPage.current) || 1);
 
 	const paginatedData = $derived.by(() => {
-		const data = $reportResultQuery.data;
+		const data = reportResultQuery.data;
 		if (!data) return [];
 
 		const start = (queryParams.pageNumber.current - 1) * queryParams.perPage.current;
@@ -110,8 +106,8 @@
 					{/if}
 				</Select.Trigger>
 				<Select.Content>
-					{#if $trxTypeListQuery.data}
-						{#each $trxTypeListQuery.data as { description, trxId } (trxId)}
+					{#if trxTypeListQuery.data}
+						{#each trxTypeListQuery.data as { description, trxId } (trxId)}
 							<Select.Item value={slugify(description)}>{description}</Select.Item>
 						{/each}
 					{/if}
@@ -197,7 +193,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $reportResultQuery.isLoading}
+		{#if reportResultQuery.isLoading}
 			{#each Array.from({ length: queryParams.perPage.current }, (_, i) => i) as i (i)}
 				<Table.Row class="animate-pulse">
 					<Table.Cell>

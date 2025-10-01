@@ -11,10 +11,10 @@
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
-	const query = $derived(createQuery(dataPolisClientRolesQueries.dataPertanggungan(regSpaj)));
-	const isLoading = $derived($query.isLoading);
-	const dataTU = $derived($query.data?.dataTU);
-	const dataPeserta = $derived($query.data?.dataPeserta);
+	const query = createQuery(() => dataPolisClientRolesQueries.dataPertanggungan(regSpaj));
+	const isLoading = $derived(query.isLoading);
+	const dataTU = $derived(query.data?.dataTU);
+	const dataPeserta = $derived(query.data?.dataPeserta);
 </script>
 
 <div class="space-y-5">
@@ -61,7 +61,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}
 						<Table.Row>
 							<Table.Cell>

@@ -48,16 +48,16 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $queryResult.isPending || $queryResult.isPlaceholderData}
+		{#if queryResult.isPending || queryResult.isPlaceholderData}
 			{#each Array.from({ length: pageSize }, (_, i) => i) as i (i)}
 				<TicketRowSkeleton index={i} />
 			{/each}
-		{:else if $queryResult.isError}
+		{:else if queryResult.isError}
 			<Table.Row>
-				<Table.Cell colspan={9} class="text-center">Error: {$queryResult.error.message}</Table.Cell>
+				<Table.Cell colspan={9} class="text-center">Error: {queryResult.error.message}</Table.Cell>
 			</Table.Row>
-		{:else if $queryResult.data[listKey].length}
-			{#each $queryResult.data[listKey] as item, i (i)}
+		{:else if queryResult.data[listKey].length}
+			{#each queryResult.data[listKey] as item, i (i)}
 				<TicketRow {item} />
 			{/each}
 		{:else}

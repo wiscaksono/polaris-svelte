@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Trash } from '@lucide/svelte';
+	import { Trash, LoaderCircle } from '@lucide/svelte';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 
 	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
@@ -12,16 +12,16 @@
 	let open = $state(false);
 	const queryClient = useQueryClient();
 
-	const mutation = createMutation({
+	const mutation = createMutation(() => ({
 		...menuConfigurationQueries.deleteMenu(),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['menu-configuration', 'list-configuration'] });
 			open = false;
 		}
-	});
+	}));
 
 	function handleDelete() {
-		$mutation.mutate(id);
+		mutation.mutate(id);
 	}
 </script>
 
@@ -40,7 +40,12 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action class={buttonVariants({ variant: 'destructive' })} onclick={handleDelete} disabled={$mutation.isPending}>Delete</AlertDialog.Action>
+			<AlertDialog.Action class={buttonVariants({ variant: 'destructive' })} onclick={handleDelete} disabled={mutation.isPending}>
+				Delete
+				{#if mutation.isPending}
+					<LoaderCircle class="animate-spin" />
+				{/if}
+			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
 </AlertDialog.Root>

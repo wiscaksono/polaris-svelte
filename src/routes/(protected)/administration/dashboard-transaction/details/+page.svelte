@@ -18,7 +18,7 @@
 	import type { TimeRangeValues } from '$lib/features/dashboard-transactions/queries';
 
 	const currentTimeRange = $derived((page.url.searchParams.get('timeRange') as TimeRangeValues) ?? 'today');
-	const query = $derived(createQuery(dashboardTransactionsQueries.transactionDetails(currentTimeRange)));
+	const query = createQuery(() => dashboardTransactionsQueries.transactionDetails(currentTimeRange));
 
 	const queryParams = useQueryStates({
 		pageSize: parseAsInteger.withDefault(50),
@@ -26,11 +26,11 @@
 		perPage: parseAsInteger.withDefault(20)
 	});
 
-	const totalItems = $derived($query.data?.length ?? 0);
+	const totalItems = $derived(query.data?.length ?? 0);
 	const totalPages = $derived(Math.ceil(totalItems / queryParams.perPage.current) || 1);
 
 	const paginatedData = $derived.by(() => {
-		const data = $query.data;
+		const data = query.data;
 		if (!data) return [];
 
 		const start = (queryParams.pageNumber.current - 1) * queryParams.perPage.current;
@@ -50,7 +50,7 @@
 
 <Card.Root class="flex flex-col rounded-none border-0 border-b bg-transparent shadow-none">
 	<Card.Header>
-		<Card.Title class="text-primary">Details ({$query.data?.length ?? 0}) records</Card.Title>
+		<Card.Title class="text-primary">Details ({query.data?.length ?? 0}) records</Card.Title>
 		<Card.Description>See the details of the transactions in the system</Card.Description>
 		<Card.Action class="flex items-center gap-2">
 			<Select.Root
@@ -123,7 +123,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#if $query.isPending || $query.isPlaceholderData}
+				{#if query.isPending || query.isPlaceholderData}
 					{#each Array.from({ length: queryParams.perPage.current }, (_, i) => i) as i (i)}
 						<Table.Row class="animate-pulse" style="animation-delay: {i * 0.1}s">
 							<Table.Cell class="sticky left-0 z-10 w-[200px] !bg-background">
@@ -157,9 +157,9 @@
 							{/each}
 						</Table.Row>
 					{/each}
-				{:else if $query.isError}
+				{:else if query.isError}
 					<Table.Row>
-						<Table.Cell colspan={7} class="text-center">Error: {$query.error.message}</Table.Cell>
+						<Table.Cell colspan={7} class="text-center">Error: {query.error.message}</Table.Cell>
 					</Table.Row>
 				{:else if paginatedData.length}
 					{#each paginatedData as item, i (i)}

@@ -10,9 +10,9 @@
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
-	const query = $derived(createQuery(dataPolisClientRolesQueries.dataPPdanTU(regSpaj)));
-	const data = $derived($query.data?.pemegangPolis);
-	const isLoading = $derived($query.isLoading);
+	const query = createQuery(() => dataPolisClientRolesQueries.dataPPdanTU(regSpaj));
+	const data = $derived(query.data?.pemegangPolis);
+	const isLoading = $derived(query.isLoading);
 </script>
 
 <div class="space-y-5">

@@ -20,17 +20,15 @@
 		noPolis: parseAsString.withDefault('').withOptions({ throttleMs: 500 })
 	});
 
-	const query = $derived(
-		createQuery(
-			dataPolisQueries.list({
-				pageSize: queryParams.pageSize.current,
-				pageNumber: queryParams.pageNumber.current,
-				noPolis: String(queryParams.noPolis.current)
-			})
-		)
+	const query = createQuery(() =>
+		dataPolisQueries.list({
+			pageSize: queryParams.pageSize.current,
+			pageNumber: queryParams.pageNumber.current,
+			noPolis: String(queryParams.noPolis.current)
+		})
 	);
 
-	const totalItems = $derived($query.data ? $query.data.totalPage * $query.data['Data Polis'].length : 0);
+	const totalItems = $derived(query.data ? query.data.totalPage * query.data['Data Polis'].length : 0);
 
 	function handleClick(item: DataPolisListRes['Data Polis'][number]) {
 		goto(resolve('/(protected)/data-polis/[regSpaj]', { regSpaj: item.idreg }));
@@ -84,7 +82,7 @@
 				class="rounded-l-none"
 				aria-label="Next page"
 				onclick={() => (queryParams.pageNumber.current += 1)}
-				disabled={($query.data?.totalPage ?? 1) <= queryParams.pageNumber.current}
+				disabled={(query.data?.totalPage ?? 1) <= queryParams.pageNumber.current}
 			>
 				<ChevronRight />
 			</Button>
@@ -107,7 +105,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $query.isPending || $query.isPlaceholderData}
+		{#if query.isPending || query.isPlaceholderData}
 			{#each Array.from({ length: queryParams.pageSize.current }, (_, i) => i) as i (i)}
 				<Table.Row>
 					<Table.Cell>
@@ -163,12 +161,12 @@
 					</Table.Cell>
 				</Table.Row>
 			{/each}
-		{:else if $query.isError}
+		{:else if query.isError}
 			<Table.Row>
-				<Table.Cell colspan={9} class="text-center">Error: {$query.error.message}</Table.Cell>
+				<Table.Cell colspan={9} class="text-center">Error: {query.error.message}</Table.Cell>
 			</Table.Row>
-		{:else if $query.data['Data Polis'].length}
-			{#each $query.data['Data Polis'] as item, i (i)}
+		{:else if query.data['Data Polis'].length}
+			{#each query.data['Data Polis'] as item, i (i)}
 				<Table.Row class="cursor-pointer" onclick={() => handleClick(item)}>
 					<Table.Cell>{item.nopol}</Table.Cell>
 					<Table.Cell>{item.no_spaj}</Table.Cell>

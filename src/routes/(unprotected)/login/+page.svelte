@@ -14,18 +14,18 @@
 
 	let payload = $state({ username: 'billi', password: 'Asdf12345' });
 
-	const mutation = createMutation({
+	const mutation = createMutation(() => ({
 		...loginQuery.login(),
 		onSuccess: (data) => {
 			api.setToken(data.token);
 			userStore.current = exclude(data, ['token']);
 			goto('/');
 		}
-	});
+	}));
 
 	async function handleLogin(event: SubmitEvent) {
 		event.preventDefault();
-		$mutation.mutate(payload);
+		mutation.mutate(payload);
 	}
 </script>
 
@@ -55,9 +55,9 @@
 							<Label for="password">Password</Label>
 							<Input id="password" type="password" required bind:value={payload.password} data-testid="password-input" />
 						</div>
-						<Button type="submit" class="w-full" disabled={$mutation.isPending} data-testid="login-button">
+						<Button type="submit" class="w-full" disabled={mutation.isPending} data-testid="login-button">
 							Login
-							{#if $mutation.isPending}
+							{#if mutation.isPending}
 								<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
 							{/if}
 						</Button>

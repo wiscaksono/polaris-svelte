@@ -13,18 +13,18 @@
 	let open = $state(false);
 	const queryClient = useQueryClient();
 
-	const mutation = createMutation({
+	const mutation = createMutation(() => ({
 		...menuConfigurationQueries.createMenu(),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['menu-configuration', 'list-configuration'] });
 			open = false;
 			value = '';
 		}
-	});
+	}));
 
 	function handleCreate() {
 		if (!value) return;
-		$mutation.mutate(value);
+		mutation.mutate(value);
 	}
 </script>
 
@@ -48,9 +48,9 @@
 			<Input id="menu-name" required bind:value />
 		</div>
 		<Dialog.Footer>
-			<Button onclick={handleCreate} disabled={$mutation.isPending || !value}>
+			<Button onclick={handleCreate} disabled={mutation.isPending || !value}>
 				Add Menu
-				{#if $mutation.isPending}
+				{#if mutation.isPending}
 					<LoaderCircle class="animate-spin" />
 				{/if}
 			</Button>

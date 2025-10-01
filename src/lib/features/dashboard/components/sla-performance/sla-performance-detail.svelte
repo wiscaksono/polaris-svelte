@@ -34,12 +34,10 @@
 		}
 	});
 
-	const query = $derived(
-		createQuery({
-			...dashboardQueries.slaPerformanceDetail(lusId),
-			enabled: open
-		})
-	);
+	const query = createQuery(() => ({
+		...dashboardQueries.slaPerformanceDetail(lusId),
+		enabled: open
+	}));
 </script>
 
 <Dialog.Root bind:open>
@@ -73,7 +71,7 @@
 					</Card.Action>
 				</Card.Header>
 				<Card.Content class="text-xl font-medium md:pl-0">
-					{$query.data?.totalCase ?? 0} <span class="text-sm font-light text-muted-foreground">Case</span>
+					{query.data?.totalCase ?? 0} <span class="text-sm font-light text-muted-foreground">Case</span>
 				</Card.Content>
 			</Card.Root>
 
@@ -85,7 +83,7 @@
 					</Card.Action>
 				</Card.Header>
 				<Card.Content class="text-xl font-medium">
-					{$query.data?.completedCase ?? 0} <span class="text-sm font-light text-muted-foreground">Case</span>
+					{query.data?.completedCase ?? 0} <span class="text-sm font-light text-muted-foreground">Case</span>
 				</Card.Content>
 			</Card.Root>
 

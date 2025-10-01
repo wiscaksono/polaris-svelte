@@ -11,7 +11,7 @@
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
-	const queries = createQueries({
+	const queries = createQueries(() => ({
 		queries: [dataPolisSummaryQueries.summary(regSpaj), dataPolisSummaryQueries.products(regSpaj)],
 		combine: (res) => {
 			return {
@@ -20,8 +20,8 @@
 				isLoading: res.some(({ isLoading }) => isLoading)
 			};
 		}
-	});
-	const isLoading = $derived($queries.isLoading);
+	}));
+	const isLoading = $derived(queries.isLoading);
 </script>
 
 <div class="space-y-5">
@@ -29,25 +29,25 @@
 		<Heading title="Policy Main Details" description="Key information including policy number, status, premium, and issue date." />
 		<div class="grid divide-y md:grid-cols-2 md:gap-4 md:divide-y-0">
 			<div class="divide-y">
-				<DetailItem label="Polis Owner" value={$queries.summary?.namaPP} {isLoading} />
-				<DetailItem label="CIF" value={$queries.summary?.cif} {isLoading} />
-				<DetailItem label="No Polis" value={$queries.summary?.noPol} {isLoading} />
-				<DetailItem label="No SPAJ" value={$queries.summary?.noSpaj} {isLoading} />
-				<DetailItem label="Status Polis" value={$queries.summary?.statusPolis} {isLoading} />
-				<DetailItem label="Basic Premium" value={$queries.summary?.basicPremium} {isLoading} />
-				<DetailItem label="Topup Premium" value={$queries.summary?.topUpPremium} {isLoading} />
-				<DetailItem label="Issued Date" value={$queries.summary?.issueDate} {isLoading} />
+				<DetailItem label="Polis Owner" value={queries.summary?.namaPP} {isLoading} />
+				<DetailItem label="CIF" value={queries.summary?.cif} {isLoading} />
+				<DetailItem label="No Polis" value={queries.summary?.noPol} {isLoading} />
+				<DetailItem label="No SPAJ" value={queries.summary?.noSpaj} {isLoading} />
+				<DetailItem label="Status Polis" value={queries.summary?.statusPolis} {isLoading} />
+				<DetailItem label="Basic Premium" value={queries.summary?.basicPremium} {isLoading} />
+				<DetailItem label="Topup Premium" value={queries.summary?.topUpPremium} {isLoading} />
+				<DetailItem label="Issued Date" value={queries.summary?.issueDate} {isLoading} />
 			</div>
 			<div class="divide-y">
-				<DetailItem label="VIP Customer" value={$queries.summary?.flagVip} {isLoading} />
-				<DetailItem label="Attention List" value={$queries.summary?.attentionList} {isLoading} />
-				<DetailItem label="Flagging" value={$queries.summary?.flagging} {isLoading} />
-				<DetailItem label="Periode Cuti Premi" value={$queries.summary?.periodeCutiPremi} {isLoading} />
-				<DetailItem label="Payment Method" value={$queries.summary?.caraBayar} {isLoading} />
-				<DetailItem label="Billing Frequency" value={$queries.summary?.billingFreq} {isLoading} />
-				<DetailItem label="Paid To Date" value={$queries.summary?.lastPayment} {isLoading} />
-				<DetailItem label="Product Code" value={$queries.summary?.productCode} {isLoading} />
-				<DetailItem label="Product" value={$queries.summary?.namaProduct} {isLoading} />
+				<DetailItem label="VIP Customer" value={queries.summary?.flagVip} {isLoading} />
+				<DetailItem label="Attention List" value={queries.summary?.attentionList} {isLoading} />
+				<DetailItem label="Flagging" value={queries.summary?.flagging} {isLoading} />
+				<DetailItem label="Periode Cuti Premi" value={queries.summary?.periodeCutiPremi} {isLoading} />
+				<DetailItem label="Payment Method" value={queries.summary?.caraBayar} {isLoading} />
+				<DetailItem label="Billing Frequency" value={queries.summary?.billingFreq} {isLoading} />
+				<DetailItem label="Paid To Date" value={queries.summary?.lastPayment} {isLoading} />
+				<DetailItem label="Product Code" value={queries.summary?.productCode} {isLoading} />
+				<DetailItem label="Product" value={queries.summary?.namaProduct} {isLoading} />
 			</div>
 		</div>
 	</section>
@@ -67,12 +67,12 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#if $queries.isLoading}
+				{#if queries.isLoading}
 					{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}
 						TODO LOADER
 					{/each}
-				{:else if $queries.products}
-					{#each $queries.products as item, i (i)}
+				{:else if queries.products}
+					{#each queries.products as item, i (i)}
 						<Table.Row>
 							<Table.Cell colspan={7} class="font-medium">{item.produk}</Table.Cell>
 						</Table.Row>

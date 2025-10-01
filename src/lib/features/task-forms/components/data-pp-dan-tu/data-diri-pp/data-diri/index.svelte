@@ -4,8 +4,6 @@
 	import { getData } from '../state.svelte';
 
 	let dataDiri = getData()?.dataDiri;
-
-	$inspect('child ', dataDiri.after.agama.label);
 </script>
 
 <div class="border p-2">

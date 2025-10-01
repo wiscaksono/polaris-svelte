@@ -21,15 +21,15 @@
 	let selectedUser = $state<number | null>(null);
 
 	const queryClient = useQueryClient();
-	const query = $derived(reassignTaskQueries.users({ jenis_trx: data.jenis_trx, lus_id: userStore.current!.lus_id }));
-	const queryResult = $derived(createQuery(query));
-	const mutation = createMutation({
+	const query = reassignTaskQueries.users({ jenis_trx: data.jenis_trx, lus_id: userStore.current!.lus_id });
+	const queryResult = createQuery(() => query);
+	const mutation = createMutation(() => ({
 		...reassignTaskQueries.assign(),
 		onSuccess: () => {
 			open = false;
 			selectedUser = null;
 		}
-	});
+	}));
 
 	function handlePrefetch() {
 		const isCached = queryClient.getQueryData(query.queryKey);
@@ -38,7 +38,7 @@
 
 	function handleAssign() {
 		if (!selectedUser) return;
-		$mutation.mutate({ caseId: data.case_id, lusId: selectedUser });
+		mutation.mutate({ caseId: data.case_id, lusId: selectedUser });
 	}
 </script>
 
@@ -62,15 +62,15 @@
 			<Label for="jenis-trx">Jenis Trx</Label>
 			<Select.Root type="single" bind:value={() => String(selectedUser), (v) => (selectedUser = Number(v))}>
 				<Select.Trigger class={cn({ 'text-muted-foreground': !selectedUser }, 'w-full')}>
-					{#if selectedUser && $queryResult.data}
-						{$queryResult.data['user-polaris'].find(({ LUS_ID }) => LUS_ID === selectedUser)?.NAMA_USER}
+					{#if selectedUser && queryResult.data}
+						{queryResult.data['user-polaris'].find(({ LUS_ID }) => LUS_ID === selectedUser)?.NAMA_USER}
 					{:else}
 						Select User
 					{/if}
 				</Select.Trigger>
 				<Select.Content>
-					{#if $queryResult.data}
-						{#each $queryResult.data['user-polaris'] as item (item.LUS_ID)}
+					{#if queryResult.data}
+						{#each queryResult.data['user-polaris'] as item (item.LUS_ID)}
 							<Select.Item value={String(item.LUS_ID)}>{item.NAMA_USER}</Select.Item>
 						{/each}
 					{/if}
@@ -79,9 +79,9 @@
 		</div>
 
 		<Dialog.Footer>
-			<Button onclick={handleAssign} disabled={$mutation.isPending}>
+			<Button onclick={handleAssign} disabled={mutation.isPending}>
 				Assign
-				{#if $mutation.isPending}
+				{#if mutation.isPending}
 					<LoaderCircle class="animate-spin" />
 				{/if}
 			</Button>

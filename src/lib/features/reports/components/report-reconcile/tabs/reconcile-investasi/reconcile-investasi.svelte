@@ -33,21 +33,19 @@
 	});
 
 	const queryParam = useQueryState('sub-tab', parseAsStringLiteral(subTabs.map(({ slug }) => slug)).withDefault(subTabs[0].slug));
-	const mutation = $derived(createMutation(reportQueries.reportReconcileInvestasiExport({ from: queryParams.from.current, to: queryParams.until.current })));
+	const mutation = createMutation(() => reportQueries.reportReconcileInvestasiExport({ from: queryParams.from.current, to: queryParams.until.current }));
 
-	const query = $derived(
-		createQuery(
-			reportQueries.reportReconcileInvestasi({
-				transactionName: queryParam.current,
-				fromDate: queryParams.from.current,
-				toDate: queryParams.until.current
-			})
-		)
+	const query = createQuery(() =>
+		reportQueries.reportReconcileInvestasi({
+			transactionName: queryParam.current,
+			fromDate: queryParams.from.current,
+			toDate: queryParams.until.current
+		})
 	);
 
 	const totalItems = $derived({
-		polaris: $query.data?.reportListRs.length ?? 0,
-		aquarius: $query.data?.resultListRs.length ?? 0
+		polaris: query.data?.reportListRs.length ?? 0,
+		aquarius: query.data?.resultListRs.length ?? 0
 	});
 
 	const totalPages = $derived({
@@ -61,7 +59,7 @@
 	});
 
 	const paginatedDataPolaris = $derived.by(() => {
-		const data = $query.data?.reportListRs;
+		const data = query.data?.reportListRs;
 		if (!data) return [];
 
 		const start = (currentPage.polaris - 1) * PER_PAGE;
@@ -70,7 +68,7 @@
 	});
 
 	const paginatedDataAquarius = $derived.by(() => {
-		const data = $query.data?.resultListRs;
+		const data = query.data?.resultListRs;
 		if (!data) return [];
 
 		const start = (currentPage.aquarius - 1) * PER_PAGE;
@@ -78,12 +76,12 @@
 		return data.slice(start, end);
 	});
 
-	const isPolisDiff = $derived($query.data?.totalPolis !== $query.data?.totalPolisAquarius);
-	const isAmountDiff = $derived($query.data?.totalAmount !== $query.data?.totalAmountAquarius);
-	const isUnitDiff = $derived($query.data?.totalUnit !== $query.data?.totalUnitAquarius);
+	const isPolisDiff = $derived(query.data?.totalPolis !== query.data?.totalPolisAquarius);
+	const isAmountDiff = $derived(query.data?.totalAmount !== query.data?.totalAmountAquarius);
+	const isUnitDiff = $derived(query.data?.totalUnit !== query.data?.totalUnitAquarius);
 
 	function handleExport() {
-		$mutation.mutate();
+		mutation.mutate();
 	}
 </script>
 
@@ -134,8 +132,8 @@
 			<Tooltip.Root>
 				<Tooltip.Trigger>
 					{#snippet child({ props })}
-						<Button {...props} size="icon" variant="outline" aria-label="Download" onclick={handleExport} disabled={$mutation.isPending}>
-							{#if $mutation.isPending}
+						<Button {...props} size="icon" variant="outline" aria-label="Download" onclick={handleExport} disabled={mutation.isPending}>
+							{#if mutation.isPending}
 								<LoaderCircle class="animate-spin" />
 							{:else}
 								<Download />
@@ -166,7 +164,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					{#each Array.from({ length: 10 }, (_, i) => i) as i (i)}
 						{@render skeleton(i)}
 					{/each}
@@ -200,18 +198,18 @@
 		<div class="divide-y">
 			<DetailItem
 				label="Total Polis"
-				value={$query.data?.totalPolis && formatNumber($query.data?.totalPolis, 'id-ID', formatNumberOptions)}
-				isLoading={$query.isLoading}
+				value={query.data?.totalPolis && formatNumber(query.data?.totalPolis, 'id-ID', formatNumberOptions)}
+				isLoading={query.isLoading}
 			/>
 			<DetailItem
 				label="Total Amount"
-				value={$query.data?.totalAmount && formatNumber($query.data?.totalAmount, 'id-ID', formatNumberOptions)}
-				isLoading={$query.isLoading}
+				value={query.data?.totalAmount && formatNumber(query.data?.totalAmount, 'id-ID', formatNumberOptions)}
+				isLoading={query.isLoading}
 			/>
 			<DetailItem
 				label="Total Unit"
-				value={$query.data?.totalUnit && formatNumber($query.data?.totalUnit, 'id-ID', formatNumberOptions)}
-				isLoading={$query.isLoading}
+				value={query.data?.totalUnit && formatNumber(query.data?.totalUnit, 'id-ID', formatNumberOptions)}
+				isLoading={query.isLoading}
 			/>
 		</div>
 	</section>
@@ -230,7 +228,7 @@
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					{#each Array.from({ length: 10 }, (_, i) => i) as i (i)}
 						{@render skeleton(i)}
 					{/each}
@@ -269,11 +267,11 @@
 						<span class="font-medium text-destructive">!</span>
 					{/if}
 				</dt>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					<dd class="mt-1 h-5 w-20 animate-pulse rounded bg-muted"></dd>
 				{:else}
 					<dd class={cn('text-right', { 'font-medium text-destructive': isPolisDiff })}>
-						{$query.data?.totalPolisAquarius ? formatNumber($query.data?.totalPolisAquarius, 'id-ID', formatNumberOptions) : '-'}
+						{query.data?.totalPolisAquarius ? formatNumber(query.data?.totalPolisAquarius, 'id-ID', formatNumberOptions) : '-'}
 					</dd>
 				{/if}
 			</div>
@@ -284,11 +282,11 @@
 						<span class="font-medium text-destructive">!</span>
 					{/if}
 				</dt>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					<dd class="mt-1 h-5 w-20 animate-pulse rounded bg-muted"></dd>
 				{:else}
 					<dd class={cn('text-right', { 'font-medium text-destructive': isAmountDiff })}>
-						{$query.data?.totalAmountAquarius ? formatNumber($query.data?.totalAmountAquarius, 'id-ID', formatNumberOptions) : '-'}
+						{query.data?.totalAmountAquarius ? formatNumber(query.data?.totalAmountAquarius, 'id-ID', formatNumberOptions) : '-'}
 					</dd>
 				{/if}
 			</div>
@@ -299,11 +297,11 @@
 						<span class="font-medium text-destructive">!</span>
 					{/if}
 				</dt>
-				{#if $query.isLoading}
+				{#if query.isLoading}
 					<dd class="mt-1 h-5 w-20 animate-pulse rounded bg-muted"></dd>
 				{:else}
 					<dd class={cn('text-right', { 'font-medium text-destructive': isUnitDiff })}>
-						{$query.data?.totalUnitAquarius ? formatNumber($query.data?.totalUnitAquarius, 'id-ID', formatNumberOptions) : '-'}
+						{query.data?.totalUnitAquarius ? formatNumber(query.data?.totalUnitAquarius, 'id-ID', formatNumberOptions) : '-'}
 					</dd>
 				{/if}
 			</div>

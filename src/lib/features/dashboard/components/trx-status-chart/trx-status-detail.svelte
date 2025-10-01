@@ -21,12 +21,10 @@
 	let search = $state('');
 	let { open = $bindable(), selectedStatus }: Props = $props();
 
-	const query = $derived(
-		createQuery({
-			...dashboardQueries.totalCaseDetail({ type: 'alteration', status: selectedStatus ?? 'New Case', range: 'All Time', page, search, size }),
-			enabled: selectedStatus !== null
-		})
-	);
+	const query = createQuery(() => ({
+		...dashboardQueries.totalCaseDetail({ type: 'alteration', status: selectedStatus ?? 'New Case', range: 'All Time', page, search, size }),
+		enabled: selectedStatus !== null
+	}));
 </script>
 
 <Dialog.Root bind:open>
@@ -79,7 +77,7 @@
 				<Button variant="outline" size="icon" class="rounded-r-none" onclick={() => (page -= 1)} disabled={page <= 1}>
 					<ChevronLeft />
 				</Button>
-				<Button variant="outline" size="icon" class="rounded-l-none border-l-0" onclick={() => (page += 1)} disabled={($query.data?.totalPage ?? 1) <= page}>
+				<Button variant="outline" size="icon" class="rounded-l-none border-l-0" onclick={() => (page += 1)} disabled={(query.data?.totalPage ?? 1) <= page}>
 					<ChevronRight />
 				</Button>
 			</div>
@@ -97,7 +95,7 @@
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
-					{#if $query.isPending || $query.isPlaceholderData}
+					{#if query.isPending || query.isPlaceholderData}
 						{#each Array.from({ length: size }, (_, i) => i) as i (i)}
 							<Table.Row class="animate-pulse" style="animation-delay: {i * 0.1}s">
 								<Table.Cell>
@@ -127,12 +125,12 @@
 								</Table.Cell>
 							</Table.Row>
 						{/each}
-					{:else if $query.isError}
+					{:else if query.isError}
 						<Table.Row>
-							<Table.Cell colspan={5} class="text-center">Error: {$query.error.message}</Table.Cell>
+							<Table.Cell colspan={5} class="text-center">Error: {query.error.message}</Table.Cell>
 						</Table.Row>
-					{:else if $query.data.content.length}
-						{#each $query.data.content as item, i (i)}
+					{:else if query.data.content.length}
+						{#each query.data.content as item, i (i)}
 							<Table.Row>
 								<Table.Cell>{item.caseTrx}</Table.Cell>
 								<Table.Cell>{item.fromApp}</Table.Cell>

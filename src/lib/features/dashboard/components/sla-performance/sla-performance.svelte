@@ -15,7 +15,7 @@
 
 	let height = $state(300);
 	const tab = useQueryState<TrxType | 'reconcile'>('tab', parseAsStringLiteral(['alteration', 'financial', 'reconcile']).withDefault('alteration'));
-	const query = $derived(createQuery(dashboardQueries.slaPerformance(tab.current === 'alteration' ? 'alteration' : 'financial')));
+	const query = createQuery(() => dashboardQueries.slaPerformance(tab.current === 'alteration' ? 'alteration' : 'financial'));
 
 	function formatDuration(totalSeconds: number) {
 		dayjs.extend(duration);
@@ -62,14 +62,14 @@
 	</Card.Header>
 	<Card.Content class="overflow-y-auto" style={`height: ${height}px`}>
 		<ul class="space-y-4">
-			{#if $query.isPending || $query.isPlaceholderData}
+			{#if query.isPending || query.isPlaceholderData}
 				{#each Array.from({ length: 4 }, (_, i) => i) as i (i)}
 					SKELETON
 				{/each}
-			{:else if $query.isError}
+			{:else if query.isError}
 				ERROR
-			{:else if $query.data.length}
-				{#each $query.data as item, i (i)}
+			{:else if query.data.length}
+				{#each query.data as item, i (i)}
 					<li class="flex items-center gap-x-4">
 						<p>
 							{i + 1}.

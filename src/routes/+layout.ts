@@ -18,7 +18,7 @@ export const load: LayoutLoad = () => {
 				refetchOnWindowFocus: false
 			},
 			mutations: {
-				onError: error => console.error("🚨 Error in mutation", error)
+				onError: (error) => console.error('🚨 Error in mutation', error)
 			}
 		}
 	});

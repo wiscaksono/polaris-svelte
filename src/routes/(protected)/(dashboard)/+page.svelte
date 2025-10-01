@@ -19,8 +19,8 @@
 	const tabValues = mainTabs.map((item) => item.value);
 
 	const tab = useQueryState<TrxType | 'reconcile'>('tab', parseAsStringLiteral(tabValues).withDefault('alteration'));
-	const totalCaseQuery = $derived(createQuery(dashboardQueries.totalCase(tab.current === 'alteration' ? 'alteration' : 'financial')));
-	const totalCaseDiffQuery = $derived(createQuery(dashboardQueries.totalCaseDiff(tab.current === 'alteration' ? 'alteration' : 'financial')));
+	const totalCaseQuery = createQuery(() => dashboardQueries.totalCase(tab.current === 'alteration' ? 'alteration' : 'financial'));
+	const totalCaseDiffQuery = createQuery(() => dashboardQueries.totalCaseDiff(tab.current === 'alteration' ? 'alteration' : 'financial'));
 </script>
 
 <svelte:head>
@@ -46,13 +46,13 @@
 </section>
 
 <section class="grid grid-cols-1 !divide-x !divide-y md:grid-cols-2 lg:grid-cols-4">
-	<TrxStatusChart data={$totalCaseQuery.data?.allTime} title="All Time" description="Data case masuk selama ini" />
-	<TrxStatusChart data={$totalCaseQuery.data?.today} title="Today" description="Data case masuk hari ini" />
+	<TrxStatusChart data={totalCaseQuery.data?.allTime} title="All Time" description="Data case masuk selama ini" />
+	<TrxStatusChart data={totalCaseQuery.data?.today} title="Today" description="Data case masuk hari ini" />
 	<SlaPerformance />
 	<div
 		class="h-5 border-y bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-black)]/5 md:col-span-2 md:block lg:col-span-4 dark:[--pattern-fg:var(--color-white)]/10"
 	></div>
-	<TotalCaseDiffChart data={$totalCaseDiffQuery.data} />
+	<TotalCaseDiffChart data={totalCaseDiffQuery.data} />
 
 	<ByCaseChart />
 </section>

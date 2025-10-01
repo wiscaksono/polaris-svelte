@@ -23,15 +23,15 @@
 	let openStates = $state<{ [key: number]: boolean }>({});
 	let columnVisibility = $state<{ [key: number]: boolean }>({});
 
-	const queryListRole = $derived(createQuery(menuConfigurationQueries.listRole()));
-	const mutationUpdateRole = createMutation(menuConfigurationQueries.toggleRole());
-	const queryListConfiguration = $derived(createQuery(menuConfigurationQueries.listConfiguration()));
+	const queryListRole = createQuery(() => menuConfigurationQueries.listRole());
+	const mutationUpdateRole = createMutation(() => menuConfigurationQueries.toggleRole());
+	const queryListConfiguration = createQuery(() => menuConfigurationQueries.listConfiguration());
 
 	const queryParams = useQueryState('q', parseAsString.withDefault(''));
 
 	const searchResult = $derived.by(() => {
 		const query = queryParams.current.toLowerCase().trim();
-		const data = $queryListConfiguration.data ?? [];
+		const data = queryListConfiguration.data ?? [];
 
 		if (!query) return { filteredData: data, initiallyOpen: new SvelteSet<number>() };
 
@@ -63,11 +63,9 @@
 
 	// Initialize column visibility when role data is first loaded
 	$effect(() => {
-		if ($queryListRole.data && untrack(() => Object.keys(columnVisibility).length === 0)) {
+		if (queryListRole.data && untrack(() => Object.keys(columnVisibility).length === 0)) {
 			const initialVisibility: { [key: number]: boolean } = {};
-			for (const role of $queryListRole.data) {
-				initialVisibility[role.role_id] = true;
-			}
+			for (const role of queryListRole.data) initialVisibility[role.role_id] = true;
 			columnVisibility = initialVisibility;
 		}
 	});
@@ -98,8 +96,8 @@
 				<DropdownMenu.Group>
 					<DropdownMenu.Label>Toggle Columns</DropdownMenu.Label>
 					<DropdownMenu.Separator />
-					{#if $queryListRole.data}
-						{#each $queryListRole.data as { name, role_id } (role_id)}
+					{#if queryListRole.data}
+						{#each queryListRole.data as { name, role_id } (role_id)}
 							<DropdownMenu.CheckboxItem bind:checked={columnVisibility[role_id]} closeOnSelect={false}>
 								{name}
 							</DropdownMenu.CheckboxItem>
@@ -117,7 +115,7 @@
 			<Table.Head class="sticky left-0 z-20 w-[200px] !bg-background" style="box-shadow: -4px 0 4px -6px var(--muted-foreground) inset">
 				<span>Menu Name</span>
 			</Table.Head>
-			{#if $queryListRole.isPending}
+			{#if queryListRole.isPending}
 				{#each Array.from({ length: 12 }, (_, i) => i) as i (i)}
 					<Table.Head>
 						<div class="h-4 w-full p-px">
@@ -125,8 +123,8 @@
 						</div>
 					</Table.Head>
 				{/each}
-			{:else if $queryListRole.data?.length}
-				{#each $queryListRole.data as { name, role_id } (role_id)}
+			{:else if queryListRole.data?.length}
+				{#each queryListRole.data as { name, role_id } (role_id)}
 					{#if columnVisibility[role_id]}
 						<Table.Head>
 							<div class="grid place-items-center">
@@ -142,7 +140,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $queryListConfiguration.isPending}
+		{#if queryListConfiguration.isPending}
 			{#each Array.from({ length: 9 }, (_, i) => i) as i (i)}
 				<Table.Row class="h-[41px]">
 					<Table.Cell class="sticky left-0 z-20 w-[200px] !bg-background" style="box-shadow: -4px 0 4px -6px var(--muted-foreground) inset">
@@ -166,9 +164,9 @@
 					</Table.Cell>
 				</Table.Row>
 			{/each}
-		{:else if $queryListConfiguration.isError}
+		{:else if queryListConfiguration.isError}
 			<Table.Row>
-				<Table.Cell colspan={12} class="h-16 text-center">{$queryListConfiguration.error.message}</Table.Cell>
+				<Table.Cell colspan={12} class="h-16 text-center">{queryListConfiguration.error.message}</Table.Cell>
 			</Table.Row>
 		{:else if searchResult.filteredData.length}
 			{#each searchResult.filteredData as { id: menuID, name, roleId, sub } (menuID)}
@@ -189,13 +187,13 @@
 									{/if}
 								</div>
 							</Table.Cell>
-							{#if $queryListRole.data}
-								{#each $queryListRole.data as { role_id } (role_id)}
+							{#if queryListRole.data}
+								{#each queryListRole.data as { role_id } (role_id)}
 									{#if columnVisibility[role_id]}
 										{@const checked = roleId.includes(role_id)}
 										<Table.Cell class="!bg-background !px-4">
 											<div class="grid place-items-center">
-												<Checkbox {checked} onCheckedChange={(checked) => $mutationUpdateRole.mutate({ menuID, subMenuID: null, roleID: role_id, checked })} />
+												<Checkbox {checked} onCheckedChange={(checked) => mutationUpdateRole.mutate({ menuID, subMenuID: null, roleID: role_id, checked })} />
 											</div>
 										</Table.Cell>
 									{/if}
@@ -226,15 +224,15 @@
 											>
 												{name}
 											</Table.Cell>
-											{#if $queryListRole.data}
-												{#each $queryListRole.data as { role_id } (role_id)}
+											{#if queryListRole.data}
+												{#each queryListRole.data as { role_id } (role_id)}
 													{#if columnVisibility[role_id]}
 														{@const checked = roleId.includes(role_id)}
 														<Table.Cell class="!bg-background !px-4">
 															<div class="grid place-items-center">
 																<Checkbox
 																	{checked}
-																	onCheckedChange={(checked) => $mutationUpdateRole.mutate({ menuID, subMenuID: null, roleID: role_id, checked })}
+																	onCheckedChange={(checked) => mutationUpdateRole.mutate({ menuID, subMenuID: null, roleID: role_id, checked })}
 																/>
 															</div>
 														</Table.Cell>

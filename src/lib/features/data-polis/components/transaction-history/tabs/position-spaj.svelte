@@ -10,7 +10,7 @@
 
 	let { regSpaj }: RouteParams<'/(protected)/data-polis/[regSpaj]/[tab]'> = $props();
 
-	const query = $derived(createQuery(dataPolisTransactionHistoryQueries.positionSPAJ(regSpaj)));
+	const query = createQuery(() => dataPolisTransactionHistoryQueries.positionSPAJ(regSpaj));
 </script>
 
 <section>
@@ -28,7 +28,7 @@
 			</Table.Row>
 		</Table.Header>
 		<Table.Body>
-			{#if $query.isLoading}
+			{#if query.isLoading}
 				{#each Array.from({ length: 5 }, (_, i) => i) as i (i)}
 					<Table.Row>
 						<Table.Cell>
@@ -68,8 +68,8 @@
 						</Table.Cell>
 					</Table.Row>
 				{/each}
-			{:else if $query.data}
-				{#each $query.data as item, i (i)}
+			{:else if query.data}
+				{#each query.data as item, i (i)}
 					<Table.Row>
 						<Table.Cell>{dayjs(item.tanggal).format('DD MMMM YYYY, HH:mm:ss')}</Table.Cell>
 						<Table.Cell>{item.posisi_dokumen}</Table.Cell>

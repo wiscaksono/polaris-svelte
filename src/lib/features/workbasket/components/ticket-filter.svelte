@@ -26,8 +26,8 @@
 	import { commonQuery } from '$lib/queries';
 
 	const queryParams = useQueryStates(ticketFilterParams);
-	const listUserQuery = createQuery(commonQuery.listUser());
-	const listTransactionQuery = createQuery(commonQuery.listTransaction());
+	const listUserQuery = createQuery(() => commonQuery.listUser());
+	const listTransactionQuery = createQuery(() => commonQuery.listTransaction());
 
 	let open = $state(false);
 	let localParams = $state({
@@ -93,8 +93,8 @@
 						{localParams.caseTrx}
 					</Select.Trigger>
 					<Select.Content align="end">
-						{#if $listTransactionQuery.data}
-							{#each $listTransactionQuery.data as item, i (i)}
+						{#if listTransactionQuery.data}
+							{#each listTransactionQuery.data as item, i (i)}
 								<Select.Item value={item.DESCRIPTION}>{item.DESCRIPTION}</Select.Item>
 							{/each}
 						{:else}
@@ -120,13 +120,13 @@
 				<Label for="user-assign">User Assign</Label>
 				<Select.Root type="single" bind:value={localParams.user}>
 					<Select.Trigger id="user-assign" data-testid="select-user-assign" class="col-span-2 w-full">
-						{#if $listUserQuery.data}
-							{toTitleCase($listUserQuery.data.find((item) => String(item.LUS_ID) === localParams.user)?.LUS_FULL_NAME ?? '')}
+						{#if listUserQuery.data}
+							{toTitleCase(listUserQuery.data.find((item) => String(item.LUS_ID) === localParams.user)?.LUS_FULL_NAME ?? '')}
 						{/if}
 					</Select.Trigger>
 					<Select.Content align="end">
-						{#if $listUserQuery.data}
-							{#each $listUserQuery.data as item, i (i)}
+						{#if listUserQuery.data}
+							{#each listUserQuery.data as item, i (i)}
 								<Select.Item value={String(item.LUS_ID)}>{toTitleCase(item.LUS_FULL_NAME)}</Select.Item>
 							{/each}
 						{:else}

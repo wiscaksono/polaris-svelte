@@ -6,16 +6,16 @@
 
 	import { majorAlterationQueries } from './queries';
 
-	let query = createQuery(majorAlterationQueries.tab2());
+	let query = createQuery(() => majorAlterationQueries.tab2());
 </script>
 
-{#if $query.isLoading}
+{#if query.isLoading}
 	<div>Loading...</div>
-{:else if $query.isError}
-	<div>An error occurred: {$query.error.message}</div>
-{:else if $query.data}
-	<DataDiriPP data={$query.data.pemegangPolis} />
-	<DataDiriTU data={$query.data.tertanggungUtama} />
+{:else if query.isError}
+	<div>An error occurred: {query.error.message}</div>
+{:else if query.data}
+	<DataDiriPP data={query.data.pemegangPolis} />
+	<DataDiriTU data={query.data.tertanggungUtama} />
 {:else}
 	<div>No data found.</div>
 {/if}

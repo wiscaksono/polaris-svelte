@@ -8,7 +8,7 @@
 
 	import { majorAlterationQueries } from '$lib/features/task-forms/major-alteration/queries';
 
-	createQuery(majorAlterationQueries.tab1());
+	createQuery(() => majorAlterationQueries.tab1());
 </script>
 
 <ChecklistReunderwriting />

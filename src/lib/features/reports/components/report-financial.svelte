@@ -72,14 +72,14 @@
 		type: [2] // TODO: Confirm ke handhika, kenapa ini ga dipake di backend?!?!?
 	});
 
-	const query = $derived(createQuery(reportQueries.reportFinancial(payload)));
-	const mutation = $derived(createMutation(reportQueries.reportFinancialExport(payload)));
+	const query = createQuery(() => reportQueries.reportFinancial(payload));
+	const mutation = createMutation(() => reportQueries.reportFinancialExport(payload));
 
-	const totalItems = $derived($query.data?.length ?? 0);
+	const totalItems = $derived(query.data?.length ?? 0);
 	const totalPages = $derived(Math.ceil(totalItems / queryParams.perPage.current) || 1);
 
 	const paginatedData = $derived.by(() => {
-		const data = $query.data;
+		const data = query.data;
 		if (!data) return [];
 
 		const start = (queryParams.pageNumber.current - 1) * queryParams.perPage.current;
@@ -88,7 +88,7 @@
 	});
 
 	function handleExport() {
-		$mutation.mutate();
+		mutation.mutate();
 	}
 </script>
 
@@ -159,8 +159,8 @@
 			<Tooltip.Root>
 				<Tooltip.Trigger>
 					{#snippet child({ props })}
-						<Button {...props} size="icon" variant="outline" aria-label="Download" onclick={handleExport} disabled={$mutation.isPending}>
-							{#if $mutation.isPending}
+						<Button {...props} size="icon" variant="outline" aria-label="Download" onclick={handleExport} disabled={mutation.isPending}>
+							{#if mutation.isPending}
 								<LoaderCircle class="animate-spin" />
 							{:else}
 								<Download />
@@ -217,7 +217,7 @@
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#if $query.isLoading}
+		{#if query.isLoading}
 			{#each Array.from({ length: queryParams.perPage.current }, (_, i) => i) as i (i)}
 				<Table.Row>
 					{#each tableHeader.map((_, j) => j) as j (j)}

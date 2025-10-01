@@ -17,7 +17,7 @@
 	let { item }: { item: Polis } = $props();
 
 	const queryClient = useQueryClient();
-	const mutation = createMutation(workbasketQueries.toggleFlag());
+	const mutation = createMutation(() => workbasketQueries.toggleFlag());
 
 	function handlePrefetch(item: Polis) {
 		const toPrefetch = searchPolisQueries.list(item.case_id);
@@ -27,7 +27,7 @@
 
 	function handleFlag(e: Event, item: Polis) {
 		e.stopPropagation();
-		$mutation.mutate({ idDoc: item.case_id, lusId: 3557 });
+		mutation.mutate({ idDoc: item.case_id, lusId: 3557 });
 	}
 
 	// TODO: Handle for another WB
@@ -43,8 +43,8 @@
 
 <Table.Row class="cursor-pointer" onclick={handleClick} onpointerenter={() => handlePrefetch(item)}>
 	<Table.Cell>
-		<Button size="icon" variant="ghost" class="size-6 hover:border" onclick={(e) => handleFlag(e, item)} disabled={$mutation.isPending}>
-			{#if $mutation.isPending}
+		<Button size="icon" variant="ghost" class="size-6 hover:border" onclick={(e) => handleFlag(e, item)} disabled={mutation.isPending}>
+			{#if mutation.isPending}
 				<LoaderCircle class="animate-spin" />
 			{:else}
 				<Flag class={cn({ 'fill-destructive text-destructive': item.flagged })} />
