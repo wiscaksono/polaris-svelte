@@ -150,3 +150,7 @@
 ::selection {
 	@apply bg-ring/50 text-foreground;
 }
+
+#svelte-inspector-toggle {
+	@apply !bottom-16 !right-3;
+}
