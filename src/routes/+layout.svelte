@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import { ModeWatcher, mode } from 'mode-watcher';
+	import { Toaster } from '$lib/components/ui/sonner';
 	import { NuqsAdapter } from 'nuqs-svelte/adapters/svelte-kit';
 
 	import { Tooltip } from 'bits-ui';
@@ -43,6 +44,7 @@
 			{@render children?.()}
 
 			<ModeWatcher />
+			<Toaster />
 			<SvelteQueryDevtools buttonPosition="bottom-right" />
 		</QueryClientProvider>
 	</Tooltip.Provider>

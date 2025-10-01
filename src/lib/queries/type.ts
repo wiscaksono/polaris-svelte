@@ -9,14 +9,14 @@ export interface ListAllSelectRes {
 		hobi_beresiko_tinggi: IDLabel<number>[];
 		hubungan_pemegang_polis_dengan_tertanggung: IDLabel<number>[];
 		hubungan_terhadap_tertanggung_utama: IDLabel<number>[];
-		jabatan: IDLabel<string>[];
+		jabatan: (Omit<IDLabel<string>, 'id'> & { id: string })[];
 		jenis_kelamin: IDLabel<number>[];
 		jenis_usaha: IDLabel<string>[];
 		kewarganegaraan: IDLabel<number>[];
 		mata_uang_rekening: IDLabel<string>[];
 		nama_bank: IDLabel<number>[];
 		perkiraan_penghasilan_kotor_per_tahun: IDLabel<string>[];
-		status_pernikahan: IDLabel<number>[];
+		status_pernikahan: (Omit<IDLabel<number>, 'id'> & { id: number })[];
 		sumber_dana: IDLabel<number>[];
 		tujuan_membeli_asuransi: IDLabel<number>[];
 	};

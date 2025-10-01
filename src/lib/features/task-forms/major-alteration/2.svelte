@@ -1,50 +1,5 @@
 <script lang="ts">
-	// import dayjs from 'dayjs';
-	// import { Pencil } from '@lucide/svelte';
-	//
-	// import { createQuery } from '@tanstack/svelte-query';
-	// import { majorAlterationQueries } from './queries';
-
 	import DataPPdanTU from '$lib/features/task-forms/components/data-pp-dan-tu';
-
-	// import { Button } from '$lib/components/ui/button';
-
-	// let query = createQuery(majorAlterationQueries.tab2());
-
-	// const dataDiriPP = $derived($query.data?.pemegangPolis.dataDiri);
-	// const dataDiriPPMap = $derived([
-	// 	{ label: 'Nama Lengkap', before: dataDiriPP?.before.namaLengkap, after: dataDiriPP?.after.namaLengkap },
-	// 	{ label: 'Jenis Kelamin', before: dataDiriPP?.before.jenisKelamin.label, after: dataDiriPP?.after.jenisKelamin.label },
-	// 	{ label: 'Tempat Lahir', before: dataDiriPP?.before.tempatLahir, after: dataDiriPP?.after.tempatLahir },
-	// 	{
-	// 		label: 'Tanggal Lahir',
-	// 		before: dayjs(dataDiriPP?.before.tanggalLahir).format('DD MMM YYYY'),
-	// 		after: dayjs(dataDiriPP?.after.tanggalLahir).format('DD MMM YYYY')
-	// 	},
-	// 	{ label: 'Usia', before: dataDiriPP?.before.usia, after: dataDiriPP?.after.usia },
-	// 	{ label: 'Nama Gadis Ibu Kandung', before: dataDiriPP?.before.namaGadisIbuKandung, after: dataDiriPP?.after.namaGadisIbuKandung },
-	// 	{ label: 'Status Pernikahan', before: dataDiriPP?.before.statusPernikahan.label, after: dataDiriPP?.after.statusPernikahan.label },
-	// 	{ label: 'Agama', before: dataDiriPP?.before.agama.label, after: dataDiriPP?.after.agama.label },
-	// 	{ label: 'Kewarganegaraan', before: dataDiriPP?.before.kewarganegaraan.label, after: dataDiriPP?.after.kewarganegaraan.label },
-	// 	{ label: 'Bukti Identitas', before: dataDiriPP?.before.buktiIdentitas.label, after: dataDiriPP?.after.buktiIdentitas.label },
-	// 	{ label: 'Nomor Identitas', before: dataDiriPP?.before.nomorIdentitas, after: dataDiriPP?.after.nomorIdentitas },
-	// 	{ label: 'Email', before: dataDiriPP?.before.email, after: dataDiriPP?.after.email },
-	// 	{ label: 'No. Handphone', before: dataDiriPP?.before.noHandphone, after: dataDiriPP?.after.noHandphone },
-	// 	{ label: 'Kode Telepon', before: dataDiriPP?.before.kodeTelepon, after: dataDiriPP?.after.kodeTelepon },
-	// 	{ label: 'No. Telepon', before: dataDiriPP?.before.noTelepon, after: dataDiriPP?.after.noTelepon },
-	// 	{ label: 'NPWP', before: dataDiriPP?.before.NPWP, after: dataDiriPP?.after.NPWP },
-	// 	{ label: 'Hubungan Pemegang Polis Dengan Tertanggung', before: dataDiriPP?.before.hubunganDenganTU.label, after: dataDiriPP?.after.hubunganDenganTU.label },
-	// 	{ label: 'Hobi Beresiko Tinggi', before: dataDiriPP?.before.hobiBeresikoTinggi.label, after: dataDiriPP?.after.hobiBeresikoTinggi.label }
-	// ]);
-	//
-	// const infoPekerjaanPP = $derived($query.data?.pemegangPolis.infoPekerjaan);
-	// const infoPekerjaanPPMap = $derived([
-	// 	{ label: 'Nama Perusahaan', before: infoPekerjaanPP?.before.namaPerusahaan, after: infoPekerjaanPP?.after.namaPerusahaan },
-	// 	{ label: 'Jenis Usaha', before: infoPekerjaanPP?.before.jenisUsaha.label, after: infoPekerjaanPP?.after.jenisUsaha.label },
-	// 	{ label: 'Pekerjaan / Jabatan', before: infoPekerjaanPP?.before.pekerjaan, after: infoPekerjaanPP?.after.pekerjaan },
-	// 	{ label: 'Uraian Pekerjaan', before: infoPekerjaanPP?.before.uraianPekerjaan, after: infoPekerjaanPP?.after.uraianPekerjaan }
-	// ]);
-	//
 	// const alamatRumahPP = $derived({ before: $query.data?.pemegangPolis.alamat.before.rumah, after: $query.data?.pemegangPolis.alamat.after.rumah });
 	// const alamatRumahPPMap = $derived([
 	// 	{ label: 'Detail Alamat', before: alamatRumahPP?.before?.detailAlamat, after: alamatRumahPP?.after?.detailAlamat },

@@ -1,3 +1,4 @@
+import { toast } from "svelte-sonner";
 import { browser } from '$app/environment';
 import { QueryClient } from '@tanstack/svelte-query';
 
@@ -18,7 +19,9 @@ export const load: LayoutLoad = () => {
 				refetchOnWindowFocus: false
 			},
 			mutations: {
-				onError: (error) => console.error('🚨 Error in mutation', error)
+				onError: (error) => {
+					toast.error("Something went wrong", { description: error.message ?? "Please try again later" });
+				}
 			}
 		}
 	});

@@ -23,11 +23,11 @@
 	import * as Select from '$lib/components/ui/select/index.js';
 	import * as Popover from '$lib/components/ui/popover/index.js';
 
-	import { commonQuery } from '$lib/queries';
+	import { commonQueries } from '$lib/queries';
 
 	const queryParams = useQueryStates(ticketFilterParams);
-	const listUserQuery = createQuery(() => commonQuery.listUser());
-	const listTransactionQuery = createQuery(() => commonQuery.listTransaction());
+	const listUserQuery = createQuery(() => commonQueries.listUser());
+	const listTransactionQuery = createQuery(() => commonQueries.listTransaction());
 
 	let open = $state(false);
 	let localParams = $state({

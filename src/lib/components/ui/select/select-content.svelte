@@ -36,7 +36,7 @@
 		{#if withSearch}
 			<div class="relative border-b p-1">
 				<Search class="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground" />
-				<Input class="border-0 !bg-transparent pl-10 !ring-0" placeholder="Search …" bind:value={searchValue} />
+				<Input class="border-0 !bg-transparent pl-10 shadow-none !ring-0" placeholder="Search …" bind:value={searchValue} />
 			</div>
 		{/if}
 		<SelectScrollUpButton />

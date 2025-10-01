@@ -1,13 +1,13 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import { Pencil } from '@lucide/svelte';
 
 	import Edit from './edit.svelte';
-	import { getDataPPdanTUContext } from '../../context';
+	import Button from '$lib/components/ui/button/button.svelte';
 
-	const context = getDataPPdanTUContext();
-	const data = context?.pemegangPolis?.dataDiri;
+	import type { DataPPdanTURes } from '../../type';
 
-	$inspect(context)
+	let { data }: { data: DataPPdanTURes['pemegangPolis']['dataDiri'] | undefined } = $props();
 
 	const dataDiriPPMap = $derived([
 		{ label: 'Nama Lengkap', before: data?.before.namaLengkap, after: data?.after.namaLengkap },
@@ -37,10 +37,16 @@
 
 <section aria-labelledby="data-diri-pemegang-polis">
 	<div class="relative mb-3.5 flex items-center justify-between gap-2">
-		<div class="pl-3 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-sidebar">
+		<div class="pl-3 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-primary">
 			<h2 id="data-diri-pemegang-polis" class="text-lg font-medium">Data Diri Pemegang Polis</h2>
 		</div>
-		<Edit {data} />
+		{#if data}
+			<Edit data={data.after} />
+		{:else}
+			<Button variant="outline" size="icon" disabled>
+				<Pencil />
+			</Button>
+		{/if}
 	</div>
 
 	<div class="divide-y">

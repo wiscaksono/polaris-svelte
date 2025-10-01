@@ -4,7 +4,9 @@ import { api } from '$lib/utils';
 
 import * as Type from './type';
 
-export const commonQuery = {
+export * from './address';
+
+export const commonQueries = {
 	allSelect: () => {
 		return queryOptions({
 			queryKey: ['common', 'all-select'],

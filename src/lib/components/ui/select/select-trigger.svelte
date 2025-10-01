@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Select as SelectPrimitive } from 'bits-ui';
-	import ChevronDownIcon from '@lucide/svelte/icons/chevron-down';
+	import { ChevronDownIcon, LoaderCircle } from '@lucide/svelte';
 	import { cn, type WithoutChild } from '$lib/utils';
 
 	let {
@@ -8,9 +8,12 @@
 		class: className,
 		children,
 		size = 'default',
+		loading,
+		disabled,
 		...restProps
 	}: WithoutChild<SelectPrimitive.TriggerProps> & {
 		size?: 'sm' | 'default';
+		loading?: boolean;
 	} = $props();
 </script>
 
@@ -22,10 +25,15 @@
 		"flex w-fit items-center justify-between gap-2 overflow-hidden rounded-md border border-input bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none select-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-input/30 dark:hover:bg-input/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground",
 		className
 	)}
+	disabled={disabled || loading}
 	{...restProps}
 >
 	<span class="truncate">
 		{@render children?.()}
 	</span>
-	<ChevronDownIcon class="ml-auto size-4 shrink-0 opacity-50" />
+	{#if loading}
+		<LoaderCircle class="ml-auto size-4 shrink-0 animate-spin opacity-50" />
+	{:else}
+		<ChevronDownIcon class="ml-auto size-4 shrink-0 opacity-50" />
+	{/if}
 </SelectPrimitive.Trigger>

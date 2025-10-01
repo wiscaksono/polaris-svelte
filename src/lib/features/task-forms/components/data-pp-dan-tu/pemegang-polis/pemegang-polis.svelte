@@ -1,9 +1,15 @@
 <script lang="ts">
-	// import DataDiri from './data-diri';
+	import DataDiri from './data-diri';
+	import InfoPekerjaan from './info-pekerjaan';
+	import AlamatRumah from './alamat-rumah/alamat-rumah.svelte';
 
-	import { useDataPPdanTU } from '../context.svelte';
+	import type { DataPPdanTURes } from '../type';
 
-	const data = useDataPPdanTU();
+	let { data }: { data: DataPPdanTURes['pemegangPolis'] | undefined } = $props();
 </script>
 
-{JSON.stringify(data)}
+<div class="space-y-5">
+	<DataDiri data={data?.dataDiri} />
+	<InfoPekerjaan data={data?.infoPekerjaan} />
+	<AlamatRumah data={{ before: data?.alamat.before.rumah, after: data?.alamat.after.rumah }} />
+</div>
