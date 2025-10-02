@@ -1,20 +1,24 @@
 <script lang="ts">
+	import { Pencil } from '@lucide/svelte';
+
+	import Edit from './edit.svelte';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
 
-	import type { DataPPdanTURes } from '../../type';
+	import type { DataPPdanTURes } from '../../../type';
 
 	interface Props {
 		data: {
-			after: DataPPdanTURes['tertanggungUtama']['alamat']['after']['rumah'] | undefined;
-			before: DataPPdanTURes['tertanggungUtama']['alamat']['before']['rumah'] | undefined;
+			after: DataPPdanTURes['pemegangPolis']['alamat']['after']['pekerjaan'] | undefined;
+			before: DataPPdanTURes['pemegangPolis']['alamat']['before']['pekerjaan'] | undefined;
 		};
 	}
 
 	let { data }: Props = $props();
 
 	const diffMap = $derived([
-		{ label: 'Detail Alamat', before: data?.before?.alamatRumah, after: data?.after?.alamatRumah },
+		{ label: 'Detail Alamat', before: data?.before?.detailAlamat, after: data?.after?.detailAlamat },
 		{ label: 'Negara', before: data?.before?.negara.label, after: data?.after?.negara.label },
 		{ label: 'Provinsi', before: data?.before?.provinsi.label, after: data?.after?.provinsi.label },
 		{ label: 'Kota / Kabupaten', before: data?.before?.kotaKabupaten.label, after: data?.after?.kotaKabupaten.label },
@@ -25,7 +29,17 @@
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Alamat Rumah" />
+	<InfoGroup.Trigger title="Pekerjaan">
+		{#snippet rightChild()}
+			{#if data.after}
+				<Edit data={data.after} />
+			{:else}
+				<Button variant="ghost" size="icon" disabled class="size-6">
+					<Pencil />
+				</Button>
+			{/if}
+		{/snippet}
+	</InfoGroup.Trigger>
 	<InfoGroup.Content class="bg-background">
 		<div class="divide-y">
 			{#each diffMap as item, i (item.label)}

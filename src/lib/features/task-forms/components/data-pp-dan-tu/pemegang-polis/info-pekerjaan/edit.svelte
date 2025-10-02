@@ -71,7 +71,16 @@
 <Dialog.Root bind:open onOpenChange={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} variant="outline" size="icon">
+			<Button
+				{...props}
+				variant="ghost"
+				size="icon"
+				class="size-6"
+				onclick={(e) => {
+					e.stopPropagation();
+					open = true;
+				}}
+			>
 				<Pencil />
 			</Button>
 		{/snippet}

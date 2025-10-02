@@ -9,10 +9,10 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import { commonQueries } from '$lib/queries';
-	import { dataPPdanTUQueries } from '../../query';
+	import { dataPPdanTUQueries } from '../../../query';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	import type { DataPPdanTURes } from '../../type';
+	import type { DataPPdanTURes } from '../../../type';
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['alamat']['after']['rumah'] } = $props();
 
@@ -57,7 +57,16 @@
 <Dialog.Root bind:open onOpenChange={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} variant="outline" size="icon">
+			<Button
+				{...props}
+				variant="ghost"
+				size="icon"
+				class="size-6"
+				onclick={(e) => {
+					e.stopPropagation();
+					open = true;
+				}}
+			>
 				<Pencil />
 			</Button>
 		{/snippet}

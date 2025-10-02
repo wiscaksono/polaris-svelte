@@ -20,7 +20,7 @@
 	<Alert.Title>Pemegang Polis dan Tertanggung Utama adalah orang yang {query.data?.ppDanTuBerbeda ? 'berbeda' : 'sama'}</Alert.Title>
 </Alert.Root>
 
-<div class="space-y-5">
+<div class="space-y-2">
 	<PemegangPolis data={query.data?.pemegangPolis} />
 	{#if query.data?.ppDanTuBerbeda && !!Object.keys(query.data?.tertanggungUtama).length}
 		<TertanggungUtama data={query.data?.tertanggungUtama} />

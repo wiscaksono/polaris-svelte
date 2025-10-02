@@ -91,7 +91,7 @@ export interface DataPPdanTURes {
 				negara: IDLabel<number>;
 				kecamatan: IDLabel<number>;
 				kodePos: string;
-				detailAlamat: string;
+				alamatRumah: string;
 				kotaKabupaten: IDLabel<number>;
 				kelurahan: IDLabel<number>;
 			};

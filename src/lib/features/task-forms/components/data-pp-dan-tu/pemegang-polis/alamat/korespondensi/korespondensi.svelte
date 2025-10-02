@@ -6,21 +6,24 @@
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
 
-	import type { DataPPdanTURes } from '../../type';
+	import type { DataPPdanTURes } from '../../../type';
 
-	let { data }: { data: DataPPdanTURes['pemegangPolis']['wajibPajakNegaraAsing'] | undefined } = $props();
+	interface Props {
+		data: {
+			after: DataPPdanTURes['pemegangPolis']['alamat']['after']['rumah'] | undefined;
+			before: DataPPdanTURes['pemegangPolis']['alamat']['before']['rumah'] | undefined;
+		};
+	}
 
-	const diffMap = $derived([
-		{ label: 'Negara Pajak', before: data?.before.negaraPajak.label, after: data?.after.negaraPajak.label },
-		{ label: 'Tin', before: data?.before.tin, after: data?.after.tin },
-		{ label: 'Description', before: data?.before.description, after: data?.after.description }
-	]);
+	let { data }: Props = $props();
+
+	const diffMap = $derived([{ label: 'Alamat Korespondensi', before: data?.before?.alamatKorespondensi.label, after: data?.after?.alamatKorespondensi.label }]);
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Wajib Pajak Negara Asing">
+	<InfoGroup.Trigger title="Korespondensi">
 		{#snippet rightChild()}
-			{#if data}
+			{#if data.after}
 				<Edit data={data.after} />
 			{:else}
 				<Button variant="ghost" size="icon" disabled class="size-6">
@@ -32,7 +35,7 @@
 	<InfoGroup.Content class="bg-background">
 		<div class="divide-y">
 			{#each diffMap as item, i (item.label)}
-				<TrackedDetailItem label={item.label} before={item.before} after={item.after} index={i} loading={!data} />
+				<TrackedDetailItem label={item.label} before={item.before} after={item.after} index={i} loading={!data.before && !data.after} />
 			{/each}
 		</div>
 	</InfoGroup.Content>
