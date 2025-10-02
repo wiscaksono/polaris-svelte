@@ -11,7 +11,7 @@
 	const sidebar = Sidebar.useSidebar();
 </script>
 
-<Sidebar.Root collapsible="icon" class="overflow-x-hidden [&>*]:select-none">
+<Sidebar.Root collapsible="icon" class="z-20 overflow-x-hidden [&>*]:select-none">
 	<Sidebar.Header class="grid h-16 place-items-center border-b border-sidebar-border">
 		<svg width="148" height="41" viewBox="0 0 148 41" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
