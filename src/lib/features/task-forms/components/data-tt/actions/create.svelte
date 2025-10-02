@@ -71,12 +71,10 @@
 		'alamat_domisili.negara.label'
 	];
 
-	let open = $state(true);
+	let open = $state(false);
 	let submitButton: HTMLButtonElement;
 	let values = $state(initialValues);
 	let search = $state({ jabatan: '', kewarganegaraan: '', country: '', province: '', city: '', district: '', subDistrict: '' });
-
-	$inspect(values.informasi_pekerjaan.jenis_usaha);
 
 	const mutation = createMutation(() => dataTTQueries.create());
 	const query = createQuery(() => ({ ...commonQueries.allSelect(), enabled: open }));

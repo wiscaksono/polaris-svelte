@@ -7,6 +7,8 @@
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 
 	import Create from './actions/create.svelte';
+	import Edit from './actions/edit.svelte';
+
 	import DataDiri from './data-diri/data-diri.svelte';
 	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
 	import AlamatDomisili from './alamat-domisili/alamat-domisili.svelte';
@@ -24,7 +26,11 @@
 	{#if query.data}
 		{#each query.data.tertanggung_tambahan as item, index (index)}
 			<InfoGroup.Root>
-				<InfoGroup.Trigger title={`${item.nama_tertanggung} - ${item.after?.data_diri?.nama_lengkap}`} />
+				<InfoGroup.Trigger title={`${item.nama_tertanggung} - ${item.after?.data_diri?.nama_lengkap}`}>
+					{#snippet rightChild()}
+						<Edit />
+					{/snippet}
+				</InfoGroup.Trigger>
 				<InfoGroup.Content>
 					<DataDiri data={{ before: item.before.data_diri, after: item.after.data_diri }} />
 					<InfoPekerjaan data={{ before: item.before.informasi_pekerjaan, after: item.after.informasi_pekerjaan }} />
