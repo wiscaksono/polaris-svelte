@@ -33,11 +33,11 @@
 
 	const mutation = createMutation(() => dataPPdanTUQueries.update());
 
-	const listCountryQuery = createQuery(() => addressQueries.listCountry());
-	const listProvinceQuery = createQuery(() => addressQueries.listProvince(values.negara.id));
-	const listCityQuery = createQuery(() => addressQueries.listCity(values.provinsi.id));
-	const listDistrictQuery = createQuery(() => addressQueries.listDistrict(values.kotaKabupaten.id));
-	const listSubDistrictQuery = createQuery(() => addressQueries.listSubDistrict(values.kecamatan.id));
+	const listCountryQuery = createQuery(() => ({ ...addressQueries.listCountry(), enabled: open }));
+	const listProvinceQuery = createQuery(() => ({ ...addressQueries.listProvince(values.negara.id), enabled: open }));
+	const listCityQuery = createQuery(() => ({ ...addressQueries.listCity(values.provinsi.id), enabled: open }));
+	const listDistrictQuery = createQuery(() => ({ ...addressQueries.listDistrict(values.kotaKabupaten.id), enabled: open }));
+	const listSubDistrictQuery = createQuery(() => ({ ...addressQueries.listSubDistrict(values.kecamatan.id), enabled: open }));
 
 	const filteredCountry = $derived.by(() => {
 		const searchTerm = countrySearch.toLowerCase().trim();

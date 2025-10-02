@@ -27,7 +27,7 @@
 	const queryClient = useQueryClient();
 	const isFormDirty = $derived(!deepEqual(data, values));
 
-	const query = createQuery(() => commonQueries.allSelect());
+	const query = createQuery(() => ({ ...commonQueries.allSelect(), enabled: open }));
 	const mutation = createMutation(() => dataPPdanTUQueries.update());
 
 	const filteredKewarganegaraan = $derived.by(() => {

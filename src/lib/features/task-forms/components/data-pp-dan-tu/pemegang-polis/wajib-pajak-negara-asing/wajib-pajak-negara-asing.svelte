@@ -8,7 +8,7 @@
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['wajibPajakNegaraAsing'] | undefined } = $props();
 
-	const wpnaPPMap = $derived([
+	const diffMap = $derived([
 		{ label: 'Negara Pajak', before: data?.before.negaraPajak.label, after: data?.after.negaraPajak.label },
 		{ label: 'Tin', before: data?.before.tin, after: data?.after.tin },
 		{ label: 'Description', before: data?.before.description, after: data?.after.description }
@@ -30,7 +30,7 @@
 	</div>
 
 	<div class="divide-y">
-		{#each wpnaPPMap as item, i (item.label)}
+		{#each diffMap as item, i (item.label)}
 			{@render detailItem(item.label, item.before, item.after, i)}
 		{/each}
 	</div>

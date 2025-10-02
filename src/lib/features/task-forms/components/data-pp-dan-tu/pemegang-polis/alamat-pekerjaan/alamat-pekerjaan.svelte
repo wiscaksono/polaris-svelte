@@ -15,7 +15,7 @@
 
 	let { data }: Props = $props();
 
-	const alamatPekerjaanPPMap = $derived([
+	const diffMap = $derived([
 		{ label: 'Detail Alamat', before: data?.before?.detailAlamat, after: data?.after?.detailAlamat },
 		{ label: 'Negara', before: data?.before?.negara.label, after: data?.after?.negara.label },
 		{ label: 'Provinsi', before: data?.before?.provinsi.label, after: data?.after?.provinsi.label },
@@ -41,7 +41,7 @@
 	</div>
 
 	<div class="divide-y">
-		{#each alamatPekerjaanPPMap as item, i (item.label)}
+		{#each diffMap as item, i (item.label)}
 			{@render detailItem(item.label, item.before, item.after, i)}
 		{/each}
 	</div>
@@ -50,7 +50,7 @@
 {#snippet detailItem(label: string, before: unknown, after: unknown, index: number = 0)}
 	<div class="grid min-h-8 grid-cols-2 items-start justify-between gap-x-4 py-1 text-sm" role="group" aria-label={label}>
 		<div class="shrink-0 text-muted-foreground" aria-hidden="true">{label}</div>
-		{#if !data}
+		{#if !data.before && !data.after}
 			<div class="ml-auto h-5 w-30 animate-pulse rounded bg-muted" style="animation-delay: {index * 0.1}s"></div>
 		{:else}
 			<div class="flex items-center justify-end gap-2 font-mono">

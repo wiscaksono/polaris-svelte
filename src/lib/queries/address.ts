@@ -17,12 +17,13 @@ export const addressQueries = {
 		return queryOptions({
 			queryKey: ['address', 'list-province', countryId],
 			queryFn: async () => {
+				if (!countryId) return [];
+
 				const { data } = await api.get<{ list_provinsi: Array<{ id: number; label: string }> }>(
 					`/polaris/api-business-polaris/major/entry/list-provinsi/${countryId}`
 				);
 				return data.list_provinsi;
 			},
-			enabled: !!countryId
 		});
 	},
 	// Kota / Kabupaten
@@ -30,12 +31,13 @@ export const addressQueries = {
 		return queryOptions({
 			queryKey: ['address', 'list-city', provinceId],
 			queryFn: async () => {
+				if (!provinceId) return [];
+
 				const { data } = await api.get<{ list_kota_kabupaten: Array<{ id: number; label: string }> }>(
 					`/polaris/api-business-polaris/major/entry/list-kota-kabupaten/${provinceId}`
 				);
 				return data.list_kota_kabupaten;
 			},
-			enabled: !!provinceId
 		});
 	},
 	// Kecamatan
@@ -43,12 +45,13 @@ export const addressQueries = {
 		return queryOptions({
 			queryKey: ['address', 'list-district', cityId],
 			queryFn: async () => {
+				if (!cityId) return [];
+
 				const { data } = await api.get<{ list_kecamatan: Array<{ id: number; label: string }> }>(
 					`/polaris/api-business-polaris/major/entry/list-kecamatan/${cityId}`
 				);
 				return data.list_kecamatan;
 			},
-			enabled: !!cityId
 		});
 	},
 	// Kelurahan
@@ -56,12 +59,13 @@ export const addressQueries = {
 		return queryOptions({
 			queryKey: ['address', 'list-sub-district', districtId],
 			queryFn: async () => {
+				if (!districtId) return [];
+
 				const { data } = await api.get<{ list_kelurahan: Array<{ id: number; label: string }> }>(
 					`/polaris/api-business-polaris/major/entry/list-kelurahan/${districtId}`
 				);
 				return data.list_kelurahan;
 			},
-			enabled: !!districtId
 		});
 	}
 };

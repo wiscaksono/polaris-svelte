@@ -27,7 +27,7 @@
 	const queryClient = useQueryClient();
 	const isFormDirty = $derived(!deepEqual(data, values));
 
-	const query = createQuery(() => addressQueries.listCountry());
+	const query = createQuery(() => ({ ...addressQueries.listCountry(), enabled: open }));
 	const mutation = createMutation(() => dataPPdanTUQueries.update());
 
 	const filteredCountry = $derived.by(() => {

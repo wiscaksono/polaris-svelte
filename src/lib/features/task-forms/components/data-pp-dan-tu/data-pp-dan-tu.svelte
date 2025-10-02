@@ -1,11 +1,14 @@
 <script lang="ts">
+	import { CircleAlert } from '@lucide/svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 
 	import { dataPPdanTUQueries } from './query';
 	import { getTaskFormContext } from '../../context';
+
 	import PemegangPolis from './pemegang-polis';
+	import TertanggungUtama from './tertanggung-utama/tertanggung-utama.svelte';
+
 	import * as Alert from '$lib/components/ui/alert/index.js';
-	import { CircleAlert } from '@lucide/svelte';
 
 	const { taskFormParams } = getTaskFormContext();
 
@@ -17,4 +20,9 @@
 	<Alert.Title>Pemegang Polis dan Tertanggung Utama adalah orang yang {query.data?.ppDanTuBerbeda ? 'berbeda' : 'sama'}</Alert.Title>
 </Alert.Root>
 
-<PemegangPolis data={query.data?.pemegangPolis} />
+<div class="space-y-5">
+	<PemegangPolis data={query.data?.pemegangPolis} />
+	{#if query.data?.ppDanTuBerbeda && !!Object.keys(query.data?.tertanggungUtama).length}
+		<TertanggungUtama data={query.data?.tertanggungUtama} />
+	{/if}
+</div>

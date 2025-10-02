@@ -21,7 +21,7 @@ interface UpdatePayload {
 export const dataPPdanTUQueries = {
 	get: ({ caseId, regSpaj }: { caseId: number; regSpaj: string }) => {
 		return queryOptions({
-			queryKey: ['task-form', 'transaction-histories', caseId, regSpaj],
+			queryKey: ['data-pp-dan-tu', caseId, regSpaj],
 			queryFn: async () => {
 				const { data } = await api.get<DataPPdanTURes>(`/polaris/api-business-polaris/major/alteration/data-pp-dan-tu?caseId=${caseId}&regSpaj=${regSpaj}`);
 				return data;

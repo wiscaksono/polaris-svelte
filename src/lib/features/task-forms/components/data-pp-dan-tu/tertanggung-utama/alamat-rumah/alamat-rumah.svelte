@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { Pencil } from '@lucide/svelte';
-
-	import Edit from './edit.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-
 	import type { DataPPdanTURes } from '../../type';
 
 	interface Props {
 		data: {
-			after: DataPPdanTURes['pemegangPolis']['alamat']['after']['rumah'] | undefined;
-			before: DataPPdanTURes['pemegangPolis']['alamat']['before']['rumah'] | undefined;
+			after: DataPPdanTURes['tertanggungUtama']['alamat']['after']['rumah'] | undefined;
+			before: DataPPdanTURes['tertanggungUtama']['alamat']['before']['rumah'] | undefined;
 		};
 	}
 
@@ -29,15 +24,8 @@
 <section aria-labelledby="alamat-rumah-pemegang-polis">
 	<div class="relative mb-3.5 flex items-center justify-between gap-2">
 		<div class="pl-3 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-primary">
-			<h2 id="alamat-rumah-pemegang-polis" class="text-lg font-medium">Alamat Rumah Pemegang Polis</h2>
+			<h2 id="alamat-rumah-pemegang-polis" class="text-lg font-medium">Alamat Rumah Tertanggung Utama</h2>
 		</div>
-		{#if data.after}
-			<Edit data={data.after} />
-		{:else}
-			<Button variant="outline" size="icon" disabled>
-				<Pencil />
-			</Button>
-		{/if}
 	</div>
 
 	<div class="divide-y">

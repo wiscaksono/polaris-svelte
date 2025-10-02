@@ -1,13 +1,9 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
-	import { Pencil } from '@lucide/svelte';
-
-	import Edit from './edit.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
 
 	import type { DataPPdanTURes } from '../../type';
 
-	let { data }: { data: DataPPdanTURes['pemegangPolis']['dataDiri'] | undefined } = $props();
+	let { data }: { data: DataPPdanTURes['tertanggungUtama']['dataDiri'] | undefined } = $props();
 
 	const diffMap = $derived([
 		{ label: 'Nama Lengkap', before: data?.before.namaLengkap, after: data?.after.namaLengkap },
@@ -21,16 +17,10 @@
 		{ label: 'Usia', before: data?.before.usia, after: data?.after.usia },
 		{ label: 'Nama Gadis Ibu Kandung', before: data?.before.namaGadisIbuKandung, after: data?.after.namaGadisIbuKandung },
 		{ label: 'Status Pernikahan', before: data?.before.statusPernikahan.label, after: data?.after.statusPernikahan.label },
-		{ label: 'Agama', before: data?.before.agama.label, after: data?.after.agama.label },
 		{ label: 'Kewarganegaraan', before: data?.before.kewarganegaraan.label, after: data?.after.kewarganegaraan.label },
-		{ label: 'Bukti Identitas', before: data?.before.buktiIdentitas.label, after: data?.after.buktiIdentitas.label },
-		{ label: 'Nomor Identitas', before: data?.before.nomorIdentitas, after: data?.after.nomorIdentitas },
-		{ label: 'Email', before: data?.before.email, after: data?.after.email },
 		{ label: 'No. Handphone', before: data?.before.noHandphone, after: data?.after.noHandphone },
 		{ label: 'Kode Telepon', before: data?.before.kodeTelepon, after: data?.after.kodeTelepon },
 		{ label: 'No. Telepon', before: data?.before.noTelepon, after: data?.after.noTelepon },
-		{ label: 'NPWP', before: data?.before.NPWP, after: data?.after.NPWP },
-		{ label: 'Hubungan Pemegang Polis Dengan Tertanggung', before: data?.before.hubunganDenganTU.label, after: data?.after.hubunganDenganTU.label },
 		{ label: 'Hobi Beresiko Tinggi', before: data?.before.hobiBeresikoTinggi.label, after: data?.after.hobiBeresikoTinggi.label }
 	]);
 </script>
@@ -38,15 +28,8 @@
 <section aria-labelledby="data-diri-pemegang-polis">
 	<div class="relative mb-3.5 flex items-center justify-between gap-2">
 		<div class="pl-3 before:absolute before:top-0 before:left-0 before:h-full before:w-1 before:rounded-r-lg before:bg-primary">
-			<h2 id="data-diri-pemegang-polis" class="text-lg font-medium">Data Diri Pemegang Polis</h2>
+			<h2 id="data-diri-pemegang-polis" class="text-lg font-medium">Data Diri Tertanggung Utama</h2>
 		</div>
-		{#if data}
-			<Edit data={data.after} />
-		{:else}
-			<Button variant="outline" size="icon" disabled>
-				<Pencil />
-			</Button>
-		{/if}
 	</div>
 
 	<div class="divide-y">

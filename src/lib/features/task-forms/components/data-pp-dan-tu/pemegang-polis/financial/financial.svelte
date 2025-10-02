@@ -8,7 +8,7 @@
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['financial'] | undefined } = $props();
 
-	const finansialPPMap = $derived([
+	const diffMap = $derived([
 		{ label: 'Sumber Dana', before: data?.before.sumberDana, after: data?.after.sumberDana },
 		{ label: 'Penghasilan Per Tahun', before: data?.before.penghasilanPerTahun.label, after: data?.after.penghasilanPerTahun.label },
 		{ label: 'Tujuan Membeli Asuransi', before: data?.before.tujuanMembeliAsuransi, after: data?.after.tujuanMembeliAsuransi },
@@ -34,7 +34,7 @@
 	</div>
 
 	<div class="divide-y">
-		{#each finansialPPMap as item, i (item.label)}
+		{#each diffMap as item, i (item.label)}
 			{@render detailItem(item.label, item.before, item.after, i)}
 		{/each}
 	</div>
