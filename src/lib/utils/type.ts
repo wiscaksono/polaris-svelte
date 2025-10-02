@@ -10,6 +10,18 @@ export interface BaseResponse<T> {
 	data: T;
 }
 
+export interface TrackedData<T> {
+	before: T;
+	after: T;
+};
+
+export type DeepKeys<T, Prev extends string = ''> = {
+	[K in keyof T & string]:
+	T[K] extends object
+	? `${Prev}${K}` | DeepKeys<T[K], `${Prev}${K}.`>
+	: `${Prev}${K}`;
+}[keyof T & string];
+
 export type IDLabel<T extends string | number> = {
 	id: T | null;
 	label: string;

@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@lottiefiles/dotlottie-svelte':
+        specifier: ^0.8.3
+        version: 0.8.3(svelte@5.39.7)
       '@tanstack/svelte-query':
         specifier: ^6.0.0
         version: 6.0.0(svelte@5.39.7)
@@ -457,6 +460,14 @@ packages:
 
   '@layerstack/utils@2.0.0-next.14':
     resolution: {integrity: sha512-1I2CS0Cwgs53W35qVg1eBdYhB/CiPvL3s0XE61b8jWkTHxgjBF65yYNgXjW74kv7WI7GsJcWMNBufPd0rnu9kA==}
+
+  '@lottiefiles/dotlottie-svelte@0.8.3':
+    resolution: {integrity: sha512-O8hn3FJdUEqCEcJae1Vn8YXY30vFCjyzIF44BhFg119oh+v68erB3tw96PSNdSvmAcwmdRbTDgm4Ye0ixXFVkw==}
+    peerDependencies:
+      svelte: ^4.0.0
+
+  '@lottiefiles/dotlottie-web@0.53.1':
+    resolution: {integrity: sha512-UDm4ANdeO+Vq47c6idU7x4kQAX2AohF6ynRvmsGnT2GRXYpTa7p4VZYmesvhWqahEWUD7qZq6hPy2CXna8wt9g==}
 
   '@lucide/svelte@0.544.0':
     resolution: {integrity: sha512-9f9O6uxng2pLB01sxNySHduJN3HTl5p0HDu4H26VR51vhZfiMzyOMe9Mhof3XAk4l813eTtl+/DYRvGyoRR+yw==}
@@ -2876,6 +2887,13 @@ snapshots:
       d3-time: 3.1.0
       d3-time-format: 4.1.0
       lodash-es: 4.17.21
+
+  '@lottiefiles/dotlottie-svelte@0.8.3(svelte@5.39.7)':
+    dependencies:
+      '@lottiefiles/dotlottie-web': 0.53.1
+      svelte: 5.39.7
+
+  '@lottiefiles/dotlottie-web@0.53.1': {}
 
   '@lucide/svelte@0.544.0(svelte@5.39.7)':
     dependencies:

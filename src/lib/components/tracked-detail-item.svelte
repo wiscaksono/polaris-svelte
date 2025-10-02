@@ -20,7 +20,7 @@
 				<span class="text-right text-destructive line-through">{before}</span>
 				<span class="text-right text-success">{after}</span>
 			{:else}
-				<span class="text-right text-foreground">{after}</span>
+				<span class="text-right text-foreground">{after ?? '-'}</span>
 			{/if}
 		</div>
 	{/if}

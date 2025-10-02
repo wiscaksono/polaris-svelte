@@ -69,6 +69,7 @@
 		]
 	},
 	"dependencies": {
+		"@lottiefiles/dotlottie-svelte": "^0.8.3",
 		"@tanstack/svelte-query": "^6.0.0",
 		"@tanstack/svelte-query-devtools": "^6.0.0",
 		"@types/deep-equal": "^1.0.4",

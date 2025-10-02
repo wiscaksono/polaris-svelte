@@ -146,7 +146,13 @@
 	}
 	input::-webkit-outer-spin-button,
 	input::-webkit-inner-spin-button {
-		display: none;
+		@apply hidden;
+	}
+	input[type="date"]{
+    @apply relative
+	}
+	input[type="date"]::-webkit-calendar-picker-indicator {
+    @apply absolute top-1/2 -translate-y-1/2 right-3
 	}
 }
 
