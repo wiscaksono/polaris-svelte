@@ -12,7 +12,7 @@
 	const query = createQuery(() => dataPPdanTUQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 </script>
 
-<Alert.Root class="mb-5" variant={query.data?.ppDanTuBerbeda ? 'destructive' : 'info'}>
+<Alert.Root class="mb-3.5" variant={query.data?.ppDanTuBerbeda ? 'destructive' : 'info'}>
 	<CircleAlert />
 	<Alert.Title>Pemegang Polis dan Tertanggung Utama adalah orang yang {query.data?.ppDanTuBerbeda ? 'berbeda' : 'sama'}</Alert.Title>
 </Alert.Root>
