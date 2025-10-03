@@ -48,8 +48,8 @@
 								<CircleAlert class="size-5 text-destructive" />
 							</div>
 						{/if}
-						<!-- <Edit data={query.data} {item} {index} /> -->
 						{#if !isDeleted}
+							<Edit data={query.data} {item} {index} />
 							<Delete data={query.data} {index} />
 						{/if}
 					{/snippet}

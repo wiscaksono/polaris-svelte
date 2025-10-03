@@ -27,6 +27,10 @@ export type IDLabel<T extends string | number> = {
 	label: string;
 };
 
+export type NonNullableProps<T> = {
+	[K in keyof T]: NonNullable<T[K]>
+};
+
 export interface Polis {
 	reg_spaj: string;
 	nopol: string;

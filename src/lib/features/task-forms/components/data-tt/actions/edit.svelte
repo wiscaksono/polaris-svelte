@@ -12,51 +12,30 @@
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 
 	import { dataTTQueries } from '../query';
+	import { requiredFields } from './utils';
 	import { commonQueries, addressQueries } from '$lib/queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	import type { DeepKeys } from '$lib/utils';
 	import type { DataTTRes } from '../type';
+	import type { NonNullableProps } from '$lib/utils';
 
 	let { data, item, index }: { data: DataTTRes; item: DataTTRes['tertanggung_tambahan'][number]; index: number } = $props();
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
 
-	const requiredFields: DeepKeys<(typeof item)['after']>[] = [
-		'data_diri.nama_lengkap',
-		'data_diri.tempat_lahir',
-		'data_diri.tanggal_lahir',
-		'data_diri.jenis_kelamin.id',
-		'data_diri.jenis_kelamin.label',
-		'data_diri.status_pernikahan.id',
-		'data_diri.status_pernikahan.label',
-		'data_diri.kewarganegaraan.id',
-		'data_diri.kewarganegaraan.label',
-		'data_diri.hobi_beresiko_tinggi.id',
-		'data_diri.hobi_beresiko_tinggi.label',
-		'data_diri.hubungan_terhadap_tertanggung_utama.id',
-		'data_diri.hubungan_terhadap_tertanggung_utama.label',
-		'informasi_pekerjaan.nama_perusahaan_lembaga',
-		'informasi_pekerjaan.jabatan.id',
-		'informasi_pekerjaan.jabatan.label',
-		'alamat_domisili.alamat_tempat_tinggal',
-		'alamat_domisili.negara.id',
-		'alamat_domisili.negara.label'
-	];
-
 	let open = $state(false);
 	let submitButton: HTMLButtonElement;
-	let values = $state(item.after);
+	let values = $state(item.after as NonNullableProps<DataTTRes['tertanggung_tambahan'][number]['after']>);
 	let search = $state({ jabatan: '', kewarganegaraan: '', country: '', province: '', city: '', district: '', subDistrict: '' });
 
 	const mutation = createMutation(() => dataTTQueries.update());
 	const query = createQuery(() => ({ ...commonQueries.allSelect(), enabled: open }));
 	const listCountryQuery = createQuery(() => ({ ...addressQueries.listCountry(), enabled: open }));
-	const listProvinceQuery = createQuery(() => ({ ...addressQueries.listProvince(values.alamat_domisili.negara.id), enabled: open }));
-	const listCityQuery = createQuery(() => ({ ...addressQueries.listCity(values.alamat_domisili.provinsi.id), enabled: open }));
-	const listDistrictQuery = createQuery(() => ({ ...addressQueries.listDistrict(values.alamat_domisili.kota_kabupaten.id), enabled: open }));
-	const listSubDistrictQuery = createQuery(() => ({ ...addressQueries.listSubDistrict(values.alamat_domisili.kecamatan.id), enabled: open }));
+	const listProvinceQuery = createQuery(() => ({ ...addressQueries.listProvince(values.alamat_domisili?.negara.id), enabled: open }));
+	const listCityQuery = createQuery(() => ({ ...addressQueries.listCity(values.alamat_domisili?.provinsi.id), enabled: open }));
+	const listDistrictQuery = createQuery(() => ({ ...addressQueries.listDistrict(values.alamat_domisili?.kota_kabupaten.id), enabled: open }));
+	const listSubDistrictQuery = createQuery(() => ({ ...addressQueries.listSubDistrict(values.alamat_domisili?.kecamatan.id), enabled: open }));
 
 	const isFormDirty = $derived(!deepEqual(values, item.after));
 	const filteredKewarganegaraan = $derived(filterByLabel(query.data?.kewarganegaraan, search.kewarganegaraan));
@@ -120,7 +99,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = item.after as NonNullableProps<DataTTRes['tertanggung_tambahan'][number]['after']>)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
