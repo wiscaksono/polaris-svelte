@@ -1,9 +1,12 @@
 <script lang="ts">
+	import deepEqual from 'deep-equal';
+	import { CircleAlert } from '@lucide/svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 
 	import { dataTTQueries } from './query';
 	import { getTaskFormContext } from '../../context';
 
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 
 	import Create from './actions/create.svelte';
@@ -24,13 +27,31 @@
 		<Create data={query.data} />
 	</div>
 
-	{#if query.data}
+	{#if query.isLoading}
+		<div>awikwok</div>
+	{:else if query.isError}
+		<div>Error</div>
+	{:else if query.data?.tertanggung_tambahan.length}
 		{#each query.data.tertanggung_tambahan as item, index (index)}
+			{@const isDeleted = item.after?.data_diri?.nama_lengkap === null || item.after?.data_diri?.nama_lengkap === undefined}
 			<InfoGroup.Root>
-				<InfoGroup.Trigger title={`${item.nama_tertanggung} - ${item.after?.data_diri?.nama_lengkap}`}>
+				<InfoGroup.Trigger title={`${item.nama_tertanggung} ${isDeleted ? '' : '- ' + item.after?.data_diri?.nama_lengkap}`}>
+					{#snippet leftChild()}
+						<Badge variant="secondary" class="uppercase">
+							{isDeleted ? 'Deleted' : item.action}
+						</Badge>
+					{/snippet}
 					{#snippet rightChild()}
-						<Edit data={query.data} {item} {index} />
-						<Delete data={query.data} {index} />
+						{@const somethingChanged = !deepEqual(item.before, item.after)}
+						{#if somethingChanged}
+							<div class="grid size-6 place-items-center">
+								<CircleAlert class="size-5 text-destructive" />
+							</div>
+						{/if}
+						<!-- <Edit data={query.data} {item} {index} /> -->
+						{#if !isDeleted}
+							<Delete data={query.data} {index} />
+						{/if}
 					{/snippet}
 				</InfoGroup.Trigger>
 				<InfoGroup.Content>
@@ -40,5 +61,7 @@
 				</InfoGroup.Content>
 			</InfoGroup.Root>
 		{/each}
+	{:else}
+		<div>No data</div>
 	{/if}
 </div>
