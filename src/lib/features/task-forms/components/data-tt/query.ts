@@ -46,5 +46,46 @@ export const dataTTQueries = {
         return data
       }
     })
+  },
+  update: () => {
+    return mutationOptions({
+      mutationFn: async ({ initialData, newData, index }: { initialData: DataTTRes, newData: Omit<DataTTRes['tertanggung_tambahan'][number]['after'], 'sar'>, index: number }) => {
+
+        const { data } = await api.post('/polaris/api-business-polaris/major/workbasket/newsub-update-additional-insured', {
+          ...initialData,
+          tertanggung_tambahan: [
+            ...initialData.tertanggung_tambahan,
+            {
+              ...initialData.tertanggung_tambahan[index],
+              action: 'edit',
+              after: {
+                data_diri: newData.data_diri,
+                informasi_pekerjaan: newData.informasi_pekerjaan,
+                alamat_domisili: newData.alamat_domisili
+              }
+            }
+          ]
+        })
+        return data
+      }
+    })
+  },
+  delete: () => {
+    return mutationOptions({
+      mutationFn: async ({ initialData, index }: { initialData: DataTTRes, index: number }) => {
+
+        const { data } = await api.post('/polaris/api-business-polaris/major/workbasket/newsub-update-additional-insured', {
+          ...initialData,
+          tertanggung_tambahan: [
+            ...initialData.tertanggung_tambahan,
+            {
+              ...initialData.tertanggung_tambahan[index],
+              action: 'delete',
+            }
+          ]
+        })
+        return data
+      }
+    })
   }
 }

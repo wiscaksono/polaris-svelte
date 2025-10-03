@@ -8,6 +8,7 @@
 
 	import Create from './actions/create.svelte';
 	import Edit from './actions/edit.svelte';
+	import Delete from './actions/delete.svelte';
 
 	import DataDiri from './data-diri/data-diri.svelte';
 	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
@@ -28,7 +29,8 @@
 			<InfoGroup.Root>
 				<InfoGroup.Trigger title={`${item.nama_tertanggung} - ${item.after?.data_diri?.nama_lengkap}`}>
 					{#snippet rightChild()}
-						<Edit />
+						<Edit data={query.data} {item} {index} />
+						<Delete data={query.data} {index} />
 					{/snippet}
 				</InfoGroup.Trigger>
 				<InfoGroup.Content>
