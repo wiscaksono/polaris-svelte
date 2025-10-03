@@ -1,22 +1,32 @@
 <script lang="ts">
-	import { createQuery } from '@tanstack/svelte-query';
-	import { Pencil } from '@lucide/svelte';
+	import dayjs from 'dayjs';
+	import deepEqual from 'deep-equal';
+	import { LoaderCircle, Pencil } from '@lucide/svelte';
+	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
+	import InputNumberFormatted from '$lib/components/ui/input/input-number-formatted.svelte';
 
+	import { commonQueries } from '$lib/queries';
 	import { dataPertanggunganQueries } from '../../query';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
 	import type { DataPertanggunganRes } from '../../type';
 
-	let { data }: { data: DataPertanggunganRes['data_pertanggungan']['manfaat_asuransi_dasar']['after'] } = $props();
+	interface Props {
+		data: DataPertanggunganRes['data_pertanggungan']['manfaat_asuransi_dasar']['after'];
+		initialData?: DataPertanggunganRes;
+	}
 
-	let open = $state(true);
+	let { data, initialData }: Props = $props();
+
+	let open = $state(false);
 	let values = $state(data);
+	let submitButton = $state<HTMLButtonElement | null>(null);
 
 	const tanggunganMandiriOptions = [
 		{ id: 1, label: 'Yes' },
@@ -25,6 +35,11 @@
 
 	const { taskFormParams } = getTaskFormContext();
 
+	const queryClient = useQueryClient();
+	const isFormDirty = $derived(!deepEqual(data, values));
+
+	const mutation = createMutation(() => dataPertanggunganQueries.update());
+	const commonQuery = createQuery(() => ({ ...commonQueries.allSelect(), enabled: open }));
 	const listProductQuery = createQuery(() => ({ ...dataPertanggunganQueries.listProduct({ regSpaj: taskFormParams.reg_spaj }), enabled: open }));
 	const selectedProduct = $derived(listProductQuery.data?.find((item) => item.riderId === values.nama_produk.riderId));
 
@@ -40,9 +55,44 @@
 
 	const isProductDisabled = $derived(!listProductQuery.data?.some((e) => e.repricing === 1));
 	const isAbleToAddTanggunganMandiri = $derived(selectedSubProduct?.flag_deduct === 1);
+
+	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
+		if (isFormDirty) {
+			e.preventDefault();
+			if (confirm('Unsaved changes. Are you sure you want to close this dialog?')) open = false;
+			return;
+		}
+	}
+
+	function handleSubmit(e: Event) {
+		e.preventDefault();
+		if (!isFormDirty || !initialData) return;
+
+		mutation.mutate(
+			{
+				...initialData,
+				data_pertanggungan: {
+					...initialData.data_pertanggungan,
+					manfaat_asuransi_dasar: { ...initialData.data_pertanggungan.manfaat_asuransi_dasar, after: values, flagAction: 'EDITED' }
+				}
+			},
+			{
+				onSuccess: async () => {
+					const queryKey = dataPertanggunganQueries.get({
+						caseId: taskFormParams.case_id,
+						regSpaj: taskFormParams.reg_spaj,
+						noTmp: taskFormParams.no_tmp
+					}).queryKey;
+
+					open = false;
+					await queryClient.invalidateQueries({ queryKey });
+				}
+			}
+		);
+	}
 </script>
 
-<Dialog.Root bind:open>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -59,13 +109,13 @@
 			</Button>
 		{/snippet}
 	</Dialog.Trigger>
-	<Dialog.Content class="max-h-[95svh] overflow-y-auto">
+	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt} class="max-h-[95svh] overflow-y-auto sm:max-w-3xl">
 		<Dialog.Header>
 			<Dialog.Title>Ubah Manfaat Asuransi Dasar</Dialog.Title>
 			<Dialog.Description>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</Dialog.Description>
 		</Dialog.Header>
 
-		<form class="-mx-6 max-h-[75svh] space-y-4 overflow-y-auto px-6">
+		<form class="-mx-6 max-h-[75svh] space-y-4 overflow-y-auto px-6" onsubmit={handleSubmit}>
 			<div class="space-y-2">
 				<Label for="nama-product">Nama Produk</Label>
 				<Select.Root
@@ -77,8 +127,7 @@
 							const newValue = listProductQuery.data?.find((item) => String(item.riderId) === v);
 							if (!newValue) return;
 
-							values.nama_produk.riderId = newValue.riderId;
-							values.nama_produk.product = newValue.product;
+							values.nama_produk = newValue;
 						}
 					}
 				>
@@ -160,23 +209,96 @@
 			<div class="grid grid-cols-2 gap-2">
 				<div class="space-y-2">
 					<Label for="uang-per-tanggungan-mandiri" required>Uang Per Tanggungan Mandiri</Label>
-					<Input
-						id="uang-per-tanggungan-mandiri"
-						placeholder="Uang Per Tanggungan Mandiri"
-						type="number"
-						inputmode="numeric"
-						bind:value={values.uang_pertanggungan}
-					/>
+					<InputNumberFormatted id="uang-per-tanggungan-mandiri" placeholder="Uang Per Tanggungan Mandiri" bind:value={values.uang_pertanggungan} />
 				</div>
 				<div class="space-y-2">
 					<Label for="basic-premium" required>Basic Premium</Label>
-					<Input id="basic-premium" placeholder="Basic Premium" type="number" inputmode="numeric" bind:value={values.basic_premium} />
+					<InputNumberFormatted id="basic-premium" placeholder="Basic Premium" bind:value={values.basic_premium} />
 				</div>
 			</div>
+			<div class="grid grid-cols-3 gap-2">
+				<div class="space-y-2">
+					<Label for="masa-pertanggungan">Masa Pertanggungan</Label>
+					<Input id="masa-pertanggungan" placeholder="Masa Pertanggungan" bind:value={values.masa_pertanggungan} type="number" disabled />
+				</div>
+				<div class="space-y-2">
+					<Label for="tanggal-mulai-pertanggungan">Tanggal Mulai Pertanggungan</Label>
+					<Input
+						id="tanggal-mulai-pertanggungan"
+						bind:value={
+							() => dayjs(values.tanggal_mulai_pertanggungan).format('YYYY-MM-DD'),
+							(v) => {
+								const newValue = dayjs(v).toString();
+								values.tanggal_mulai_pertanggungan = newValue;
+							}
+						}
+						type="date"
+					/>
+				</div>
+				<div class="space-y-2">
+					<Label for="tanggal-akhir-pertanggungan">Tanggal Akhir Pertanggungan</Label>
+					<Input
+						id="tanggal-akhir-pertanggungan"
+						bind:value={
+							() => dayjs(values.tanggal_akhir_pertanggungan).format('YYYY-MM-DD'),
+							(v) => {
+								const newValue = dayjs(v).toString();
+								values.tanggal_akhir_pertanggungan = newValue;
+							}
+						}
+						type="date"
+					/>
+				</div>
+			</div>
+			<div class="grid grid-cols-3 gap-2">
+				<div class="space-y-2">
+					<Label for="top-up-premium">Top Up Premium</Label>
+					<InputNumberFormatted id="top-up-premium" placeholder="Top Up Premium" bind:value={values.topup_premium} />
+				</div>
+				<div class="space-y-2">
+					<Label for="billing-frequency">Billing Frequency</Label>
+					<Select.Root
+						type="single"
+						disabled={!commonQuery.data}
+						bind:value={
+							() => String(values.billing_frequency.id),
+							(v) => {
+								const newValue = commonQuery.data?.billing_frequency.find((item) => String(item.id) === v);
+								if (!newValue) return;
+
+								values.billing_frequency = newValue;
+							}
+						}
+					>
+						<Select.Trigger id="billing-frequency" class="w-full" loading={listProductQuery.isLoading}>
+							{values.billing_frequency.label ? values.billing_frequency.label : 'Billing Frequency'}
+						</Select.Trigger>
+						<Select.Content>
+							{#if commonQuery.data}
+								{#each commonQuery.data.billing_frequency as item (item.id)}
+									<Select.Item value={String(item.id)}>
+										{item.label}
+									</Select.Item>
+								{/each}
+							{/if}
+						</Select.Content>
+					</Select.Root>
+				</div>
+				<div class="space-y-2">
+					<Label for="kurs">Kurs</Label>
+					<Input id="kurs" placeholder="Kurs" bind:value={values.kurs.label} disabled />
+				</div>
+			</div>
+			<button bind:this={submitButton} type="submit" class="hidden">Submit</button>
 		</form>
 
 		<Dialog.Footer>
-			<Button type="submit">Save</Button>
+			<Button type="submit" onclick={() => submitButton?.click()} disabled={!isFormDirty || mutation.isPending}>
+				Save
+				{#if mutation.isPending}
+					<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
+				{/if}
+			</Button>
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

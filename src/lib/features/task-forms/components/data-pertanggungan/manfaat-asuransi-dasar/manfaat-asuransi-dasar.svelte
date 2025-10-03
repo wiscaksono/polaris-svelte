@@ -13,9 +13,10 @@
 
 	interface Props {
 		data?: DataPertanggunganRes['data_pertanggungan']['manfaat_asuransi_dasar'];
+		initialData?: DataPertanggunganRes;
 	}
 
-	let { data }: Props = $props();
+	let { data, initialData }: Props = $props();
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
@@ -120,7 +121,7 @@
 			{/if}
 
 			{#if data?.after}
-				<Edit data={data.after} />
+				<Edit data={data.after} {initialData} />
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>

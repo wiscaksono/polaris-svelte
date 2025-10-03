@@ -4,7 +4,7 @@ export interface ListAllSelectRes {
 	list_all: {
 		agama: IDLabel<number>[];
 		alamat_korespondensi: IDLabel<number>[];
-		billing_frequency: IDLabel<number>[];
+		billing_frequency: (Omit<IDLabel<string>, 'id'> & { id: number })[];
 		bukti_identitas: IDLabel<number>[];
 		hobi_beresiko_tinggi: IDLabel<number>[];
 		hubungan_pemegang_polis_dengan_tertanggung: IDLabel<number>[];

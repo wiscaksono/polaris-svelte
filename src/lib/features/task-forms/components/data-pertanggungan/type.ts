@@ -5,7 +5,7 @@ export interface DataPertanggunganRes {
   reg_spaj: string
   data_pertanggungan: {
     manfaat_asuransi_dasar: {
-      flagAction: string
+      flagAction: 'NEW' | 'EDITED' | 'DELETED' | '-'
     } & TrackedData<{
       nama_produk: { riderId: number, product: string }
       nama_sub_produk: { id: number, label: string, ldp_plan: number | null, flag_prometh: number }

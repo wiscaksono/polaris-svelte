@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api } from '$lib/utils';
+import { api, mutationOptions } from '$lib/utils';
 import type * as Type from './type';
 
 export const dataPertanggunganQueries = {
@@ -9,9 +9,16 @@ export const dataPertanggunganQueries = {
       queryKey: ['data-pertanggungan', caseId, regSpaj, noTmp],
       queryFn: async () => {
         const { data } = await api.get<Type.DataPertanggunganRes>(`/polaris/api-business-polaris/major/alteration/data-pertanggungan?noTmp=${noTmp}&caseId=${caseId}&regSpaj=${regSpaj}`);
-        return data.data_pertanggungan;
+        return data;
       }
     });
+  },
+  update: () => {
+    return mutationOptions({
+      mutationFn: async (payload: Type.DataPertanggunganRes) => {
+        await api.post('/polaris/api-business-polaris/major/alteration/data-pertanggungan-save', payload)
+      }
+    })
   },
   listProduct: ({ regSpaj }: { regSpaj: string }) => {
     return queryOptions({

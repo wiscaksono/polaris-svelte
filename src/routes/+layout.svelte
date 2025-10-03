@@ -43,7 +43,7 @@
 		<QueryClientProvider client={data.queryClient}>
 			{@render children?.()}
 
-			<ModeWatcher />
+			<ModeWatcher modeStorageKey="theme" />
 			<Toaster />
 			<SvelteQueryDevtools buttonPosition="bottom-right" />
 		</QueryClientProvider>

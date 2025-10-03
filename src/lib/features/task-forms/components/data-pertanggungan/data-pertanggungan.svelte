@@ -13,6 +13,6 @@
 </script>
 
 <div class="space-y-2">
-	<ManfaatAsuransiDasar data={query.data?.manfaat_asuransi_dasar} />
-	<ManfaatAsuransiTambahan data={query.data?.manfaat_asuransi_tambahan} />
+	<ManfaatAsuransiDasar data={query.data?.data_pertanggungan.manfaat_asuransi_dasar} initialData={query.data} />
+	<ManfaatAsuransiTambahan data={query.data?.data_pertanggungan.manfaat_asuransi_tambahan} />
 </div>

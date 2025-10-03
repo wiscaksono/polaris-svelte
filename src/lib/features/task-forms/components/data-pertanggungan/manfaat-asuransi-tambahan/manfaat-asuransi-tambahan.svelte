@@ -93,8 +93,8 @@
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
-	<InfoGroup.Content>
-		{#if data}
+	<InfoGroup.Content class="bg-background">
+		{#if data?.length}
 			{#each data as item, index (index)}
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.nama_rider}>
@@ -122,6 +122,10 @@
 					</InfoGroup.Content>
 				</InfoGroup.Root>
 			{/each}
+		{:else}
+			<div class="grid h-16 place-items-center">
+				<p class="text-center">Polis ini tidak memiliki data Manfaat Asuransi Tambahan</p>
+			</div>
 		{/if}
 	</InfoGroup.Content>
 </InfoGroup.Root>
