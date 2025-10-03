@@ -64,7 +64,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChange={() => (values = data)}>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
