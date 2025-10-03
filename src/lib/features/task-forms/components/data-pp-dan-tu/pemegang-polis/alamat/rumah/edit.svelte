@@ -106,7 +106,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChange={() => (values = data)}>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -136,7 +136,7 @@
 			<div class="space-y-2">
 				<Label for="negara">Negara</Label>
 				<Select.Root
-					onOpenChange={() => (countrySearch = '')}
+					onOpenChangeComplete={() => (countrySearch = '')}
 					type="single"
 					disabled={!listCountryQuery.data}
 					bind:value={
@@ -176,7 +176,7 @@
 			<div class="space-y-2">
 				<Label for="provinsi">Provinsi</Label>
 				<Select.Root
-					onOpenChange={() => (provinceSearch = '')}
+					onOpenChangeComplete={() => (provinceSearch = '')}
 					type="single"
 					disabled={!listProvinceQuery.data}
 					bind:value={
@@ -213,7 +213,7 @@
 			<div class="space-y-2">
 				<Label for="kota-atau-kabupaten">Kota / Kabupaten</Label>
 				<Select.Root
-					onOpenChange={() => (citySearch = '')}
+					onOpenChangeComplete={() => (citySearch = '')}
 					type="single"
 					disabled={!listCityQuery.data}
 					bind:value={
@@ -247,7 +247,7 @@
 			<div class="space-y-2">
 				<Label for="kecamatan">Kecamatan</Label>
 				<Select.Root
-					onOpenChange={() => (districtSearch = '')}
+					onOpenChangeComplete={() => (districtSearch = '')}
 					type="single"
 					disabled={!listDistrictQuery.data}
 					bind:value={
@@ -278,7 +278,7 @@
 			<div class="space-y-2">
 				<Label for="kelurahan">Kelurahan</Label>
 				<Select.Root
-					onOpenChange={() => (subDistrictSearch = '')}
+					onOpenChangeComplete={() => (subDistrictSearch = '')}
 					type="single"
 					disabled={!listSubDistrictQuery.data}
 					bind:value={

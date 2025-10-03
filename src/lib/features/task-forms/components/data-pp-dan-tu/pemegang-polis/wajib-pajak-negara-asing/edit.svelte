@@ -60,7 +60,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChange={() => (values = data)}>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = data)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -86,7 +86,7 @@
 			<div class="space-y-2">
 				<Label for="negara">Negara</Label>
 				<Select.Root
-					onOpenChange={() => (countrySearch = '')}
+					onOpenChangeComplete={() => (countrySearch = '')}
 					type="single"
 					disabled={!query.data}
 					bind:value={
