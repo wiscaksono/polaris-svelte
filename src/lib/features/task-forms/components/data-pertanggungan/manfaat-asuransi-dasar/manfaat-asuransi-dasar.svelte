@@ -6,7 +6,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
-	import Edit from './actions/edit.svelte';
+	import Update from './actions/update.svelte';
 
 	import { formatCurrency } from '$lib/utils';
 	import type { DataPertanggunganRes } from '../type';
@@ -121,7 +121,7 @@
 			{/if}
 
 			{#if data?.after}
-				<Edit data={data.after} {initialData} />
+				<Update data={data.after} {initialData} />
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
