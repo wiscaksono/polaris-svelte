@@ -29,12 +29,12 @@
 >
 	{#snippet child({ props: triggerProps })}
 		<header {...triggerProps}>
-			<div class="flex items-center gap-2">
-				<h2 class="text-sm font-medium">{title}</h2>
+			<div class="flex items-center gap-2 overflow-hidden pr-10">
+				<h2 class="truncate text-sm font-medium">{title}</h2>
 				{@render leftChild?.()}
 			</div>
 
-			<div class="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1">
+			<div class="absolute top-1/2 right-2 flex -translate-y-1/2 items-center gap-1 bg-primary">
 				{@render rightChild?.()}
 				<div class="grid size-6 place-items-center transition-transform group-data-[state=open]:rotate-90">
 					<ChevronRight class="size-4" />
