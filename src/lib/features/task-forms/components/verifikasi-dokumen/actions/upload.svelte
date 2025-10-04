@@ -111,7 +111,7 @@
 			</div>
 			<div class="space-y-2">
 				<Label for="file" required>File</Label>
-				<Input id="file" type="file" bind:files={values.file} onchange={validateFileSize} required />
+				<Input id="file" type="file" bind:files={values.file} onchange={validateFileSize} required accept="image/*, .pdf" />
 			</div>
 			<Alert.Root variant="destructive">
 				<CircleAlert />
