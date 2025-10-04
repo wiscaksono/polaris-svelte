@@ -49,7 +49,7 @@ class API {
 		}
 	}
 
-	private async request<T>(path: string, options?: RequestInit, signal?: AbortSignal): Promise<BaseResponse<T>> {
+	private async request<T>(path: string, options?: RequestInit): Promise<BaseResponse<T>> {
 		if (this.token && this.isTokenExpired(this.token)) {
 			console.log('Token expired, attempting to refresh.');
 			try {
@@ -67,7 +67,6 @@ class API {
 				...(!(options?.body instanceof FormData) && { 'Content-Type': 'application/json' }),
 				...(this.token && { Authorization: `Bearer ${this.token}` })
 			},
-			signal,
 			...options
 		};
 
@@ -112,34 +111,35 @@ class API {
 		goto(resolve('/'));
 	}
 
-	get<T>(path: string, signal?: AbortSignal) {
-		return this.request<T>(path, { method: 'GET' }, signal);
+	get<T>(path: string) {
+		return this.request<T>(path, { method: 'GET' });
 	}
 
-	post<T>(path: string, body: FormData | object, signal?: AbortSignal) {
+	post<T>(path: string, body: FormData | object) {
 		return this.request<T>(
 			path,
 			{
 				method: 'POST',
 				body: body instanceof FormData ? body : JSON.stringify(body)
-			},
-			signal
+			}
 		);
 	}
 
-	put<T>(path: string, body: FormData | object, signal?: AbortSignal) {
+	put<T>(path: string, body: FormData | object) {
 		return this.request<T>(
 			path,
 			{
 				method: 'PUT',
 				body: body instanceof FormData ? body : JSON.stringify(body)
-			},
-			signal
+			}
 		);
 	}
 
-	delete<T>(path: string, signal?: AbortSignal) {
-		return this.request<T>(path, { method: 'DELETE' }, signal);
+	delete<T>(path: string, body?: FormData | object) {
+		return this.request<T>(path, {
+			method: 'DELETE',
+			...(body && { body: body instanceof FormData ? body : JSON.stringify(body) })
+		});
 	}
 }
 
