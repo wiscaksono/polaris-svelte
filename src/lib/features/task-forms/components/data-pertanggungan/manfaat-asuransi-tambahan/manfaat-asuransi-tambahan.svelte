@@ -8,6 +8,7 @@
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
 
 	import Create from './actions/create.svelte';
+	import Delete from './actions/delete.svelte';
 
 	import { formatCurrency } from '$lib/utils';
 	import type { DataPertanggunganRes } from '../type';
@@ -115,6 +116,7 @@
 									<CircleAlert class="size-5 text-destructive" />
 								</div>
 							{/if}
+							<Delete {initialData} {index} />
 						{/snippet}
 					</InfoGroup.Trigger>
 					<InfoGroup.Content class="bg-background">
