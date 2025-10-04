@@ -99,47 +99,47 @@ export interface DataPertanggunganListSubProductMADRes {
 
 export interface DataPertanggunganListSubProductMATRes {
 	list_subproduct: Array<{
-		rider_id: number
-		rider_number: number
-		lsdbs_name: string
-		flag_pp: number
-		flag_tu: number
-		flag_tt: number
-		ldp_plan: number | null
-		flag_prometh: number
-		flag_deduct: number
-	}>
+		rider_id: number;
+		rider_number: number;
+		lsdbs_name: string;
+		flag_pp: number;
+		flag_tu: number;
+		flag_tt: number;
+		ldp_plan: number | null;
+		flag_prometh: number;
+		flag_deduct: number;
+	}>;
 }
 
 export interface DataPertanggunganListTertanggungRes {
 	list_tertanggung: Array<{
-		mcl_id: string
-		flag_peserta: number
-		noUrut: number
-		jenis_tertanggung: string
-		nama_tertanggung: string
-	}>
+		mcl_id: string;
+		flag_peserta: number;
+		noUrut: number;
+		jenis_tertanggung: string;
+		nama_tertanggung: string;
+	}>;
 }
 
 export interface DataPertanggunganListWaiverDurationRes {
 	list_waiver: Array<{
-		lsbs_id: number
-		lsdbs_number: number
-		ldp_plan: number
-		ldp_name: string
-	}>
+		lsbs_id: number;
+		lsdbs_number: number;
+		ldp_plan: number;
+		ldp_name: string;
+	}>;
 }
 
 export interface DataPertanggunganListUnitRes {
 	list_unit: Array<{
-		id: number
-		label: string
-	}>
+		id: number;
+		label: string;
+	}>;
 }
 
 export interface DataPertanggunganListClassRes {
 	list_class: Array<{
-		id: number
-		label: string
-	}>
+		id: number;
+		label: string;
+	}>;
 }

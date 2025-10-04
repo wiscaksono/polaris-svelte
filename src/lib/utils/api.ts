@@ -84,7 +84,7 @@ class API {
 		}
 
 		if (!response.ok) {
-			const errorBody = await response.json() as BaseResponse<T>;
+			const errorBody = (await response.json()) as BaseResponse<T>;
 			throw new Error(errorBody?.message ?? response.statusText);
 		}
 
@@ -116,23 +116,17 @@ class API {
 	}
 
 	post<T>(path: string, body: FormData | object) {
-		return this.request<T>(
-			path,
-			{
-				method: 'POST',
-				body: body instanceof FormData ? body : JSON.stringify(body)
-			}
-		);
+		return this.request<T>(path, {
+			method: 'POST',
+			body: body instanceof FormData ? body : JSON.stringify(body)
+		});
 	}
 
 	put<T>(path: string, body: FormData | object) {
-		return this.request<T>(
-			path,
-			{
-				method: 'PUT',
-				body: body instanceof FormData ? body : JSON.stringify(body)
-			}
-		);
+		return this.request<T>(path, {
+			method: 'PUT',
+			body: body instanceof FormData ? body : JSON.stringify(body)
+		});
 	}
 
 	delete<T>(path: string, body?: FormData | object) {

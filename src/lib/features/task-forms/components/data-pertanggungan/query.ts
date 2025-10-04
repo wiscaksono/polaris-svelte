@@ -37,9 +37,7 @@ export const dataPertanggunganQueries = {
 		return queryOptions({
 			queryKey: ['data-pertanggungan', 'list-product-new', regSpaj],
 			queryFn: async () => {
-				const { data } = await api.get<Type.DataPertanggunganListProductNewRes>(
-					`/polaris/api-business-polaris/major/entry/list-product-new/${regSpaj}`
-				);
+				const { data } = await api.get<Type.DataPertanggunganListProductNewRes>(`/polaris/api-business-polaris/major/entry/list-product-new/${regSpaj}`);
 				return data.list_product;
 			}
 		});
@@ -54,10 +52,10 @@ export const dataPertanggunganQueries = {
 				return data.list_subproduct;
 			},
 			// Our backend is fill with many idiots, so we need to filter out duplicates
-			select: data => {
+			select: (data) => {
 				const seen = new Set<string>();
 
-				const uniqueList = data.filter(item => {
+				const uniqueList = data.filter((item) => {
 					const isDuplicate = seen.has(item.lsdbs_name);
 					seen.add(item.lsdbs_name);
 					return !isDuplicate;
@@ -78,7 +76,23 @@ export const dataPertanggunganQueries = {
 			}
 		});
 	},
-	listTertanggung: ({ noTmp, regSpaj, riderId, riderNumber, flagPP, flagTU, flagTT }: { noTmp: string; regSpaj: string, riderId: number, riderNumber: number; flagPP: number, flagTU: number, flagTT: number }) => {
+	listTertanggung: ({
+		noTmp,
+		regSpaj,
+		riderId,
+		riderNumber,
+		flagPP,
+		flagTU,
+		flagTT
+	}: {
+		noTmp: string;
+		regSpaj: string;
+		riderId: number;
+		riderNumber: number;
+		flagPP: number;
+		flagTU: number;
+		flagTT: number;
+	}) => {
 		return queryOptions({
 			queryKey: ['data-pertanggungan', 'list-tertanggung', noTmp, regSpaj, riderId, riderNumber, flagPP, flagTU, flagTT],
 			queryFn: async () => {
@@ -89,11 +103,13 @@ export const dataPertanggunganQueries = {
 			}
 		});
 	},
-	listWaiverDuration: ({ riderId, productId }: { riderId: number, productId: number }) => {
+	listWaiverDuration: ({ riderId, productId }: { riderId: number; productId: number }) => {
 		return queryOptions({
 			queryKey: ['data-pertanggungan', 'list-waiver', riderId, productId],
 			queryFn: async () => {
-				const { data } = await api.get<Type.DataPertanggunganListWaiverDurationRes>(`/polaris/api-business-polaris/major/entry/list-waiver/${riderId}/${productId}`);
+				const { data } = await api.get<Type.DataPertanggunganListWaiverDurationRes>(
+					`/polaris/api-business-polaris/major/entry/list-waiver/${riderId}/${productId}`
+				);
 				return data.list_waiver;
 			}
 		});
@@ -115,5 +131,5 @@ export const dataPertanggunganQueries = {
 				return data.list_class;
 			}
 		});
-	},
+	}
 };
