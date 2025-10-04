@@ -42,7 +42,7 @@
 	--sidebar-border: oklch(0.4574 0.0898 285.52);
 	--sidebar-ring: oklch(0.8085 0.0694 232.17);
 	--success: oklch(0.7 0.15 145);
-	--info: oklch(0.6815 0.134987 229.4515)
+	--info: oklch(0.6815 0.134987 229.4515);
 }
 
 .dark {
@@ -83,7 +83,7 @@
 	--sidebar-border: oklch(1 0 0 / 10%);
 	--sidebar-ring: oklch(0.8085 0.0694 232.17);
 	--success: oklch(0.7 0.15 145);
-	--info: oklch(0.6815 0.134987 229.4515)
+	--info: oklch(0.6815 0.134987 229.4515);
 }
 
 @theme inline {
@@ -148,11 +148,11 @@
 	input::-webkit-inner-spin-button {
 		@apply hidden;
 	}
-	input[type="date"]{
-    @apply relative
+	input[type='date'] {
+		@apply relative;
 	}
-	input[type="date"]::-webkit-calendar-picker-indicator {
-    @apply absolute top-1/2 -translate-y-1/2 right-3
+	input[type='date']::-webkit-calendar-picker-indicator {
+		@apply absolute top-1/2 right-3 -translate-y-1/2;
 	}
 }
 

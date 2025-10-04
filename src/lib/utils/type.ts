@@ -13,13 +13,10 @@ export interface BaseResponse<T> {
 export interface TrackedData<T> {
 	before: T;
 	after: T;
-};
+}
 
 export type DeepKeys<T, Prev extends string = ''> = {
-	[K in keyof T & string]:
-	T[K] extends object
-	? `${Prev}${K}` | DeepKeys<T[K], `${Prev}${K}.`>
-	: `${Prev}${K}`;
+	[K in keyof T & string]: T[K] extends object ? `${Prev}${K}` | DeepKeys<T[K], `${Prev}${K}.`> : `${Prev}${K}`;
 }[keyof T & string];
 
 export type IDLabel<T extends string | number> = {
@@ -28,7 +25,7 @@ export type IDLabel<T extends string | number> = {
 };
 
 export type NonNullableProps<T> = {
-	[K in keyof T]: NonNullable<T[K]>
+	[K in keyof T]: NonNullable<T[K]>;
 };
 
 export interface Polis {

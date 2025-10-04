@@ -44,7 +44,7 @@
 	const selectedProduct = $derived(listProductQuery.data?.find((item) => item.riderId === values.nama_produk.riderId));
 
 	const listSubProductQuery = createQuery(() => ({
-		...dataPertanggunganQueries.listSubProduct({
+		...dataPertanggunganQueries.listSubProductMAD({
 			regSpaj: taskFormParams.reg_spaj,
 			riderId: values.nama_produk.riderId,
 			repricing: selectedProduct?.repricing ?? 0
@@ -111,8 +111,8 @@
 	</Dialog.Trigger>
 	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt} class="max-h-[95svh] overflow-y-auto sm:max-w-3xl">
 		<Dialog.Header>
-			<Dialog.Title>Ubah Manfaat Asuransi Dasar</Dialog.Title>
-			<Dialog.Description>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</Dialog.Description>
+			<Dialog.Title>Edit Basic Insurance Benefits</Dialog.Title>
+			<Dialog.Description>Kindly complete the form to update your insurance benefits.</Dialog.Description>
 		</Dialog.Header>
 
 		<form class="-mx-6 max-h-[75svh] space-y-4 overflow-y-auto px-6" onsubmit={handleSubmit}>

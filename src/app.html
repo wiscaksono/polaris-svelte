@@ -17,7 +17,14 @@
 	<body data-sveltekit-preload-data="hover" class="group/body overscroll-none font-sans text-foreground antialiased">
 		<div style="display: contents">%sveltekit.body%</div>
 		<script>
-			!function(){let e=localStorage.getItem("theme")||"system",t=window.matchMedia("(prefers-color-scheme: dark)").matches;("dark"===e||"system"===e&&t)&&(document.documentElement.classList.add("dark"),document.documentElement.style.colorScheme="dark",document.documentElement.style.backgroundColor="var(--background-color)")}();
+			!(function () {
+				let e = localStorage.getItem('theme') || 'system',
+					t = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				('dark' === e || ('system' === e && t)) &&
+					(document.documentElement.classList.add('dark'),
+					(document.documentElement.style.colorScheme = 'dark'),
+					(document.documentElement.style.backgroundColor = 'var(--background-color)'));
+			})();
 		</script>
 	</body>
 </html>

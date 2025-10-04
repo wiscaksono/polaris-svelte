@@ -23,7 +23,7 @@ export const addressQueries = {
 					`/polaris/api-business-polaris/major/entry/list-provinsi/${countryId}`
 				);
 				return data.list_provinsi;
-			},
+			}
 		});
 	},
 	// Kota / Kabupaten
@@ -37,7 +37,7 @@ export const addressQueries = {
 					`/polaris/api-business-polaris/major/entry/list-kota-kabupaten/${provinceId}`
 				);
 				return data.list_kota_kabupaten;
-			},
+			}
 		});
 	},
 	// Kecamatan
@@ -51,7 +51,7 @@ export const addressQueries = {
 					`/polaris/api-business-polaris/major/entry/list-kecamatan/${cityId}`
 				);
 				return data.list_kecamatan;
-			},
+			}
 		});
 	},
 	// Kelurahan
@@ -65,7 +65,7 @@ export const addressQueries = {
 					`/polaris/api-business-polaris/major/entry/list-kelurahan/${districtId}`
 				);
 				return data.list_kelurahan;
-			},
+			}
 		});
 	}
 };

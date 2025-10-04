@@ -1,20 +1,23 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import deepEqual from 'deep-equal';
+	import { CircleAlert } from '@lucide/svelte';
 
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
 
+	import Create from './actions/create.svelte';
+
 	import { formatCurrency } from '$lib/utils';
 	import type { DataPertanggunganRes } from '../type';
-	import { CircleAlert } from '@lucide/svelte';
 
 	interface Props {
 		data?: DataPertanggunganRes['data_pertanggungan']['manfaat_asuransi_tambahan'];
+		initialData?: DataPertanggunganRes;
 	}
 
-	let { data }: Props = $props();
+	let { data, initialData }: Props = $props();
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
@@ -91,9 +94,10 @@
 					<CircleAlert class="size-5 text-destructive" />
 				</div>
 			{/if}
+			<Create {data} {initialData} />
 		{/snippet}
 	</InfoGroup.Trigger>
-	<InfoGroup.Content class="bg-background">
+	<InfoGroup.Content class={!data?.length ? 'bg-background' : ''}>
 		{#if data?.length}
 			{#each data as item, index (index)}
 				<InfoGroup.Root>
@@ -124,7 +128,7 @@
 			{/each}
 		{:else}
 			<div class="grid h-16 place-items-center">
-				<p class="text-center">Polis ini tidak memiliki data Manfaat Asuransi Tambahan</p>
+				<p class="text-center">This policy has no additional insurance benefits data.</p>
 			</div>
 		{/if}
 	</InfoGroup.Content>

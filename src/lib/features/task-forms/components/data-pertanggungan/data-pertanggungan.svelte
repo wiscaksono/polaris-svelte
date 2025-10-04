@@ -14,5 +14,5 @@
 
 <div class="space-y-2">
 	<ManfaatAsuransiDasar data={query.data?.data_pertanggungan.manfaat_asuransi_dasar} initialData={query.data} />
-	<ManfaatAsuransiTambahan data={query.data?.data_pertanggungan.manfaat_asuransi_tambahan} />
+	<ManfaatAsuransiTambahan data={query.data?.data_pertanggungan.manfaat_asuransi_tambahan} initialData={query.data} />
 </div>

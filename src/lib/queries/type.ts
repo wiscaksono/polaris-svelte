@@ -35,5 +35,3 @@ export interface ListUserRes {
 		LUS_FULL_NAME: string;
 	}[];
 }
-
-

@@ -19,7 +19,7 @@
 	let inputElement = $state<HTMLInputElement | null>(null);
 
 	function formatValue(val: number): string {
-		if (val === 0) return '';
+		if (val === 0) return '0';
 		return new Intl.NumberFormat('id-ID').format(val);
 	}
 </script>

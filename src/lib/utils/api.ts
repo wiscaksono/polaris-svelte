@@ -84,16 +84,10 @@ class API {
 			throw new Error(response.statusText);
 		}
 
-		if (!response.ok) {
-			let errorBody;
-			try {
-				errorBody = await response.json();
-			} catch (e: unknown) {
-				console.error('Failed to parse JSON for error body:', e);
-				errorBody = await response.text();
-			}
-			throw new Error(JSON.stringify(errorBody));
-		}
+		// if (!response.ok) {
+		// 	const errorBody = await response.json();
+		// 	throw new Error(JSON.stringify(errorBody));
+		// }
 
 		return response.json() as Promise<BaseResponse<T>>;
 	}
