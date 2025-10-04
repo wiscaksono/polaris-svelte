@@ -154,6 +154,12 @@
 	input[type='date']::-webkit-calendar-picker-indicator {
 		@apply absolute top-1/2 right-3 -translate-y-1/2;
 	}
+  input[type='file']::file-selector-button {
+    @apply text-foreground bg-muted rounded mr-2 text-sm px-1;
+  }
+	input[type="file"] {
+  	@apply text-muted-foreground font-normal;
+	}
 }
 
 ::selection {

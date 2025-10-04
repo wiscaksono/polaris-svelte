@@ -2,7 +2,7 @@
 	import dayjs from 'dayjs';
 	import { mode } from 'mode-watcher';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { EllipsisVertical, Pencil, LoaderCircle } from '@lucide/svelte';
+	import { EllipsisVertical, LoaderCircle } from '@lucide/svelte';
 
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -43,9 +43,9 @@
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-			<div {...props} class="flex flex-col divide-y overflow-hidden rounded border bg-muted hover:opacity-90" aria-label={data.JENIS_DOC} tabindex="0">
+			<div {...props} class="flex shrink-0 flex-col divide-y overflow-hidden rounded border bg-muted hover:opacity-90" aria-label={data.JENIS_DOC} tabindex="0">
 				{#if documentQuery.data}
-					<img src={thumbnailUrl} class="aspect-square h-full w-full object-contain" alt={data.JENIS_DOC} />
+					<img src={thumbnailUrl} class="aspect-square h-full w-full object-cover" alt={data.JENIS_DOC} />
 				{:else}
 					<div class="aspect-square h-full w-full bg-muted"></div>
 				{/if}

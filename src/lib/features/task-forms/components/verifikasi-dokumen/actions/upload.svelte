@@ -111,7 +111,7 @@
 			</div>
 			<div class="space-y-2">
 				<Label for="file" required>File</Label>
-				<Input id="file" type="file" bind:files={values.file} onchange={validateFileSize} />
+				<Input id="file" type="file" bind:files={values.file} onchange={validateFileSize} required />
 			</div>
 			<Alert.Root variant="destructive">
 				<CircleAlert />
@@ -121,7 +121,7 @@
 		</form>
 
 		<Dialog.Footer>
-			<Button type="submit" onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending}>
+			<Button type="submit" onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending || !values.file || !values.idJn}>
 				Upload
 				{#if mutation.isPending}
 					<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
