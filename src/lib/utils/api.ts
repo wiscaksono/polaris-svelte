@@ -84,10 +84,10 @@ class API {
 			throw new Error(response.statusText);
 		}
 
-		// if (!response.ok) {
-		// 	const errorBody = await response.json();
-		// 	throw new Error(JSON.stringify(errorBody));
-		// }
+		if (!response.ok) {
+			const errorBody = await response.json() as BaseResponse<T>;
+			throw new Error(errorBody?.message ?? response.statusText);
+		}
 
 		return response.json() as Promise<BaseResponse<T>>;
 	}

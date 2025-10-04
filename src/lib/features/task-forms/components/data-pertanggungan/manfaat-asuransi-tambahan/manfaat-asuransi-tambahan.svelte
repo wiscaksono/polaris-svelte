@@ -9,6 +9,7 @@
 
 	import Create from './actions/create.svelte';
 	import Delete from './actions/delete.svelte';
+	import Update from './actions/update.svelte';
 
 	import { formatCurrency } from '$lib/utils';
 	import type { DataPertanggunganRes } from '../type';
@@ -100,7 +101,7 @@
 	</InfoGroup.Trigger>
 	<InfoGroup.Content class={!data?.length ? 'bg-background' : ''}>
 		{#if data?.length}
-			{#each data as item, index (index)}
+			{#each data.slice(0, 1) as item, index (index)}
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.nama_rider}>
 						{#snippet leftChild()}
@@ -116,7 +117,10 @@
 									<CircleAlert class="size-5 text-destructive" />
 								</div>
 							{/if}
-							<Delete {initialData} {index} />
+							{#if initialData && initialData.data_pertanggungan.manfaat_asuransi_tambahan[index].action !== 'delete'}
+								<Delete {initialData} {index} />
+								<Update data={item} {initialData} {index} />
+							{/if}
 						{/snippet}
 					</InfoGroup.Trigger>
 					<InfoGroup.Content class="bg-background">
