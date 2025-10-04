@@ -2,7 +2,11 @@
 	import { Collapsible as CollapsiblePrimitive } from 'bits-ui';
 	import { cn, type WithoutChild } from '$lib/utils';
 
-	let { ref = $bindable(null), class: className, children, ...restProps }: WithoutChild<CollapsiblePrimitive.ContentProps> = $props();
+	interface Props extends WithoutChild<CollapsiblePrimitive.ContentProps> {
+		wrapperClassName?: string;
+	}
+
+	let { ref = $bindable(null), class: className, children, wrapperClassName, ...restProps }: Props = $props();
 </script>
 
 <CollapsiblePrimitive.Content
@@ -15,7 +19,7 @@
 	)}
 	{...restProps}
 >
-	<div class="space-y-2 p-2">
+	<div class={cn('space-y-2 p-2', wrapperClassName)}>
 		{@render children?.()}
 	</div>
 </CollapsiblePrimitive.Content>
