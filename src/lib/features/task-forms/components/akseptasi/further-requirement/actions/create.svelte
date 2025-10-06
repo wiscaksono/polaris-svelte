@@ -29,7 +29,7 @@
 	const { taskFormParams } = getTaskFormContext();
 	const isFormDirty = $derived(!deepEqual(selectedMenuFurther, null) && !deepEqual(selectedSubMenuFurther, []));
 
-	const mutation = createMutation(() => furtherRequirementQueries.update());
+	const mutation = createMutation(() => furtherRequirementQueries.create());
 	const menuFurtherQuery = createQuery(() => ({ ...furtherRequirementQueries.listMenuFurther(), enabled: open }));
 	const subMenuFurtherQuery = createQuery(() => ({
 		...furtherRequirementQueries.listSubMenuFurther(selectedMenuFurther ? selectedMenuFurther.sub_id : 0),

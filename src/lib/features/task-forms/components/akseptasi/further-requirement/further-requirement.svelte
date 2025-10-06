@@ -8,6 +8,8 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import Create from './actions/create.svelte';
+	import Update from './actions/update.svelte';
+	import Delete from './actions/delete.svelte';
 
 	import { furtherRequirementQueries } from './queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
@@ -62,13 +64,14 @@
 							<Table.Cell>{item.statusFurther === 'ACCEPT' || item.statusFurther === 'COMPLETED' ? 'Yes' : 'No'}</Table.Cell>
 							<Table.Cell>{item.tglDecision ? dayjs(item.tglDecision).format('DD MMM YYYY, HH:mm') : '-'}</Table.Cell>
 							<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-								Action
+								<Update data={item} />
+								<Delete data={item} />
 							</Table.Cell>
 						</Table.Row>
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={9} class="h-16 text-center">No data found</Table.Cell>
+						<Table.Cell colspan={9} class="h-16 text-center">No further requirement found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>

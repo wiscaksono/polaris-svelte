@@ -14,7 +14,7 @@ export const furtherRequirementQueries = {
       }
     })
   },
-  update: () => {
+  create: () => {
     return mutationOptions({
       mutationFn: async ({ regSpaj, lusId, caseId, subMenuFurther }: { regSpaj: string, lusId: number, caseId: number, subMenuFurther: Array<Type.FurtherRequirementSubMenuListRes['detailFurtherList'][number] & { remarks: string }> }) => {
         await api.post('/polaris/api-business-polaris/major/alteration/further', {
@@ -29,6 +29,24 @@ export const furtherRequirementQueries = {
             statusFurther: "PENDING",
             subId: item.sub_id,
           }))
+        })
+      }
+    })
+  },
+  deleteOrUpdate: (action: 'delete' | 'update') => {
+    return mutationOptions({
+      mutationFn: async ({ regSpaj, lusId, caseId, subMenuFurther }: { regSpaj: string, lusId: number, caseId: number, subMenuFurther: Type.FurtherRequirementRes['listFurtherTrx'][number] }) => {
+        await api.post('/polaris/api-business-polaris/major/alteration/further', {
+          listFurther: [
+            {
+              ...subMenuFurther,
+              filename: null,
+              idDoc: caseId,
+              lusId,
+              flagAction: action === 'delete' ? 3 : 2,
+              regSpaj,
+            }
+          ]
         })
       }
     })
