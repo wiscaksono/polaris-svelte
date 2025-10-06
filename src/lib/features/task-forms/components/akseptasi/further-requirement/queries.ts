@@ -70,3 +70,63 @@ export const furtherRequirementQueries = {
     })
   }
 }
+
+export const formSPMQueries = {
+  get: ({ regSpaj, caseId }: { regSpaj: string | number, caseId: string | number }) => {
+    return queryOptions({
+      queryKey: ['form-spm', regSpaj, caseId],
+      queryFn: async () => {
+        const { data } = await api.get<Type.FormSPMRes>(`/polaris/api-business-polaris/major/alteration/trxSpm?regSpaj=${regSpaj}&noTrx=${caseId}`)
+        return data.trxSpm
+      }
+    })
+  },
+  crud: (action: 'create' | 'update' | 'delete') => {
+    return mutationOptions({
+      mutationFn: async ({ payload, initialData }: { payload: Type.FormSPMRes['trxSpm'][number], initialData: Type.FormSPMRes['trxSpm'] }) => {
+        const flagAction = { 'create': 1, 'update': 2, 'delete': 3 } as const
+        const { data } = await api.post('/polaris/api-business-polaris/major/alteration/spm', {
+          spm: [...initialData, ({ ...payload, flagAction: flagAction[action] })]
+        })
+        return data
+      }
+    })
+  },
+  listMedisUntuk: ({ regSpaj, caseId }: { regSpaj: string | number, caseId: string | number }) => {
+    return queryOptions({
+      queryKey: ['form-spm', 'list-medis-untuk', regSpaj, caseId],
+      queryFn: async () => {
+        const { data } = await api.get<Type.FormSPMListMedisUntukRes>(`/polaris/api-business-polaris/major/alteration/akseptasiGetSPM?regSpaj=${regSpaj}&idDoc=${caseId}`)
+        return data.datalist_spm
+      }
+    })
+  },
+  listMedis: () => {
+    return queryOptions({
+      queryKey: ['form-spm', 'list-medis'],
+      queryFn: async () => {
+        const { data } = await api.get<Type.FormSPMListMedisRes>('/polaris/api-business-polaris/major/alteration/akseptasiGetTipeMedis')
+        return data.data
+      }
+    })
+  },
+  listMedisAdditional: () => {
+    return queryOptions({
+      queryKey: ['form-spm', 'list-medis-additional'],
+      queryFn: async () => {
+        const { data } = await api.get<Type.FormSPMListMedisAdditionalRes>('/polaris/api-business-polaris/major/alteration/akseptasiGetMedisTambahan')
+        return data.detail_tambahan
+      },
+    })
+  },
+  detailMedis: (tipeMedis?: string | null) => {
+    return queryOptions({
+      queryKey: ['form-spm', 'detail-list-medis', tipeMedis],
+      queryFn: async () => {
+        if (tipeMedis === '' || !tipeMedis) return ['Tidak ada data']
+        const { data } = await api.get<Type.FormSPMDetailTipeMedisRes>(`/polaris/api-business-polaris/major/alteration/akseptasiGetDetailTipeMedis?tipeMedis=${encodeURIComponent(tipeMedis)}`)
+        return data.detail_medis
+      }
+    })
+  }
+}

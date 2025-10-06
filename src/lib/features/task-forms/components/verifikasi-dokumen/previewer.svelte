@@ -20,7 +20,7 @@
 	const documentQuery = createQuery(() => verifikasiDokumenQueries.viewDocument(data.ID));
 
 	let thumbnailUrl = $state('');
-	let previewUrl = $state('');
+	let previewUrl = $state<string | null>(null);
 
 	$effect(() => {
 		if (!documentQuery.data) return;
@@ -30,6 +30,9 @@
 			previewUrl = URL.createObjectURL(documentQuery.data.blob);
 		} else if (documentQuery.data.contentType?.startsWith('image/')) {
 			thumbnailUrl = URL.createObjectURL(documentQuery.data.blob);
+		} else if (documentQuery.data.contentType?.startsWith('application/json')) {
+			thumbnailUrl = mode.current === 'dark' ? '/broken-file-dark.png' : '/broken-file-light.png';
+			previewUrl = null;
 		}
 
 		return () => {
@@ -40,7 +43,7 @@
 </script>
 
 <Dialog.Root>
-	<Dialog.Trigger>
+	<Dialog.Trigger disabled={previewUrl === null}>
 		{#snippet child({ props })}
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<div {...props} class="flex shrink-0 flex-col divide-y overflow-hidden rounded border bg-muted hover:opacity-90" aria-label={data.JENIS_DOC} tabindex="0">

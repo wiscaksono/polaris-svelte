@@ -8,10 +8,10 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import { userStore } from '$lib/stores';
-	import { furtherRequirementQueries } from '../queries';
+	import { furtherRequirementQueries } from '../../queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	import type { FurtherRequirementRes } from '../type';
+	import type { FurtherRequirementRes } from '../../type';
 
 	let { data }: { data: FurtherRequirementRes['listFurtherTrx'][number] } = $props();
 

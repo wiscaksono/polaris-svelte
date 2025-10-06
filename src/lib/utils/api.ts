@@ -84,11 +84,24 @@ class API {
 		}
 
 		if (!response.ok) {
-			const errorBody = (await response.json()) as BaseResponse<T>;
-			throw new Error(errorBody?.message ?? response.statusText);
+			let errorMessage = response.statusText;
+			try {
+				// Only try parsing JSON if content exists
+				const text = await response.text();
+				if (text) {
+					const errorBody = JSON.parse(text) as BaseResponse<T>;
+					errorMessage = errorBody?.message ?? errorMessage;
+				} else {
+					errorMessage = `[${response.status}] No response body received`;
+				}
+			} catch {
+				errorMessage = `[${response.status}] Invalid response format`;
+			}
+			throw new Error(errorMessage);
 		}
 
 		return response.json() as Promise<BaseResponse<T>>;
+
 	}
 
 	private isTokenExpired(token: string) {

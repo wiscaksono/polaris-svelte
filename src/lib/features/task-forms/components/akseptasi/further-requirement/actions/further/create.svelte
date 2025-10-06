@@ -12,10 +12,10 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 
 	import { userStore } from '$lib/stores';
-	import { furtherRequirementQueries } from '../queries';
+	import { furtherRequirementQueries } from '../../queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	import type { FurtherRequirementRes, FurtherRequirementMenuListRes, FurtherRequirementSubMenuListRes } from '../type';
+	import type { FurtherRequirementRes, FurtherRequirementMenuListRes, FurtherRequirementSubMenuListRes } from '../../type';
 
 	let { data }: { data: FurtherRequirementRes['listFurtherTrx'] } = $props();
 
@@ -93,7 +93,7 @@
 			<Dialog.Description>Add a new further requirement to the list of further requirements.</Dialog.Description>
 		</Dialog.Header>
 
-		<form class="space-y-4" onsubmit={handleSubmit}>
+		<form class={`${subMenuFurtherQuery.data ? 'space-y-4' : 'space-y-0'} transition-all`} onsubmit={handleSubmit}>
 			<Select.Root
 				type="single"
 				disabled={!menuFurtherQuery.data?.length}
@@ -106,7 +106,7 @@
 					}
 				}
 			>
-				<Select.Trigger class="w-full">
+				<Select.Trigger class="w-full" loading={menuFurtherQuery.isLoading}>
 					{selectedMenuFurther ? selectedMenuFurther.sub_desc : 'Select Further'}
 				</Select.Trigger>
 				<Select.Content>
@@ -120,54 +120,58 @@
 				</Select.Content>
 			</Select.Root>
 
-			{#key subMenuFurtherQuery.data}
-				<div class="space-y-2" transition:slide={{ duration: 100, axis: 'y' }}>
-					{#if filteredSubMenuFurther.length}
-						{#each filteredSubMenuFurther as item (item.det_id)}
-							<div class="grid gap-4 sm:grid-cols-7" transition:slide={{ duration: 300, axis: 'y' }}>
-								<Label class="col-span-3 font-normal">
-									<Checkbox
-										bind:checked={
-											() => {
-												const v = selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id);
-												return !!v;
-											},
-											(v) => {
-												if (v) {
-													selectedSubMenuFurther = [...selectedSubMenuFurther, { ...item, remarks: '' }];
-												} else {
-													selectedSubMenuFurther = selectedSubMenuFurther.filter((i) => i.det_id !== item.det_id || i.sub_id !== item.sub_id);
+			{#if subMenuFurtherQuery.isLoading}
+				<div class="grid h-16 place-items-center">
+					<LoaderCircle class="animate-spin" />
+				</div>
+			{:else}
+				{#key subMenuFurtherQuery.data}
+					<div class="space-y-2" transition:slide={{ duration: 100, axis: 'y' }}>
+						{#if filteredSubMenuFurther.length}
+							{#each filteredSubMenuFurther as item (item.det_id)}
+								<div class="grid gap-4 sm:grid-cols-7" transition:slide={{ duration: 300, axis: 'y' }}>
+									<Label class="col-span-3 font-normal">
+										<Checkbox
+											bind:checked={
+												() => {
+													const v = selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id);
+													return !!v;
+												},
+												(v) => {
+													if (v) {
+														selectedSubMenuFurther = [...selectedSubMenuFurther, { ...item, remarks: '' }];
+													} else {
+														selectedSubMenuFurther = selectedSubMenuFurther.filter((i) => i.det_id !== item.det_id || i.sub_id !== item.sub_id);
+													}
 												}
 											}
+										/>
+										{item.lsad_desc}
+									</Label>
+									<Input
+										class="col-span-4"
+										disabled={!selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id)}
+										bind:value={
+											() => {
+												const v = selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id);
+												if (!v) return '';
+												return v.remarks;
+											},
+											(v) => {
+												selectedSubMenuFurther = selectedSubMenuFurther.map((i) => {
+													if (i.det_id === item.det_id && i.sub_id === item.sub_id) return { ...i, remarks: v };
+													return i;
+												});
+											}
 										}
+										placeholder="Remarks"
 									/>
-									{item.lsad_desc}
-								</Label>
-								<Input
-									class="col-span-4"
-									disabled={!selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id)}
-									bind:value={
-										() => {
-											const v = selectedSubMenuFurther.find((i) => i.det_id === item.det_id && i.sub_id === item.sub_id);
-											if (!v) return '';
-											return v.remarks;
-										},
-										(v) => {
-											selectedSubMenuFurther = selectedSubMenuFurther.map((i) => {
-												if (i.det_id === item.det_id && i.sub_id === item.sub_id) return { ...i, remarks: v };
-												return i;
-											});
-										}
-									}
-									placeholder="Remarks"
-								/>
-							</div>
-						{/each}
-					{:else}
-						<p>No Data</p>
-					{/if}
-				</div>
-			{/key}
+								</div>
+							{/each}
+						{/if}
+					</div>
+				{/key}
+			{/if}
 			<button type="submit" class="hidden" bind:this={submitButton}>submit</button>
 		</form>
 		<Dialog.Footer>

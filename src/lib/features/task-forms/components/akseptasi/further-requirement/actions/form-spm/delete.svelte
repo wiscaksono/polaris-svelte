@@ -5,32 +5,25 @@
 	import Button, { buttonVariants } from '$lib/components/ui/button/button.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 
-	import { furtherRequirementQueries } from '../queries';
+	import { formSPMQueries } from '../../queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
-	import { userStore } from '$lib/stores';
+	import type { FormSPMRes } from '../../type';
 
-	import type { FurtherRequirementRes } from '../type';
-
-	let { data }: { data: FurtherRequirementRes['listFurtherTrx'][number] } = $props();
+	let { data, initialData }: { data: FormSPMRes['trxSpm'][number]; initialData: FormSPMRes['trxSpm'] } = $props();
 
 	let open = $state(false);
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const mutation = createMutation(() => furtherRequirementQueries.deleteOrUpdate('delete'));
+	const mutation = createMutation(() => formSPMQueries.crud('delete'));
 
 	function handleDelete() {
 		mutation.mutate(
-			{
-				regSpaj: taskFormParams.reg_spaj,
-				lusId: userStore.current!.lus_id,
-				caseId: taskFormParams.case_id,
-				subMenuFurther: data
-			},
+			{ payload: data, initialData: initialData.filter((item) => item.nama_pp !== data.nama_pp) },
 			{
 				onSuccess: async () => {
-					const queryKey = furtherRequirementQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }).queryKey;
+					const queryKey = formSPMQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }).queryKey;
 					open = false;
 					await queryClient.invalidateQueries({ queryKey });
 				}
@@ -58,8 +51,8 @@
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title>Are sure want to delete this further requirement?</AlertDialog.Title>
-			<AlertDialog.Description>This action cannot be undone. This will permanently delete the further requirement you are deleting.</AlertDialog.Description>
+			<AlertDialog.Title>Are sure want to delete this form SPM?</AlertDialog.Title>
+			<AlertDialog.Description>This action cannot be undone. This will permanently delete the form SPM you are deleting.</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>

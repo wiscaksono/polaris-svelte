@@ -23,7 +23,9 @@
 			{/if}
 		</span>
 		{#if childrenProp}
-			{@render childrenProp({ selected, highlighted })}
+			<div class="truncate">
+				{@render childrenProp({ selected, highlighted })}
+			</div>
 		{:else}
 			{label || value}
 		{/if}
