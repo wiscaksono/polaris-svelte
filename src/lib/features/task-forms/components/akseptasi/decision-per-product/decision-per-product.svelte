@@ -1,0 +1,107 @@
+<script lang="ts">
+	import { createQuery } from '@tanstack/svelte-query';
+
+	import * as InfoGroup from '$lib/components/ui/info-group';
+	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
+
+	import Update from './actions/update.svelte';
+
+	import { formatCurrency } from '$lib/utils';
+	import { decisionPerProductQuery } from './query';
+	import { getTaskFormContext } from '$lib/features/task-forms/context';
+
+	const { taskFormParams } = getTaskFormContext();
+	const query = createQuery(() => decisionPerProductQuery.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
+
+	const diffMap = $derived((index: number) => [
+		{ label: 'Nama Produk', before: query.data?.listPeserta[index]?.before.productName, after: query.data?.listPeserta[index]?.after.productName },
+		{ label: 'Kurs', before: query.data?.listPeserta[index]?.before?.kurs, after: query.data?.listPeserta[index]?.after?.kurs },
+		{
+			label: 'Uang Pertanggungan',
+			before: query.data?.listPeserta[index]?.before?.uangPertanggungan
+				? formatCurrency(query.data?.listPeserta[index]?.before?.uangPertanggungan, 'IDR', 'id-ID')
+				: '-',
+			after: query.data?.listPeserta[index]?.after?.uangPertanggungan
+				? formatCurrency(query.data?.listPeserta[index]?.after?.uangPertanggungan, 'IDR', 'id-ID')
+				: '-'
+		},
+		{
+			label: 'Jenis Akseptasi',
+			before: query.data?.listPeserta[index]?.before?.jenisAkseptasi,
+			after: query.data?.listPeserta[index]?.after?.jenisAkseptasi
+		},
+		{
+			label: 'Sub Akseptasi',
+			before: query.data?.listPeserta[index]?.before?.subAkseptasi
+				? query.data?.listPeserta[index]?.before?.subAkseptasi.map(({ desc_display }) => desc_display).join(', ')
+				: '-',
+			after: query.data?.listPeserta[index]?.after?.subAkseptasi
+				? query.data?.listPeserta[index]?.after?.subAkseptasi.map(({ desc_display }) => desc_display).join(', ')
+				: '-'
+		},
+		{
+			label: 'Jenis Extra',
+			before: query.data?.listPeserta[index]?.before?.jenisExtra
+				? query.data?.listPeserta[index]?.before?.jenisExtra.map(({ jenis_extra }) => jenis_extra).join(', ')
+				: '-',
+			after: query.data?.listPeserta[index]?.after?.jenisExtra
+				? query.data?.listPeserta[index]?.after?.jenisExtra.map(({ jenis_extra }) => jenis_extra).join(', ')
+				: '-'
+		},
+		{
+			label: 'EM',
+			before: query.data?.listPeserta[index]?.before?.em,
+			after: query.data?.listPeserta[index]?.after?.em
+		},
+		{
+			label: 'Satuan',
+			before: query.data?.listPeserta[index]?.before?.satuan,
+			after: query.data?.listPeserta[index]?.after?.satuan
+		},
+		{
+			label: 'Tambahan Biaya / Premi',
+			before: query.data?.listPeserta[index]?.before?.tambahanBiaya
+				? formatCurrency(query.data?.listPeserta[index]?.before?.tambahanBiaya, 'IDR', 'id-ID')
+				: '-',
+			after: query.data?.listPeserta[index]?.after?.tambahanBiaya ? formatCurrency(query.data?.listPeserta[index]?.after?.tambahanBiaya, 'IDR', 'id-ID') : '-'
+		},
+		{
+			label: 'Keterangan Substandard',
+			before: query.data?.listPeserta[index]?.before?.keteranganSubstrandar,
+			after: query.data?.listPeserta[index]?.after?.keteranganSubstrandar
+		},
+		{
+			label: 'Diagnosis Description',
+			before: query.data?.listPeserta[index]?.before?.diagnosisDescription
+				? query.data.listPeserta[index]?.before?.diagnosisDescription.map(({ diagnosis }) => diagnosis).join(', ')
+				: '-',
+			after: query.data?.listPeserta[index]?.after?.diagnosisDescription
+				? query.data.listPeserta[index]?.after?.diagnosisDescription.map(({ diagnosis }) => diagnosis).join(', ')
+				: '-'
+		}
+	]);
+</script>
+
+<InfoGroup.Root>
+	<InfoGroup.Trigger title="Decision per Product"></InfoGroup.Trigger>
+	<InfoGroup.Content>
+		{#if query.data}
+			{#each query.data.listPeserta.slice(0, 1) as item, i (i)}
+				<InfoGroup.Root>
+					<InfoGroup.Trigger title={item.namaTertanggung}>
+						{#snippet rightChild()}
+							<Update data={item} />
+						{/snippet}
+					</InfoGroup.Trigger>
+					<InfoGroup.Content class="bg-background">
+						<div class="divide-y">
+							{#each diffMap(i) as { label, before, after }, j (j)}
+								<TrackedDetailItem {label} {before} {after} />
+							{/each}
+						</div>
+					</InfoGroup.Content>
+				</InfoGroup.Root>
+			{/each}
+		{/if}
+	</InfoGroup.Content>
+</InfoGroup.Root>

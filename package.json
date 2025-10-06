@@ -65,7 +65,8 @@
 	"pnpm": {
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
-			"esbuild"
+			"esbuild",
+			"puppeteer"
 		]
 	},
 	"dependencies": {
@@ -82,6 +83,7 @@
 		"mode-watcher": "^1.1.0",
 		"nuqs-svelte": "^1.2.2",
 		"pdfjs-dist": "^5.4.149",
+		"puppeteer": "^24.23.0",
 		"runed": "^0.34.0",
 		"tailwind-merge": "^3.3.1"
 	}
