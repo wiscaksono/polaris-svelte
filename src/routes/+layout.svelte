@@ -44,7 +44,7 @@
 			{@render children?.()}
 
 			<ModeWatcher modeStorageKey="theme" />
-			<Toaster />
+			<Toaster richColors />
 			<SvelteQueryDevtools buttonPosition="bottom-right" />
 		</QueryClientProvider>
 	</Tooltip.Provider>

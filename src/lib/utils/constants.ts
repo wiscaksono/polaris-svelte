@@ -1,5 +1,7 @@
 import * as icon from '@lucide/svelte';
 
+export const IS_DEV = import.meta.env.MODE === 'development';
+
 export const sideMenu = [
 	{
 		title: null,

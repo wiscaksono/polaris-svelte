@@ -21,7 +21,7 @@ export const load: LayoutLoad = () => {
 			mutations: {
 				onError: (error) => {
 					console.log(error);
-					toast.error('Something went wrong', { description: error.message ?? 'Please try again later' });
+					toast.error('Something went wrong', { description: error.message ?? 'Please try again later', position: 'bottom-center' });
 				}
 			}
 		}
