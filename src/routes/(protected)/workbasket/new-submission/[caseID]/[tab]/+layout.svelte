@@ -29,7 +29,7 @@
 		})
 	);
 
-	setTaskFormContext({ taskFormParams: data.taskFormParams });
+	setTaskFormContext({ taskFormParams: () => data.taskFormParams, currentTaskFormTab: () => data.currentTaskFormTab });
 </script>
 
 <div class="grid grid-cols-[1fr_1.25rem_1fr] overflow-hidden">

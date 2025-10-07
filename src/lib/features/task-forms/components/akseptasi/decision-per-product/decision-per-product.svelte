@@ -10,7 +10,7 @@
 	import { decisionPerProductQueries } from './query';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 	const query = createQuery(() => decisionPerProductQueries.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 
 	const diffMap = $derived((index: number) => [
@@ -98,8 +98,10 @@
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.namaTertanggung}>
 						{#snippet rightChild()}
-							{#if item.after.productName}
-								<Update data={item} />
+							{#if currentTaskFormTab.slug !== 'worksheet'}
+								{#if item.after.productName}
+									<Update data={item} />
+								{/if}
 							{/if}
 						{/snippet}
 					</InfoGroup.Trigger>

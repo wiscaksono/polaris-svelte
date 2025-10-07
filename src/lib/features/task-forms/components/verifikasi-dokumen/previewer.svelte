@@ -12,11 +12,13 @@
 	import Delete from './actions/delete.svelte';
 
 	import { verifikasiDokumenQueries } from './queries';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { VerifikasiDokumenListDocument } from './type';
 
 	let { data }: { data: VerifikasiDokumenListDocument[number] } = $props();
 
+	const { currentTaskFormTab } = getTaskFormContext();
 	const documentQuery = createQuery(() => verifikasiDokumenQueries.viewDocument(data.ID));
 
 	let thumbnailUrl = $state('');
@@ -57,24 +59,26 @@
 						<p class="line-clamp-1 text-sm">{data.JENIS_DOC}</p>
 						<p class="line-clamp-1 text-xs text-muted-foreground">{dayjs(data.CREATED_DATE).format('DD MMM YYYY, HH:mm')}</p>
 					</div>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger>
-							{#snippet child({ props })}
-								<Button {...props} variant="ghost" size="icon" class="size-6 rounded">
-									<EllipsisVertical />
-								</Button>
-							{/snippet}
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content>
-							<DropdownMenu.Group>
-								<DropdownMenu.Label>Actions</DropdownMenu.Label>
-								<DropdownMenu.Separator />
-								<Update {data} />
-								<DropdownMenu.Separator />
-								<Delete idDoc={data.ID_DOC} />
-							</DropdownMenu.Group>
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
+					{#if currentTaskFormTab.slug !== 'worksheet'}
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								{#snippet child({ props })}
+									<Button {...props} variant="ghost" size="icon" class="size-6 rounded">
+										<EllipsisVertical />
+									</Button>
+								{/snippet}
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content>
+								<DropdownMenu.Group>
+									<DropdownMenu.Label>Actions</DropdownMenu.Label>
+									<DropdownMenu.Separator />
+									<Update {data} />
+									<DropdownMenu.Separator />
+									<Delete idDoc={data.ID_DOC} />
+								</DropdownMenu.Group>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+					{/if}
 				</div>
 			</div>
 		{/snippet}

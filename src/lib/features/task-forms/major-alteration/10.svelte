@@ -7,15 +7,21 @@
 	import Pending from '../components/actions/pending';
 	import CancelTicket from '../components/actions/cancel-ticket';
 	import EskalasiKeTL from '../components/actions/eskalasi-ke-tl';
+
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
+
+	const { currentTaskFormTab } = getTaskFormContext();
 </script>
 
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
-		<EskalasiKeTL />
-		<Approve />
-		<Pending />
-		<CancelTicket />
-	</div>
+	{#if currentTaskFormTab.slug !== 'worksheet'}
+		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
+			<EskalasiKeTL />
+			<Approve />
+			<Pending />
+			<CancelTicket />
+		</div>
+	{/if}
 	<FurtherRequirement />
 	<HistoryEskalasiKeTL />
 	<DecisionPerProduct />

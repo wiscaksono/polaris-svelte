@@ -11,7 +11,7 @@
 	import Previewer from './previewer.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
 	const listDocumentQuery = createQuery(() => verifikasiDokumenQueries.listDocument({ noTrx: taskFormParams.no_trx, regSpaj: taskFormParams.reg_spaj }));
 </script>
@@ -19,7 +19,9 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Verifikasi Dokumen">
 		{#snippet rightChild()}
-			<Upload />
+			{#if currentTaskFormTab.slug !== 'worksheet'}
+				<Upload />
+			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
 	<InfoGroup.Content wrapperClassName="grid lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-2 space-y-0 bg-background">

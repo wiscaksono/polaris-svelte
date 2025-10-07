@@ -18,7 +18,7 @@
 	import { furtherRequirementQueries, formSPMQueries } from './queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 	const furtherQuery = createQuery(() => furtherRequirementQueries.get({ regSpaj: taskFormParams.reg_spaj, caseId: taskFormParams.case_id }));
 
 	const isContainMCU = $derived(!!furtherQuery.data?.map((item) => item.kategori).filter((item) => item.includes('MCU')).length);
@@ -38,6 +38,8 @@
 			return { isLoading, data };
 		}
 	}));
+
+	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
 </script>
 
 <InfoGroup.Root>
@@ -47,13 +49,16 @@
 		<section class="space-y-2">
 			<div class="flex items-center justify-between gap-2">
 				<p class="font-medium">Further Requirements</p>
-				{#if furtherQuery.data}
-					<CreateFurther data={furtherQuery.data} />
-				{:else}
-					<Button class="!pl-2" disabled>
-						<Plus />
-						Add
-					</Button>
+
+				{#if !isCurrentTabWorksheet}
+					{#if furtherQuery.data}
+						<CreateFurther data={furtherQuery.data} />
+					{:else}
+						<Button class="!pl-2" disabled>
+							<Plus />
+							Add
+						</Button>
+					{/if}
 				{/if}
 			</div>
 			<Table.Root variant="outline">
@@ -64,9 +69,11 @@
 						<Table.Head>Remarks</Table.Head>
 						<Table.Head>Completed</Table.Head>
 						<Table.Head>Tanggal Completed</Table.Head>
-						<Table.Head class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-							Action
-						</Table.Head>
+						{#if currentTaskFormTab.slug !== 'worksheet'}
+							<Table.Head class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+								Action
+							</Table.Head>
+						{/if}
 					</Table.Row>
 				</Table.Header>
 				<Table.Body>
@@ -110,7 +117,7 @@
 						{/each}
 					{:else if furtherQuery.isError}
 						<Table.Row>
-							<Table.Cell colspan={9} class="text-center">Error: {furtherQuery.error.message}</Table.Cell>
+							<Table.Cell colspan={isCurrentTabWorksheet ? 5 : 6} class="text-center">Error: {furtherQuery.error.message}</Table.Cell>
 						</Table.Row>
 					{:else if furtherQuery.data.length}
 						{#each furtherQuery.data as item, i (i)}
@@ -120,15 +127,17 @@
 								<Table.Cell>{item.remarks ?? '-'}</Table.Cell>
 								<Table.Cell>{item.statusFurther === 'ACCEPT' || item.statusFurther === 'COMPLETED' ? 'Yes' : 'No'}</Table.Cell>
 								<Table.Cell>{item.tglDecision ? dayjs(item.tglDecision).format('DD MMM YYYY, HH:mm') : '-'}</Table.Cell>
-								<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-									<UpdateFurther data={item} />
-									<DeleteFurther data={item} />
-								</Table.Cell>
+								{#if !isCurrentTabWorksheet}
+									<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+										<UpdateFurther data={item} />
+										<DeleteFurther data={item} />
+									</Table.Cell>
+								{/if}
 							</Table.Row>
 						{/each}
 					{:else}
 						<Table.Row>
-							<Table.Cell colspan={9} class="h-16 text-center">No further requirement found</Table.Cell>
+							<Table.Cell colspan={isCurrentTabWorksheet ? 5 : 6} class="h-16 text-center">No further requirement found</Table.Cell>
 						</Table.Row>
 					{/if}
 				</Table.Body>
@@ -140,13 +149,16 @@
 			<section class="space-y-2" transition:slide>
 				<div class="flex items-center justify-between gap-2">
 					<p class="font-medium">Form SPM</p>
-					{#if formSPMQuery.data}
-						<CreateFormSPM initialData={formSPMQuery.data} />
-					{:else}
-						<Button class="!pl-2" disabled>
-							<Plus />
-							Add
-						</Button>
+
+					{#if !isCurrentTabWorksheet}
+						{#if formSPMQuery.data}
+							<CreateFormSPM initialData={formSPMQuery.data} />
+						{:else}
+							<Button class="!pl-2" disabled>
+								<Plus />
+								Add
+							</Button>
+						{/if}
 					{/if}
 				</div>
 				<Table.Root variant="outline">
@@ -163,9 +175,11 @@
 							<Table.Head>Tanggal Update</Table.Head>
 							<Table.Head>Completed</Table.Head>
 							<Table.Head>Tanggal Completed</Table.Head>
-							<Table.Head class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-								Action
-							</Table.Head>
+							{#if !isCurrentTabWorksheet}
+								<Table.Head class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+									Action
+								</Table.Head>
+							{/if}
 						</Table.Row>
 					</Table.Header>
 					<Table.Body>
@@ -227,19 +241,21 @@
 											<div class="h-full w-full rounded bg-muted"></div>
 										</div>
 									</Table.Cell>
-									<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-										<Button variant="ghost" size="icon" class="size-6" disabled>
-											<Pencil />
-										</Button>
-										<Button variant="ghost" size="icon" class="size-6" disabled>
-											<Trash />
-										</Button>
-									</Table.Cell>
+									{#if !isCurrentTabWorksheet}
+										<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+											<Button variant="ghost" size="icon" class="size-6" disabled>
+												<Pencil />
+											</Button>
+											<Button variant="ghost" size="icon" class="size-6" disabled>
+												<Trash />
+											</Button>
+										</Table.Cell>
+									{/if}
 								</Table.Row>
 							{/each}
 						{:else if formSPMQuery.isError}
 							<Table.Row>
-								<Table.Cell colspan={9} class="text-center">Error: {formSPMQuery.error.message}</Table.Cell>
+								<Table.Cell colspan={isCurrentTabWorksheet ? 10 : 11} class="text-center">Error: {formSPMQuery.error.message}</Table.Cell>
 							</Table.Row>
 						{:else if formSPMQuery.data?.length}
 							{#each formSPMQuery.data as item, i (i)}
@@ -291,26 +307,36 @@
 										{/if}
 									</Table.Cell>
 									<Table.Cell>
-										<Input class="h-8 w-full" type="date" value={dayjs(item.tgl_update).format('YYYY-MM-DD')} />
+										{#if !isCurrentTabWorksheet}
+											<Input class="h-8 w-full" type="date" value={dayjs(item.tgl_update).format('YYYY-MM-DD')} />
+										{:else}
+											{item.tgl_update ? dayjs(item.tgl_update).format('DD MMM YYYY, HH:mm') : '-'}
+										{/if}
 									</Table.Cell>
 									<Table.Cell>
-										<Select.Root type="single">
-											<Select.Trigger class="w-full" size="sm">
-												{item.status}
-											</Select.Trigger>
-											<Select.Content>
-												<Select.Item value="Yes">Yes</Select.Item>
-												<Select.Item value="No">No</Select.Item>
-											</Select.Content>
-										</Select.Root>
+										{#if !isCurrentTabWorksheet}
+											<Select.Root type="single">
+												<Select.Trigger class="w-full" size="sm">
+													{item.status}
+												</Select.Trigger>
+												<Select.Content>
+													<Select.Item value="Yes">Yes</Select.Item>
+													<Select.Item value="No">No</Select.Item>
+												</Select.Content>
+											</Select.Root>
+										{:else}
+											{item.status}
+										{/if}
 									</Table.Cell>
 									<Table.Cell>
 										{item.tgl_completed ? dayjs(item.tgl_completed).format('DD MMM YYYY, HH:mm') : '-'}
 									</Table.Cell>
-									<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-										<UpdateFormSPM data={item} initialData={formSPMQuery.data} />
-										<DeleteFormSPM data={item} initialData={formSPMQuery.data} />
-									</Table.Cell>
+									{#if !isCurrentTabWorksheet}
+										<Table.Cell class="sticky right-0 z-20 w-40 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+											<UpdateFormSPM data={item} initialData={formSPMQuery.data} />
+											<DeleteFormSPM data={item} initialData={formSPMQuery.data} />
+										</Table.Cell>
+									{/if}
 								</Table.Row>
 								<Table.Row>
 									<Table.Cell colspan={4} class="h-px p-0">
@@ -329,7 +355,7 @@
 											</div>
 										</div>
 									</Table.Cell>
-									<Table.Cell colspan={8} class="h-px p-0">
+									<Table.Cell colspan={isCurrentTabWorksheet ? 7 : 8} class="h-px p-0">
 										<div class="flex h-full flex-col border-l-4 border-info">
 											<div class="space-y-1 px-4 py-2">
 												<p class="border-b pb-1 font-medium">PEMERIKSAAN TAMBAHAN</p>

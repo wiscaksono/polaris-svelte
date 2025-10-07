@@ -9,6 +9,8 @@
 	import Update from './actions/update.svelte';
 
 	import { formatCurrency } from '$lib/utils';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
+
 	import type { DataPertanggunganRes } from '../type';
 
 	interface Props {
@@ -20,6 +22,7 @@
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
+	const { currentTaskFormTab } = getTaskFormContext();
 	const diffMap = $derived([
 		{ label: 'Nama Produk', before: data?.before.nama_produk.product, after: data?.after.nama_produk.product },
 		{
@@ -120,8 +123,10 @@
 				</div>
 			{/if}
 
-			{#if data?.after}
-				<Update data={data.after} {initialData} />
+			{#if currentTaskFormTab.slug !== 'worksheet'}
+				{#if data?.after}
+					<Update data={data.after} {initialData} />
+				{/if}
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>

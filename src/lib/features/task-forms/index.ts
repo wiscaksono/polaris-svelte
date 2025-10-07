@@ -1,8 +1,6 @@
 import type { TransactionType } from '$lib/utils/type';
 import type { SearchPolisListRes } from '../search-polis/queries/type';
 
-export type TaskFormProps = { taskFormParams: SearchPolisListRes[number] };
-
 export interface TaskFormConfig {
 	title: string;
 	slug: string;
@@ -11,7 +9,7 @@ export interface TaskFormConfig {
 	component: Promise<typeof import('*.svelte')>;
 }
 
-export const majorAlterationTaskForms: TaskFormConfig[] = [
+export const majorAlterationTaskForms = [
 	{
 		title: 'Data Submission',
 		slug: 'data-submission',
@@ -62,17 +60,18 @@ export const majorAlterationTaskForms: TaskFormConfig[] = [
 		slug: 'akseptasi',
 		component: import('./major-alteration/10.svelte')
 	}
-];
+] as const satisfies TaskFormConfig[];
 
-export const withdrawalTaskForms: TaskFormConfig[] = [
+
+export const withdrawalTaskForms = [
 	{
 		title: 'Data Submission',
 		slug: 'data-submission',
 		component: import('./withdrawal/1.svelte')
 	}
-];
+] as const satisfies TaskFormConfig[];
 
-export const taskForms: Record<TransactionType, TaskFormConfig[]> = {
+export const taskForms = {
 	'Major Alteration': majorAlterationTaskForms,
 	'Minor Alteration': majorAlterationTaskForms,
 	Tolakan: majorAlterationTaskForms,
@@ -100,4 +99,11 @@ export const taskForms: Record<TransactionType, TaskFormConfig[]> = {
 	'Maturity Trad': majorAlterationTaskForms,
 	'Tolakan Trad': majorAlterationTaskForms,
 	'Refund Trad': majorAlterationTaskForms
+} satisfies Record<TransactionType, readonly TaskFormConfig[]>;;
+
+export type TaskForms = (typeof taskForms)[TransactionType];
+
+export type TaskFormProps = {
+	taskFormParams: SearchPolisListRes[number];
+	currentTaskFormTab: TaskForms[number]; // Use the new, more descriptive TaskForm type
 };

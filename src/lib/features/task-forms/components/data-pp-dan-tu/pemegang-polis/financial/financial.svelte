@@ -5,11 +5,13 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
 	import TrackedDetailItem from '$lib/components/tracked-detail-item.svelte';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { DataPPdanTURes } from '../../type';
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['financial'] | undefined } = $props();
 
+	const { currentTaskFormTab } = getTaskFormContext();
 	const diffMap = $derived([
 		{ label: 'Sumber Dana', before: data?.before.sumberDana, after: data?.after.sumberDana },
 		{ label: 'Penghasilan Per Tahun', before: data?.before.penghasilanPerTahun.label, after: data?.after.penghasilanPerTahun.label },
@@ -24,12 +26,14 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Financial">
 		{#snippet rightChild()}
-			{#if data}
-				<Edit data={data.after} />
-			{:else}
-				<Button variant="ghost" size="icon" disabled class="size-6">
-					<Pencil />
-				</Button>
+			{#if currentTaskFormTab.slug !== 'worksheet'}
+				{#if data}
+					<Edit data={data.after} />
+				{:else}
+					<Button variant="ghost" size="icon" disabled class="size-6">
+						<Pencil />
+					</Button>
+				{/if}
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>

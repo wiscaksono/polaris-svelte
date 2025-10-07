@@ -12,6 +12,8 @@
 	import Update from './actions/update.svelte';
 
 	import { formatCurrency } from '$lib/utils';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
+
 	import type { DataPertanggunganRes } from '../type';
 
 	interface Props {
@@ -23,6 +25,7 @@
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
+	const { currentTaskFormTab } = getTaskFormContext();
 	const diffMap = $derived((index: number) => [
 		{ label: 'Nama Tertanggung', before: data?.[index].before.nama_tertanggung, after: data?.[index].after.nama_tertanggung },
 		{ label: 'Jenis Tertanggung', before: data?.[index].before.jenis_tertanggung.label, after: data?.[index].after.jenis_tertanggung.label },
@@ -96,7 +99,10 @@
 					<CircleAlert class="size-5 text-destructive" />
 				</div>
 			{/if}
-			<Create {data} {initialData} />
+
+			{#if currentTaskFormTab.slug !== 'worksheet'}
+				<Create {data} {initialData} />
+			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
 	<InfoGroup.Content class={!data?.length ? 'bg-background' : ''}>
@@ -117,9 +123,12 @@
 									<CircleAlert class="size-5 text-destructive" />
 								</div>
 							{/if}
-							{#if initialData && initialData.data_pertanggungan.manfaat_asuransi_tambahan[index].action !== 'delete'}
-								<Delete {initialData} {index} />
-								<Update data={item} {initialData} {index} />
+
+							{#if currentTaskFormTab.slug !== 'worksheet'}
+								{#if initialData && initialData.data_pertanggungan.manfaat_asuransi_tambahan[index].action !== 'delete'}
+									<Delete {initialData} {index} />
+									<Update data={item} {initialData} {index} />
+								{/if}
 							{/if}
 						{/snippet}
 					</InfoGroup.Trigger>

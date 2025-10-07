@@ -17,15 +17,17 @@
 	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
 	import AlamatDomisili from './alamat-domisili/alamat-domisili.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
 	const query = createQuery(() => dataTTQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 </script>
 
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2">
-		<Create data={query.data} />
-	</div>
+	{#if currentTaskFormTab.slug !== 'worksheet'}
+		<div class="flex items-center justify-end gap-2">
+			<Create data={query.data} />
+		</div>
+	{/if}
 
 	{#if query.isLoading}
 		<InfoGroup.Root>
@@ -58,9 +60,11 @@
 								<CircleAlert class="size-5 text-destructive" />
 							</div>
 						{/if}
-						{#if !isDeleted}
-							<Edit data={query.data} {item} {index} />
-							<Delete data={query.data} {index} />
+						{#if currentTaskFormTab.slug !== 'worksheet'}
+							{#if !isDeleted}
+								<Edit data={query.data} {item} {index} />
+								<Delete data={query.data} {index} />
+							{/if}
 						{/if}
 					{/snippet}
 				</InfoGroup.Trigger>

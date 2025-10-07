@@ -8,9 +8,15 @@
 
 	import type { DataKesehatanRes } from './type';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
-	const query = createQuery(() => dataKesehatanQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
+	const query = createQuery(() =>
+		dataKesehatanQueries.get({
+			caseId: taskFormParams.case_id,
+			regSpaj: taskFormParams.reg_spaj,
+			isCurrentTabWorksheet: currentTaskFormTab.slug === 'worksheet'
+		})
+	);
 </script>
 
 <InfoGroup.Root>
