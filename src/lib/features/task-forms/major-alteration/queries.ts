@@ -1,6 +1,6 @@
 import { queryOptions, useQueryClient } from '@tanstack/svelte-query';
 
-import { getTaskFormContext } from '../context';
+import { getTaskFormContext } from '../context.svelte';
 import { api, mutationOptions } from '$lib/utils';
 
 import * as Types from './type';
@@ -35,7 +35,7 @@ export const majorAlterationQueries = {
 };
 
 export const majorAlterationMutations = {
-	tab1: () => {},
+	tab1: () => { },
 
 	tab2: () => {
 		const queryClient = useQueryClient();

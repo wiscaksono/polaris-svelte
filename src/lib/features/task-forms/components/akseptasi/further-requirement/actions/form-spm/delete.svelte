@@ -6,7 +6,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 
 	import { formSPMQueries } from '../../queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { FormSPMRes } from '../../type';
 

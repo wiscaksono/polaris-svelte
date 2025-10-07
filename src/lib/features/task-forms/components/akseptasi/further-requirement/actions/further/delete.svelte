@@ -6,7 +6,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog/index.js';
 
 	import { furtherRequirementQueries } from '../../queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import { userStore } from '$lib/stores';
 

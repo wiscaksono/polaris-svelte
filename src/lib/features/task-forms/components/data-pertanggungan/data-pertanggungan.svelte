@@ -3,7 +3,7 @@
 	import ManfaatAsuransiDasar from './manfaat-asuransi-dasar';
 	import ManfaatAsuransiTambahan from './manfaat-asuransi-tambahan';
 
-	import { getTaskFormContext } from '../../context';
+	import { getTaskFormContext } from '../../context.svelte';
 	import { dataPertanggunganQueries } from './query';
 
 	const { taskFormParams } = getTaskFormContext();

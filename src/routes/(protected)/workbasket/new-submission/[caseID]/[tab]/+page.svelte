@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { setTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
 
-	setTaskFormContext({ taskFormParams: data.taskFormParams });
+	$inspect(getTaskFormContext());
 </script>
 
 {#if data.currentTaskFormTab}

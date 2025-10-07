@@ -12,7 +12,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import { formSPMQueries } from '../../queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams } = getTaskFormContext();
 

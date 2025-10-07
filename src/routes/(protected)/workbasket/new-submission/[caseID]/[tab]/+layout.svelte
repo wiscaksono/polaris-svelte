@@ -8,6 +8,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import { taskFormQueries } from '$lib/features/task-forms/queries';
+	import { setTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const tabs = [
 		{ id: 'document-trx', title: 'Dokumen Transaksi', icon: BookText },
@@ -27,6 +28,8 @@
 			trx_major: data.taskFormParams.no_trx
 		})
 	);
+
+	setTaskFormContext({ taskFormParams: data.taskFormParams });
 </script>
 
 <div class="grid grid-cols-[1fr_1.25rem_1fr] overflow-hidden">

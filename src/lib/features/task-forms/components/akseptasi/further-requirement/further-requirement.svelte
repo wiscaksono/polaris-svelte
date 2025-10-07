@@ -16,7 +16,7 @@
 	import { CreateFormSPM, UpdateFormSPM, DeleteFormSPM } from './actions/form-spm';
 
 	import { furtherRequirementQueries, formSPMQueries } from './queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams } = getTaskFormContext();
 	const furtherQuery = createQuery(() => furtherRequirementQueries.get({ regSpaj: taskFormParams.reg_spaj, caseId: taskFormParams.case_id }));

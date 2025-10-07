@@ -1,6 +1,8 @@
 export interface DataPolisTabsConfig {
 	title: string;
 	slug: string;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - not sure what is wrong here
 	component: Promise<typeof import('*.svelte')>;
 }
 

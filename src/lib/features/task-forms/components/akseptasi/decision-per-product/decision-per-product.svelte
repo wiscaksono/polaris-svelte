@@ -8,7 +8,7 @@
 
 	import { formatCurrency } from '$lib/utils';
 	import { decisionPerProductQueries } from './query';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams } = getTaskFormContext();
 	const query = createQuery(() => decisionPerProductQueries.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));

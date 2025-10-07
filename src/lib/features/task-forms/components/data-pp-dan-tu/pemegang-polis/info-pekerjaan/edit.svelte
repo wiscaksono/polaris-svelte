@@ -11,7 +11,7 @@
 
 	import { commonQueries } from '$lib/queries';
 	import { dataPPdanTUQueries } from '../../query';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { DataPPdanTURes } from '../../type';
 

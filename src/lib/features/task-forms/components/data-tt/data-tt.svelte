@@ -4,7 +4,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 
 	import { dataTTQueries } from './query';
-	import { getTaskFormContext } from '../../context';
+	import { getTaskFormContext } from '../../context.svelte';
 
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import * as InfoGroup from '$lib/components/ui/info-group/index.js';
@@ -17,17 +17,15 @@
 	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
 	import AlamatDomisili from './alamat-domisili/alamat-domisili.svelte';
 
-	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
+	const { taskFormParams } = getTaskFormContext();
 
 	const query = createQuery(() => dataTTQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 </script>
 
 <div class="space-y-2">
-	{#if currentTaskFormTab?.title !== 'Worksheet'}
-		<div class="flex items-center justify-end gap-2">
-			<Create data={query.data} />
-		</div>
-	{/if}
+	<div class="flex items-center justify-end gap-2">
+		<Create data={query.data} />
+	</div>
 
 	{#if query.isLoading}
 		<InfoGroup.Root>

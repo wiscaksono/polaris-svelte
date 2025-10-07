@@ -13,7 +13,7 @@
 
 	import { userStore } from '$lib/stores';
 	import { decisionPerProductQueries } from '../query';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { DecisionPerProductRes } from '../type';
 

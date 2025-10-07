@@ -13,7 +13,7 @@
 
 	import { userStore } from '$lib/stores';
 	import { formSPMQueries } from '../../queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams } = getTaskFormContext();
 

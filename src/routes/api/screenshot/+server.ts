@@ -35,12 +35,7 @@ export const GET: RequestHandler = async ({ url: internalURL }) => {
 
     if (!element) return error(404, { message: 'Element not found' });
 
-    // Screenshot hanya elemen itu beserta anak-anaknya
-    const screenshot = await element.screenshot({ type: 'png' });
-
-    return new Response(screenshot, {
-      headers: { 'Content-Type': 'image/png' }
-    });
+    return new Response("hi");
   } catch (err) {
     console.error(err);
     return error(500, { message: 'Failed to capture element screenshot' });

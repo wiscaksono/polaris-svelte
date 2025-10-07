@@ -6,6 +6,8 @@ export type TaskFormProps = { taskFormParams: SearchPolisListRes[number] };
 export interface TaskFormConfig {
 	title: string;
 	slug: string;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - not sure what is wrong here
 	component: Promise<typeof import('*.svelte')>;
 }
 

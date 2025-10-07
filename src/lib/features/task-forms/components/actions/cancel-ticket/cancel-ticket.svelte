@@ -16,7 +16,7 @@
 	import { userStore } from '$lib/stores';
 	import { actionQueries } from '../queries';
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const initialValues = { remarks: '', reason: '', file: undefined };
 

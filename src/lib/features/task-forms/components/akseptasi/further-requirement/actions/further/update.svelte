@@ -9,7 +9,7 @@
 
 	import { userStore } from '$lib/stores';
 	import { furtherRequirementQueries } from '../../queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { FurtherRequirementRes } from '../../type';
 

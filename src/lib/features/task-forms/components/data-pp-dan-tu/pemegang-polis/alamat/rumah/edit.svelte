@@ -12,7 +12,7 @@
 
 	import { dataPPdanTUQueries } from '../../../query';
 	import { addressQueries } from '$lib/queries';
-	import { getTaskFormContext } from '$lib/features/task-forms/context';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	import type { DataPPdanTURes } from '../../../type';
 
