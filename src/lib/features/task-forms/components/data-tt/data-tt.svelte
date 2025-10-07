@@ -17,20 +17,32 @@
 	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
 	import AlamatDomisili from './alamat-domisili/alamat-domisili.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
 	const query = createQuery(() => dataTTQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 </script>
 
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2">
-		<Create data={query.data} />
-	</div>
+	{#if currentTaskFormTab?.title !== 'Worksheet'}
+		<div class="flex items-center justify-end gap-2">
+			<Create data={query.data} />
+		</div>
+	{/if}
 
 	{#if query.isLoading}
-		<div>awikwok</div>
+		<InfoGroup.Root>
+			<InfoGroup.Trigger title="Data Tertanggung Tambahan" />
+			<InfoGroup.Content>
+				<p class="grid h-16 place-items-center">Loading…</p>
+			</InfoGroup.Content>
+		</InfoGroup.Root>
 	{:else if query.isError}
-		<div>Error</div>
+		<InfoGroup.Root>
+			<InfoGroup.Trigger title="Data Tertanggung Tambahan" />
+			<InfoGroup.Content>
+				<p class="grid h-16 place-items-center">{query.error.message}</p>
+			</InfoGroup.Content>
+		</InfoGroup.Root>
 	{:else if query.data?.tertanggung_tambahan.length}
 		{#each query.data.tertanggung_tambahan as item, index (index)}
 			{@const isDeleted = item.after?.data_diri?.nama_lengkap === null || item.after?.data_diri?.nama_lengkap === undefined}
@@ -62,6 +74,11 @@
 			</InfoGroup.Root>
 		{/each}
 	{:else}
-		<div>No data</div>
+		<InfoGroup.Root>
+			<InfoGroup.Trigger title="Data Tertanggung Tambahan" />
+			<InfoGroup.Content>
+				<p class="grid h-16 place-items-center">No data</p>
+			</InfoGroup.Content>
+		</InfoGroup.Root>
 	{/if}
 </div>
