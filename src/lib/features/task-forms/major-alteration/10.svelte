@@ -3,11 +3,15 @@
 	import HistoryEskalasiKeTL from '$lib/features/task-forms/components/akseptasi/history-eskalasi-ke-tl';
 	import DecisionPerProduct from '$lib/features/task-forms/components/akseptasi/decision-per-product';
 
+	import Approve from '../components/actions/approve';
+	import Pending from '../components/actions/pending';
 	import CancelTicket from '../components/actions/cancel-ticket';
 </script>
 
 <div class="space-y-2">
 	<div class="flex items-center justify-end gap-2">
+		<Approve />
+		<Pending />
 		<CancelTicket />
 	</div>
 	<FurtherRequirement />

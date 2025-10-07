@@ -65,7 +65,7 @@
 <Dialog.Root bind:open onOpenChangeComplete={() => (values = initialValues)}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} class="!pl-2" onclick={() => (open = true)}>
+			<Button {...props} class="!pl-2.5">
 				<X />
 				Cancel Ticket
 			</Button>

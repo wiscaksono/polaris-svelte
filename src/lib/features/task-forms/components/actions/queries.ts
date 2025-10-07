@@ -1,6 +1,7 @@
-import { api, mutationOptions } from "$lib/utils"
+import { queryOptions } from "@tanstack/svelte-query";
 
-import { IS_DEV } from "$lib/utils";
+import { api, mutationOptions, IS_DEV } from "$lib/utils"
+import * as Type from "./type"
 
 export const actionQueries = {
   cancelTicket: ({ lusId, noTrx, regSpaj, docId, nopol }: { lusId: number; noTrx: string, regSpaj: string, docId: number, nopol: string }) => {
@@ -39,6 +40,44 @@ export const actionQueries = {
         }
 
         await Promise.all(promises)
+      }
+    })
+  },
+  getApproveButtonState: ({ docId, regSpaj, trxMajor, lusId }: { docId: number, regSpaj: string, trxMajor: string, lusId: number }) => {
+    return queryOptions({
+      queryKey: ['action-approve', 'get-button-state', docId, regSpaj, trxMajor, lusId],
+      queryFn: async () => {
+        const { data } = await api.post<Type.ApproveButtonStateRes>('/polaris/api-business-polaris/major/alteration/buttonApproval', {
+          regSpaj,
+          docId,
+          trxMajor,
+          lusId
+        })
+
+        return data
+      }
+    })
+  },
+  getApproveButtonOldProduct: ({ trxMajor, regSpaj }: { trxMajor: string, regSpaj: string }) => {
+    return queryOptions({
+      queryKey: ['action-approve', 'validate-button-state', trxMajor, regSpaj],
+      queryFn: async () => {
+        const { message } = await api.get<boolean>(`/polaris/api-business-polaris/major/general/validateProductAndBilling/?noTrx=${trxMajor}&regSpaj=${regSpaj}`)
+        return message
+      }
+    })
+  },
+  getApprovalButtonLimitValidation: ({ docId, regSpaj, trxMajor, lusId }: { docId: number, regSpaj: string, trxMajor: string, lusId: number }) => {
+    return queryOptions({
+      queryKey: ['action-approve', 'todo', docId, regSpaj, trxMajor, lusId],
+      queryFn: async () => {
+        const { data } = await api.post<Type.ApproveButtonLimitValidationRes>('/polaris/api-business-polaris/major/alteration/validasiApproval', {
+          regSpaj,
+          docId,
+          trxMajor,
+          lusId
+        })
+        return data
       }
     })
   }
