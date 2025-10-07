@@ -80,44 +80,83 @@
 				: '-'
 		}
 	]);
+
+	const groupedNamaTertanggung = $derived.by(() => {
+		const data = query.data?.listPeserta;
+		if (!data || currentTaskFormTab.slug !== 'worksheet') return undefined;
+		const dataGroup = Object.groupBy(data, ({ namaTertanggung }) => namaTertanggung);
+		return dataGroup;
+	});
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Decision per Product"></InfoGroup.Trigger>
-	<InfoGroup.Content>
-		{#if query.isLoading}
-			<div class="grid h-16 animate-pulse place-items-center">
-				<p class="text-center">Loading…</p>
-			</div>
-		{:else if query.isError}
-			<div class="grid h-16 place-items-center">
-				<p class="text-center">Error: {query.error.message}</p>
-			</div>
-		{:else if query.data}
-			{#each query.data.listPeserta as item, i (i)}
-				<InfoGroup.Root>
-					<InfoGroup.Trigger title={item.namaTertanggung}>
-						{#snippet rightChild()}
-							{#if currentTaskFormTab.slug !== 'worksheet'}
+	<InfoGroup.Trigger title="Decision per Product" />
+	{#if currentTaskFormTab.slug === 'worksheet'}
+		<InfoGroup.Content class="bg-background">
+			{#if query.isLoading}
+				<div class="grid h-16 animate-pulse place-items-center">
+					<p class="text-center">Loading…</p>
+				</div>
+			{:else if groupedNamaTertanggung}
+				{#each Object.keys(groupedNamaTertanggung) as namaTertanggung (namaTertanggung)}
+					{@const peserta = groupedNamaTertanggung[namaTertanggung]}
+					<InfoGroup.Root>
+						<InfoGroup.Trigger title={namaTertanggung} />
+						<InfoGroup.Content class="bg-background">
+							<div class="divide-y">
+								{#if peserta?.length}
+									{#each peserta as item, i (i)}
+										<TrackedDetailItem label={`Product ${i + 1}`} before={item.before.productName} after={item.after.productName} />
+									{/each}
+								{:else}
+									<div class="grid h-16 place-items-center">
+										<p class="text-center">This Policy has no decision per product data.</p>
+									</div>
+								{/if}
+							</div>
+						</InfoGroup.Content>
+					</InfoGroup.Root>
+				{/each}
+			{:else}
+				<div class="grid h-16 animate-pulse place-items-center">
+					<p class="text-center">This Policy has no decision per product data.</p>
+				</div>
+			{/if}
+		</InfoGroup.Content>
+	{:else}
+		<InfoGroup.Content>
+			{#if query.isLoading}
+				<div class="grid h-16 animate-pulse place-items-center">
+					<p class="text-center">Loading…</p>
+				</div>
+			{:else if query.isError}
+				<div class="grid h-16 place-items-center">
+					<p class="text-center">Error: {query.error.message}</p>
+				</div>
+			{:else if query.data}
+				{#each query.data.listPeserta as item, i (i)}
+					<InfoGroup.Root>
+						<InfoGroup.Trigger title={item.namaTertanggung}>
+							{#snippet rightChild()}
 								{#if item.after.productName}
 									<Update data={item} />
 								{/if}
-							{/if}
-						{/snippet}
-					</InfoGroup.Trigger>
-					<InfoGroup.Content class="bg-background">
-						<div class="divide-y">
-							{#each diffMap(i) as { label, before, after }, j (j)}
-								<TrackedDetailItem {label} {before} {after} />
-							{/each}
-						</div>
-					</InfoGroup.Content>
-				</InfoGroup.Root>
-			{/each}
-		{:else}
-			<div class="grid h-16 place-items-center">
-				<p class="text-center">This Policy has no decision per product data.</p>
-			</div>
-		{/if}
-	</InfoGroup.Content>
+							{/snippet}
+						</InfoGroup.Trigger>
+						<InfoGroup.Content class="bg-background">
+							<div class="divide-y">
+								{#each diffMap(i) as { label, before, after }, j (j)}
+									<TrackedDetailItem {label} {before} {after} />
+								{/each}
+							</div>
+						</InfoGroup.Content>
+					</InfoGroup.Root>
+				{/each}
+			{:else}
+				<div class="grid h-16 place-items-center">
+					<p class="text-center">This Policy has no decision per product data.</p>
+				</div>
+			{/if}
+		</InfoGroup.Content>
+	{/if}
 </InfoGroup.Root>

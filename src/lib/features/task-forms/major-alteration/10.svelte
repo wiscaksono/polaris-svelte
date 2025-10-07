@@ -23,6 +23,8 @@
 		</div>
 	{/if}
 	<FurtherRequirement />
-	<HistoryEskalasiKeTL />
+	{#if currentTaskFormTab.slug !== 'worksheet'}
+		<HistoryEskalasiKeTL />
+	{/if}
 	<DecisionPerProduct />
 </div>
