@@ -1,7 +1,7 @@
 <script lang="ts">
 	import deepEqual from 'deep-equal';
-	import { createQuery } from '@tanstack/svelte-query';
 	import { LoaderCircle, Pencil, Info } from '@lucide/svelte';
+	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Tooltip from '$lib/components/ui/tooltip';
@@ -11,7 +11,9 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	import { decisionPerProductQuery } from '../query';
+	import { userStore } from '$lib/stores';
+	import { decisionPerProductQueries } from '../query';
+	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
 	import type { DecisionPerProductRes } from '../type';
 
@@ -26,11 +28,23 @@
 	let diagnosisSearch = $state('');
 	let submitButton: HTMLButtonElement;
 
-	const isFormDirty = $derived(!deepEqual(data, values));
-	const listJenisAkseptasiQuery = createQuery(() => decisionPerProductQuery.listJenisAkseptasi());
-	const listSubAkseptasiQuery = createQuery(() => decisionPerProductQuery.listSubAkseptasi());
-	const listJenisExtraQuery = createQuery(() => decisionPerProductQuery.listJenisExtra());
-	const listDiagnosisQuery = createQuery(() => decisionPerProductQuery.listDiagnosis());
+	const { taskFormParams } = getTaskFormContext();
+
+	const queryClient = useQueryClient();
+	const isFormDirty = $derived(!deepEqual(data.after, values));
+
+	const mutation = createMutation(() =>
+		decisionPerProductQueries.update({
+			idDoc: String(taskFormParams.case_id),
+			lusId: userStore.current!.lus_id,
+			regSpaj: taskFormParams.reg_spaj,
+			trxMajor: taskFormParams.no_tmp
+		})
+	);
+	const listJenisAkseptasiQuery = createQuery(() => decisionPerProductQueries.listJenisAkseptasi());
+	const listSubAkseptasiQuery = createQuery(() => decisionPerProductQueries.listSubAkseptasi());
+	const listJenisExtraQuery = createQuery(() => decisionPerProductQueries.listJenisExtra());
+	const listDiagnosisQuery = createQuery(() => decisionPerProductQueries.listDiagnosis());
 
 	const filteredDiagnosis = $derived.by(() => {
 		const searchTerm = diagnosisSearch.toLowerCase().trim();
@@ -42,6 +56,30 @@
 	const isJenisAkseptasiSubstandard = $derived(values.jenisAkseptasi === 'Substandard');
 	const isSubAkseptasiExtra = $derived(values.subAkseptasi?.map((item) => item.desc_display).includes('EXTRA'));
 	const isSubAkseptasiExclusion = $derived(values.subAkseptasi?.map((item) => item.desc_display).includes('EXCLUSION'));
+
+	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
+		if (isFormDirty) {
+			e.preventDefault();
+			if (confirm('Unsaved changes. Are you sure you want to close this dialog?')) open = false;
+			return;
+		}
+	}
+
+	function handleSubmit(e: Event) {
+		e.preventDefault();
+		if (!isFormDirty) return;
+
+		mutation.mutate(
+			{ ...data, after: values },
+			{
+				onSuccess: async () => {
+					const queryKey = decisionPerProductQueries.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }).queryKey;
+					open = false;
+					await queryClient.invalidateQueries({ queryKey });
+				}
+			}
+		);
+	}
 </script>
 
 <Dialog.Root bind:open onOpenChangeComplete={() => (values = data.after)}>
@@ -61,12 +99,12 @@
 			</Button>
 		{/snippet}
 	</Dialog.Trigger>
-	<Dialog.Content>
+	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
-			<Dialog.Title>Update</Dialog.Title>
-			<Dialog.Description>lorem ipsum</Dialog.Description>
+			<Dialog.Title>Update Decision per Product</Dialog.Title>
+			<Dialog.Description>Adjust product decisions. Tooltips clarify each field.</Dialog.Description>
 		</Dialog.Header>
-		<form class="space-y-4">
+		<form class="space-y-4" onsubmit={handleSubmit}>
 			<div class="space-y-2">
 				<Label for="jenis-akseptasi">Jenis Akseptasi</Label>
 				<Select.Root
@@ -84,7 +122,7 @@
 								values.satuan = null;
 								values.tambahanBiaya = null;
 								values.keteranganSubstrandar = null;
-								values.diagnosisDescription = null;
+								values.diagnosisDescription = [];
 							}
 						}
 					}
@@ -126,7 +164,6 @@
 							const newDetailTambahan = v
 								.map((id) => {
 									const originalItem = listSubAkseptasiQuery.data.find((item) => String(item.sub_id) === id);
-									console.log(originalItem);
 									if (originalItem) return { sub_id: originalItem.sub_id, desc_display: originalItem.desc_display };
 									return null;
 								})
@@ -137,7 +174,7 @@
 							const includeExtra = values.jenisAkseptasi === 'Substandard' && values.subAkseptasi?.map((item) => item.desc_display).includes('EXTRA');
 							if (!includeExtra) {
 								values.jenisExtra = null;
-								values.diagnosisDescription = null;
+								values.diagnosisDescription = [];
 							}
 						}
 					}
@@ -172,7 +209,7 @@
 					disabled={!isSubAkseptasiExtra}
 					type="single"
 					bind:value={
-						() => String(values.jenisExtra?.[0].lsbs_id),
+						() => (values.jenisExtra?.[0]?.lsbs_id ? String(values.jenisExtra?.[0]?.lsbs_id) : ''),
 						(v) => {
 							const newValue = listJenisExtraQuery.data?.find((item) => String(item.lsbs_id) === v);
 							if (!newValue) return;
@@ -181,7 +218,7 @@
 					}
 				>
 					<Select.Trigger id="jenis-extra" class="w-full">
-						{values.jenisExtra?.[0].jenis_extra ? values.jenisExtra?.[0].jenis_extra : 'Jenis Extra'}
+						{values.jenisExtra?.[0]?.jenis_extra ? values.jenisExtra?.[0]?.jenis_extra : 'Jenis Extra'}
 					</Select.Trigger>
 					<Select.Content>
 						{#if listJenisExtraQuery.data}
@@ -206,7 +243,7 @@
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Label>
-				<Input id="em" type="text" bind:value={values.em} disabled={!isSubAkseptasiExtra} placeholder="EM" />
+				<Input id="em" type="number" bind:value={values.em} disabled={!isSubAkseptasiExtra} placeholder="EM" />
 			</div>
 			<div class="space-y-2">
 				<Label for="satuan">
@@ -220,8 +257,10 @@
 						</Tooltip.Content>
 					</Tooltip.Root>
 				</Label>
-				<Select.Root type="single" disabled={!isSubAkseptasiExtra}>
-					<Select.Trigger id="satuan" class="w-full">Satuan</Select.Trigger>
+				<Select.Root type="single" disabled={!isSubAkseptasiExtra} bind:value={() => (values.satuan ? values.satuan : ''), (v) => (values.satuan = v)}>
+					<Select.Trigger id="satuan" class="w-full">
+						{values.satuan ? values.satuan : 'Satuan'}
+					</Select.Trigger>
 					<Select.Content>
 						<Select.Item value="Persen">Persen</Select.Item>
 						<Select.Item value="Permil">Permil</Select.Item>
@@ -343,9 +382,9 @@
 		</form>
 
 		<Dialog.Footer>
-			<Button type="submit" onclick={() => submitButton.click()} disabled={!isFormDirty}>
+			<Button type="submit" onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending}>
 				Update
-				{#if false}
+				{#if mutation.isPending}
 					<LoaderCircle class="animate-spin" />
 				{/if}
 			</Button>

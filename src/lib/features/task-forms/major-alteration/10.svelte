@@ -5,7 +5,7 @@
 </script>
 
 <div class="space-y-2">
-	<!-- <FurtherRequirement /> -->
+	<FurtherRequirement />
 	<!-- <EskalasiKeTL /> -->
 	<DecisionPerProduct />
 </div>

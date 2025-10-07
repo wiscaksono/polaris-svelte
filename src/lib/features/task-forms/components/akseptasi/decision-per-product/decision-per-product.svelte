@@ -7,11 +7,11 @@
 	import Update from './actions/update.svelte';
 
 	import { formatCurrency } from '$lib/utils';
-	import { decisionPerProductQuery } from './query';
+	import { decisionPerProductQueries } from './query';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 
 	const { taskFormParams } = getTaskFormContext();
-	const query = createQuery(() => decisionPerProductQuery.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
+	const query = createQuery(() => decisionPerProductQueries.get({ idDoc: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 
 	const diffMap = $derived((index: number) => [
 		{ label: 'Nama Produk', before: query.data?.listPeserta[index]?.before.productName, after: query.data?.listPeserta[index]?.after.productName },
@@ -85,12 +85,22 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Decision per Product"></InfoGroup.Trigger>
 	<InfoGroup.Content>
-		{#if query.data}
-			{#each query.data.listPeserta.slice(0, 1) as item, i (i)}
+		{#if query.isLoading}
+			<div class="grid h-16 animate-pulse place-items-center">
+				<p class="text-center">Loading…</p>
+			</div>
+		{:else if query.isError}
+			<div class="grid h-16 place-items-center">
+				<p class="text-center">Error: {query.error.message}</p>
+			</div>
+		{:else if query.data}
+			{#each query.data.listPeserta as item, i (i)}
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.namaTertanggung}>
 						{#snippet rightChild()}
-							<Update data={item} />
+							{#if item.after.productName}
+								<Update data={item} />
+							{/if}
 						{/snippet}
 					</InfoGroup.Trigger>
 					<InfoGroup.Content class="bg-background">
@@ -102,6 +112,10 @@
 					</InfoGroup.Content>
 				</InfoGroup.Root>
 			{/each}
+		{:else}
+			<div class="grid h-16 place-items-center">
+				<p class="text-center">This Policy has no decision per product data.</p>
+			</div>
 		{/if}
 	</InfoGroup.Content>
 </InfoGroup.Root>

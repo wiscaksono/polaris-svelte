@@ -16,7 +16,7 @@ export interface DecisionPerProductRes {
     kurs: string | null;
     uangPertanggungan: number | null;
     jenisAkseptasi: string | null;
-    jenisExtra: Array<{ lsbs_id: number; jenis_extra: string }> | null;
+    jenisExtra: Array<{ lsbs_id: number; jenis_extra: string }> | [] | null;
     subAkseptasi: Array<{ sub_id: number; desc_display: string }> | null;
     em: number | null;
     satuan: string | null;

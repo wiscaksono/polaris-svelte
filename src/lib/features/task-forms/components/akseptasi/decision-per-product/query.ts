@@ -1,14 +1,24 @@
 import { queryOptions } from "@tanstack/svelte-query"
 
-import { api } from "$lib/utils"
+import { api, mutationOptions } from "$lib/utils"
 import * as Type from './type'
 
-export const decisionPerProductQuery = {
+export const decisionPerProductQueries = {
   get: ({ regSpaj, idDoc }: { regSpaj: string | number; idDoc: string | number }) => {
     return queryOptions({
       queryKey: ['decision-per-product', regSpaj, idDoc],
       queryFn: async () => {
         const { data } = await api.get<Type.DecisionPerProductRes>(`/polaris/api-business-polaris/major/alteration/decisionForm?regSpaj=${regSpaj}&idDoc=${idDoc}`)
+        return data
+      }
+    })
+  },
+  update: ({ idDoc, lusId, regSpaj, trxMajor }: { idDoc: string; lusId: number; regSpaj: string; trxMajor: string }) => {
+    return mutationOptions({
+      mutationFn: async (payload: Type.DecisionPerProductRes['listPeserta'][number]) => {
+        const { data } = await api.post('/polaris/api-business-polaris/major/alteration/saveDecisionAfter', {
+          payload: [{ ...payload, idDoc, lusId, regSpaj, trxMajor }]
+        })
         return data
       }
     })
