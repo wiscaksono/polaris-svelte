@@ -39,8 +39,6 @@
 	// 	})
 	// );
 
-	const isLoading = $derived(stateQuery.isLoading || isOldProductQuery.isLoading);
-
 	function handleOpen() {
 		if (isOldProductQuery.data) return (openOldProductDialog = true);
 	}
@@ -49,8 +47,8 @@
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} class="!pl-2.5" disabled={!isOldProductQuery.data} onclick={handleOpen}>
-				{#if isLoading}
+			<Button {...props} class="!pl-2.5" disabled={true} onclick={handleOpen}>
+				{#if true}
 					<Check />
 				{:else}
 					<LoaderCircle class="animate-spin" />

@@ -6,10 +6,12 @@
 	import Approve from '../components/actions/approve';
 	import Pending from '../components/actions/pending';
 	import CancelTicket from '../components/actions/cancel-ticket';
+	import EskalasiKeTL from '../components/actions/eskalasi-ke-tl';
 </script>
 
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2">
+	<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
+		<EskalasiKeTL />
 		<Approve />
 		<Pending />
 		<CancelTicket />

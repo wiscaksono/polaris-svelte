@@ -1,6 +1,7 @@
 import { queryOptions } from "@tanstack/svelte-query";
 
 import { api, mutationOptions, IS_DEV } from "$lib/utils"
+
 import * as Type from "./type"
 
 export const actionQueries = {
@@ -78,6 +79,25 @@ export const actionQueries = {
           lusId
         })
         return data
+      }
+    })
+  },
+  insertEscalationHistory: () => {
+    return mutationOptions({
+      mutationFn: async ({ noTrx, remarks }: { noTrx: string; remarks: string }) => {
+        await api.post('/polaris/api-business-polaris/v1/general/escalateToTeamLead', { noTrx, remarks })
+      }
+    })
+  },
+  pending: () => {
+    return mutationOptions({
+      mutationFn: async ({ regSpaj, docId, trxMajor, lusId }: { regSpaj: string, docId: number, trxMajor: string, lusId: number }) => {
+        await api.post('/polaris/api-business-polaris/major/alteration/pendingFurther', {
+          regSpaj,
+          docId,
+          lusId,
+          trxMajor
+        })
       }
     })
   }

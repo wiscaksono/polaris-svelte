@@ -1,17 +1,23 @@
 <script lang="ts">
-	import { RotateCcw } from '@lucide/svelte';
-	import { createQuery } from '@tanstack/svelte-query';
+	import { resolve } from '$app/paths';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
+	import { RotateCcw, LoaderCircle } from '@lucide/svelte';
+	import { createQuery, createMutation } from '@tanstack/svelte-query';
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 
+	import { actionQueries } from '../queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context';
 	import { furtherRequirementQueries } from '../../akseptasi/further-requirement/queries';
+	import { userStore } from '$lib/stores';
 
 	let open = $state(false);
 
 	const { taskFormParams } = getTaskFormContext();
+	const mutation = createMutation(() => actionQueries.pending());
 	const query = createQuery(() =>
 		furtherRequirementQueries.get({
 			caseId: taskFormParams.case_id,
@@ -20,6 +26,26 @@
 	);
 
 	const hasFurther = $derived(query.data?.length);
+
+	function handleSubmit() {
+		mutation.mutate(
+			{
+				regSpaj: taskFormParams.reg_spaj,
+				docId: taskFormParams.case_id,
+				trxMajor: taskFormParams.no_tmp,
+				lusId: userStore.current!.lus_id
+			},
+			{
+				onSuccess: async () => {
+					open = false;
+					// TODO: Invalidate further list query
+
+					await goto(resolve('/workbasket/new-submission'));
+					toast.success('Ticket has been pending successfully.', { position: 'bottom-center' });
+				}
+			}
+		);
+	}
 </script>
 
 <Tooltip.Root>
@@ -51,7 +77,12 @@
 				</AlertDialog.Header>
 				<AlertDialog.Footer>
 					<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-					<AlertDialog.Action variant="destructive">Pending</AlertDialog.Action>
+					<AlertDialog.Action variant="destructive" onclick={handleSubmit} disabled={mutation.isPending}>
+						Confirm
+						{#if mutation.isPending}
+							<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
+						{/if}
+					</AlertDialog.Action>
 				</AlertDialog.Footer>
 			</AlertDialog.Content>
 		</AlertDialog.Portal>

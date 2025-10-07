@@ -16,7 +16,8 @@ export const load: LayoutLoad = () => {
 			queries: {
 				enabled: browser,
 				staleTime: 60 * 1000,
-				refetchOnWindowFocus: false
+				refetchOnWindowFocus: false,
+				retry: false
 			},
 			mutations: {
 				onError: (error) => {
