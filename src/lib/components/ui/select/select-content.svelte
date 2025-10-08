@@ -11,12 +11,14 @@
 		class: className,
 		sideOffset = 4,
 		portalProps,
+		viewPortProps,
 		children,
 		withSearch,
 		searchValue = $bindable(''),
 		...restProps
 	}: WithoutChild<SelectPrimitive.ContentProps> & {
 		portalProps?: SelectPrimitive.PortalProps;
+		viewPortProps?: SelectPrimitive.ViewportProps;
 		withSearch?: boolean;
 		searchValue?: string;
 	} = $props();
@@ -40,7 +42,10 @@
 			</div>
 		{/if}
 		<SelectScrollUpButton />
-		<SelectPrimitive.Viewport class={cn('h-(--bits-select-anchor-height) w-(--bits-select-anchor-width) scroll-my-1 p-1')}>
+		<SelectPrimitive.Viewport
+			class={cn('h-(--bits-select-anchor-height) w-(--bits-select-anchor-width) scroll-my-1 p-1', viewPortProps?.class)}
+			{...viewPortProps}
+		>
 			{@render children?.()}
 		</SelectPrimitive.Viewport>
 		<SelectScrollDownButton />

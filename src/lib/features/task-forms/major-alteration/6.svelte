@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SPICAResult from '$lib/features/task-forms/components/spica/spica-result.svelte';
+	import SPICAResult from '$lib/features/task-forms/components/spica';
 </script>
 
 <SPICAResult />

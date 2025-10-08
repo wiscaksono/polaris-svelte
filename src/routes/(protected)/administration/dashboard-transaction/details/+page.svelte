@@ -21,7 +21,6 @@
 	const query = createQuery(() => dashboardTransactionsQueries.transactionDetails(currentTimeRange));
 
 	const queryParams = useQueryStates({
-		pageSize: parseAsInteger.withDefault(50),
 		pageNumber: parseAsInteger.withDefault(1),
 		perPage: parseAsInteger.withDefault(20)
 	});

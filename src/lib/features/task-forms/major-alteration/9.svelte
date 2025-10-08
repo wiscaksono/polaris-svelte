@@ -3,8 +3,6 @@
 	import TabThree from './3.svelte';
 	import TabFour from './4.svelte';
 	import TabFive from './5.svelte';
-	import TabSix from './6.svelte';
-	import TabSeven from './7.svelte';
 	import TabEight from './8.svelte';
 	import TabTen from './10.svelte';
 
@@ -19,8 +17,6 @@
 	<TabThree />
 	<TabFour />
 	<TabFive />
-	<TabSix />
-	<TabSeven />
 	<TabEight />
 	<TabTen />
 	<UnderwrittingNote />
