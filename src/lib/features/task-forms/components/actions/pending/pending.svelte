@@ -32,7 +32,7 @@
 			{
 				regSpaj: taskFormParams.reg_spaj,
 				docId: taskFormParams.case_id,
-				trxMajor: taskFormParams.no_tmp,
+				trxMajor: taskFormParams.no_trx,
 				lusId: userStore.current!.lus_id
 			},
 			{
