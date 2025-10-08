@@ -13,13 +13,15 @@
 	import Edit from './actions/edit.svelte';
 	import Delete from './actions/delete.svelte';
 
-	import DataDiri from './data-diri/data-diri.svelte';
-	import InfoPekerjaan from './info-pekerjaan/info-pekerjaan.svelte';
-	import AlamatDomisili from './alamat-domisili/alamat-domisili.svelte';
+	import DataDiri from './data-diri';
+	import InfoPekerjaan from './info-pekerjaan';
+	import AlamatDomisili from './alamat-domisili';
+	import SAR from './sar';
 
 	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
 	const query = createQuery(() => dataTTQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
+	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
 </script>
 
 <div class="space-y-2">
@@ -72,6 +74,9 @@
 					<DataDiri data={{ before: item.before.data_diri, after: item.after.data_diri }} />
 					<InfoPekerjaan data={{ before: item.before.informasi_pekerjaan, after: item.after.informasi_pekerjaan }} />
 					<AlamatDomisili data={{ before: item.before.alamat_domisili, after: item.after.alamat_domisili }} />
+					{#if isCurrentTabWorksheet}
+						<SAR data={{ before: item.before.sar, after: item.after.sar }} />
+					{/if}
 				</InfoGroup.Content>
 			</InfoGroup.Root>
 		{/each}

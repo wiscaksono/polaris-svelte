@@ -112,3 +112,51 @@ export interface DataPPdanTURes {
 		medicalRequirement: number | null;
 	};
 }
+
+export interface KycSarMedicalRes {
+	sarWorksheetBefore: {
+		worksheetBeforeTu: {
+			totalSARLife: string | null
+			totalSARCI: string | null
+			totalSARTPD: string | null
+			totalSARPA: string | null
+			totalSARPANew: string | null
+		}
+		worksheetBeforePp: KycSarMedicalRes['sarWorksheetBefore']['worksheetBeforeTu']
+	}
+	occupation: {
+		occupationPp: string
+		occupationTu: string
+	}
+	kyc: {
+		kycPp: {
+			transactionLessThan500Mio: string | null
+			highRiskBusiness: string | null
+			highRiskCountry: string | null
+			attentionList: string | null
+			dttot: string | null
+			wmd: string | null
+			pep: string | null
+			ppatk: string | null
+		}
+		kycTu: KycSarMedicalRes['kyc']['kycPp']
+	}
+	medicalAbnormal: {
+		abnormalTu: string
+		abnormalPp: string
+	}
+	sarWorksheetAfter: {
+		worksheetAfterPp: {
+			totalSARLife: number | null
+			totalSARCI: number | null
+			totalSARTPD: number | null
+			totalSARPA: number | null
+			totalSARPANew: number | null
+		}
+		worksheetAfterTu: KycSarMedicalRes['sarWorksheetAfter']['worksheetAfterPp']
+	}
+	medicalWorksheetAfter: {
+		medicalRequirmentPp: string | null
+		medicalRequirmentTu: string | null
+	}
+}

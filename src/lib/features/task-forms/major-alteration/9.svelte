@@ -15,14 +15,14 @@
 </script>
 
 <div class="space-y-2">
-	<!-- <TabTwo /> -->
-	<!-- <TabThree /> -->
-	<!-- <TabFour /> -->
-	<!-- <TabFive /> -->
-	<!-- <TabSix /> -->
-	<!-- <TabSeven /> -->
-	<!-- <TabEight /> -->
-	<!-- <TabTen /> -->
+	<TabTwo />
+	<TabThree />
+	<TabFour />
+	<TabFive />
+	<TabSix />
+	<TabSeven />
+	<TabEight />
+	<TabTen />
 	<UnderwrittingNote />
 	<DecisionFinalMajorAlteration />
 	<Approver />

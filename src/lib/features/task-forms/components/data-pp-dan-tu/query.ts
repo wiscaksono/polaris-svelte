@@ -1,7 +1,7 @@
 import { api, mutationOptions } from '$lib/utils';
 import { queryOptions } from '@tanstack/svelte-query';
 
-import type { DataPPdanTURes } from './type';
+import type { DataPPdanTURes, KycSarMedicalRes } from './type';
 
 interface UpdatePayload {
 	caseId: number;
@@ -55,3 +55,15 @@ export const dataPPdanTUQueries = {
 		});
 	}
 };
+
+export const kycSarMedicalQueries = {
+	get: ({ reg_spaj, trx_major, id_doc }: { reg_spaj: string; trx_major: string; id_doc: string | number }) => {
+		return {
+			queryKey: ['kyc-sar', reg_spaj, trx_major, id_doc],
+			queryFn: async () => {
+				const { data } = await api.post<KycSarMedicalRes>(`/polaris/api-business-polaris/major/alteration/viewKycSar`, { reg_spaj, trx_major, id_doc })
+				return data
+			}
+		};
+	},
+}

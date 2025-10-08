@@ -3,7 +3,7 @@ export interface DecisionFinalMajorAlterationRes {
     value: number
     label: string
     generateSPB: boolean
-  }]
+  }] | []
   effectiveDatePertanggungan: string | null
   effectiveDate: string | null
 }

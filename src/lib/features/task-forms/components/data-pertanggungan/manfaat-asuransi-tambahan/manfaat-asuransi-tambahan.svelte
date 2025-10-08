@@ -107,7 +107,7 @@
 	</InfoGroup.Trigger>
 	<InfoGroup.Content class={!data?.length ? 'bg-background' : ''}>
 		{#if data?.length}
-			{#each data.slice(0, 1) as item, index (index)}
+			{#each data as item, index (index)}
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.nama_rider}>
 						{#snippet leftChild()}

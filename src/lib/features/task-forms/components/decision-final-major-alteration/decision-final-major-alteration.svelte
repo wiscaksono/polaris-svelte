@@ -28,7 +28,7 @@
 					<div class="ml-auto h-5 w-30 animate-pulse rounded bg-muted"></div>
 				{:else}
 					<div class="flex items-center justify-end gap-2 font-mono">
-						<span class="text-right text-foreground">{query.data?.decision[0].label ?? '-'}</span>
+						<span class="text-right text-foreground">{query.data?.decision?.[0]?.label ?? '-'}</span>
 					</div>
 				{/if}
 			</div>
