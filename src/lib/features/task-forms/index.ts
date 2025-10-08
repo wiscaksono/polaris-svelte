@@ -63,14 +63,6 @@ export const majorAlterationTaskForms = [
 ] as const satisfies TaskFormConfig[];
 
 
-export const withdrawalTaskForms = [
-	{
-		title: 'Data Submission',
-		slug: 'data-submission',
-		component: import('./withdrawal/1.svelte')
-	}
-] as const satisfies TaskFormConfig[];
-
 export const taskForms = {
 	'Major Alteration': majorAlterationTaskForms,
 	'Minor Alteration': majorAlterationTaskForms,
@@ -82,7 +74,7 @@ export const taskForms = {
 	// Financial Group
 	'Switching and Redirection': majorAlterationTaskForms,
 	Deduction: majorAlterationTaskForms,
-	Withdrawal: withdrawalTaskForms,
+	Withdrawal: majorAlterationTaskForms,
 	'Surrender Link': majorAlterationTaskForms,
 	Switching: majorAlterationTaskForms,
 	Redirection: majorAlterationTaskForms,
@@ -99,11 +91,12 @@ export const taskForms = {
 	'Maturity Trad': majorAlterationTaskForms,
 	'Tolakan Trad': majorAlterationTaskForms,
 	'Refund Trad': majorAlterationTaskForms
-} satisfies Record<TransactionType, readonly TaskFormConfig[]>;;
+} satisfies Record<TransactionType, readonly TaskFormConfig[]>;
 
 export type TaskForms = (typeof taskForms)[TransactionType];
 
 export type TaskFormProps = {
 	taskFormParams: SearchPolisListRes[number];
 	currentTaskFormTab: TaskForms[number]; // Use the new, more descriptive TaskForm type
+	isReUnderwriting: boolean;
 };
