@@ -63,4 +63,4 @@
 	</div>
 </section>
 
-<TicketTable queryResult={query} listKey="further" {pageSize} />
+<TicketTable type="Further" queryResult={query} listKey="further" {pageSize} />

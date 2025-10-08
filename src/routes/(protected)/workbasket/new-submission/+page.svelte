@@ -89,4 +89,4 @@
 	</div>
 </section>
 
-<TicketTable queryResult={query} listKey="newSubmission" pageSize={queryParams.pageSize.current} />
+<TicketTable type="New Submission" queryResult={query} listKey="newSubmission" pageSize={queryParams.pageSize.current} />

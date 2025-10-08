@@ -63,4 +63,4 @@
 	</div>
 </header>
 
-<TicketTable queryResult={query} listKey="filling" {pageSize} />
+<TicketTable type="Filling" queryResult={query} listKey="filling" {pageSize} />

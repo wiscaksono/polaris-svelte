@@ -4,16 +4,17 @@
 	import TicketRow from './ticket-row.svelte';
 	import TicketRowSkeleton from './ticket-row-skeleton.svelte';
 
-	import type { CreateBaseQueryResult } from '@tanstack/svelte-query';
 	import type { PolisListRes } from '$lib/utils';
+	import type { CreateBaseQueryResult } from '@tanstack/svelte-query';
 
 	interface $$Props {
 		queryResult: CreateBaseQueryResult<PolisListRes<T>, Error>;
 		listKey: T;
 		pageSize: number;
+		type: 'New Submission' | 'Further' | 'Filling';
 	}
 
-	let { queryResult, listKey, pageSize }: $$Props = $props();
+	let { queryResult, listKey, pageSize, type }: $$Props = $props();
 </script>
 
 <Table.Root>
@@ -58,7 +59,7 @@
 			</Table.Row>
 		{:else if queryResult.data[listKey].length}
 			{#each queryResult.data[listKey] as item, i (i)}
-				<TicketRow {item} />
+				<TicketRow {item} {type} />
 			{/each}
 		{:else}
 			<Table.Row>
