@@ -1,6 +1,8 @@
 import { getContext, hasContext, setContext } from 'svelte';
 
 import type { TaskFormProps } from '.';
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 
 type Getter<T> = () => T;
 
@@ -26,6 +28,9 @@ export function setTaskFormContext(data: TaskFormStateProps) {
 }
 
 export function getTaskFormContext() {
-	if (!hasContext(key)) throw new Error('User context not found');
+	if (!hasContext(key)) {
+		goto(resolve('/workbasket/new-submission'))
+		throw new Error('User context not found')
+	};
 	return getContext<TaskFormContext>(key);
 }
