@@ -6,6 +6,7 @@
 	import { cn } from '$lib/utils';
 	import * as Table from '$lib/components/ui/table';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import AlertOtherTrx from '$lib/features/task-forms/components/alert-another-trx';
 
 	import { taskFormQueries } from '$lib/features/task-forms/queries';
 	import { setTaskFormContext } from '$lib/features/task-forms/context.svelte';
@@ -79,6 +80,7 @@
 		</nav>
 		<section class="flex-1 overflow-y-auto px-4">
 			<div aria-hidden="true" class="sticky top-0 z-10 h-3.5 w-full bg-gradient-to-b from-background"></div>
+			<AlertOtherTrx />
 			{@render children()}
 			<div aria-hidden="true" class="sticky bottom-0 z-10 h-3.5 w-full bg-gradient-to-t from-background"></div>
 		</section>

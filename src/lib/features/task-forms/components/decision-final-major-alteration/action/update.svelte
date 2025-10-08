@@ -46,13 +46,13 @@
 
 		mutation.mutate(
 			{
-				decId: values.decision[0].value,
+				decId: values.decision[0]?.value ?? 0,
 				idDoc: taskFormParams.case_id,
 				regSpaj: taskFormParams.reg_spaj,
 				trxMajor: taskFormParams.no_trx,
 				flagMajor: 1,
 				flagInsert: 1,
-				generateSPB: values.decision[0].value === 2,
+				generateSPB: values.decision[0]?.value === 2,
 				effectiveDate: dayjs(values.effectiveDate).format('YYYY-MM-DD'),
 				effectiveDatePertanggungan: dayjs(values.effectiveDatePertanggungan).format('YYYY-MM-DD')
 			},
@@ -113,17 +113,17 @@
 				<Select.Root
 					type="single"
 					bind:value={
-						() => String(values.decision[0].value),
+						() => (values.decision[0] ? String(values.decision[0].value) : ''),
 						(v) => {
 							const newValue = listDecisionQuery.data?.find((item) => String(item.value) === v);
-							if (!newValue) return;
+							if (!newValue || !values.decision[0]) return;
 							values.decision[0].value = newValue.value;
 							values.decision[0].label = newValue.label;
 						}
 					}
 				>
 					<Select.Trigger id="decision" class="w-full" bind:ref={decisionTrigger}>
-						{values.decision[0].label}
+						{values.decision[0]?.label}
 					</Select.Trigger>
 					<Select.Content>
 						{#if listDecisionQuery.data?.length}

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { slide } from 'svelte/transition';
 	import { CircleAlert } from '@lucide/svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 
@@ -15,10 +16,14 @@
 	const query = createQuery(() => dataPPdanTUQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 </script>
 
-<Alert.Root class="mb-3.5" variant={query.data?.ppDanTuBerbeda ? 'destructive' : 'info'}>
-	<CircleAlert />
-	<Alert.Title>Pemegang Polis dan Tertanggung Utama adalah orang yang {query.data?.ppDanTuBerbeda ? 'berbeda' : 'sama'}</Alert.Title>
-</Alert.Root>
+{#if query.data}
+	<div class="mb-2" transition:slide>
+		<Alert.Root variant={query.data?.ppDanTuBerbeda ? 'destructive' : 'info'}>
+			<CircleAlert />
+			<Alert.Title>Pemegang Polis dan Tertanggung Utama adalah orang yang {query.data?.ppDanTuBerbeda ? 'berbeda' : 'sama'}</Alert.Title>
+		</Alert.Root>
+	</div>
+{/if}
 
 <div class="space-y-2">
 	<PemegangPolis data={query.data?.pemegangPolis} />
