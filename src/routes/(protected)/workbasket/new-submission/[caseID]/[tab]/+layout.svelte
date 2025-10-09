@@ -46,7 +46,7 @@
 <div
 	data-side={expandedTab}
 	class="grid overflow-hidden data-[side=equal]:grid-cols-[1fr_1.25rem_1fr] data-[side=left]:grid-cols-[1fr_1.25rem_0fr] data-[side=right]:grid-cols-[0fr_1.25rem_1fr]"
-	style="transition: grid-template-columns var(--default-transition-duration) var(--default-transition-timing-function)"
+	style="transition: grid-template-columns 300ms var(--default-transition-timing-function)"
 >
 	<section class="flex h-[calc(100svh-var(--header-height))] w-full flex-col overflow-hidden bg-background">
 		<div class="flex items-center justify-between gap-5 border-b px-4 py-3.5">
