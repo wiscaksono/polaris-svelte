@@ -13,7 +13,7 @@
 
 	let remarks = $state('');
 	let open = $state(false);
-	let submitButton: HTMLButtonElement;
+	let submitButton = $state<HTMLButtonElement | null>(null);
 
 	// const queryClient = useQueryClient();
 	const { taskFormParams, isReUnderwriting } = getTaskFormContext();
@@ -64,7 +64,7 @@
 				</form>
 
 				<Dialog.Footer>
-					<Button onclick={() => submitButton.click()} disabled={!remarks || mutation.isPending}>
+					<Button onclick={() => submitButton?.click()} disabled={!remarks || mutation.isPending}>
 						Confirm
 						{#if mutation.isPending}
 							<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
