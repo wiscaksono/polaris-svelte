@@ -15,7 +15,7 @@ export type TaskFormStateProps = {
 };
 
 class TaskFormContext {
-	readonly props: TaskFormStateProps;
+	private props: TaskFormStateProps;
 	readonly isReUnderwriting: CreateQueryResult<boolean>;
 	taskFormParams = $derived.by(() => this.props.taskFormParams());
 	currentTaskFormTab = $derived.by(() => this.props.currentTaskFormTab());

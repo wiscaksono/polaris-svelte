@@ -1,7 +1,7 @@
 <script lang="ts">
-	import DataSubmission from '$lib/features/task-forms/components/data-submission';
+	import DataSubmissionMajorAlteration from '$lib/features/task-forms/components/data-submission-major-alteration';
 	import AlertIsReunderwriting from '$lib/features/task-forms/components/alert-is-reunderwriting';
 </script>
 
 <AlertIsReunderwriting />
-<DataSubmission />
+<DataSubmissionMajorAlteration />

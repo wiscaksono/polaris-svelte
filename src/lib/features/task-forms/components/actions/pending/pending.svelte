@@ -14,7 +14,7 @@
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import { searchPolisQueries } from '$lib/features/search-polis/queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
-	import { furtherRequirementQueries } from '../../akseptasi/further-requirement/queries';
+	import { furtherRequirementQueries } from '../../further-requirement/queries';
 
 	let open = $state(false);
 

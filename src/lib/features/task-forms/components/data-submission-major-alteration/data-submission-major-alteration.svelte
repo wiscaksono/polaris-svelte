@@ -2,7 +2,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
-	import { dataSubmissionQueries } from '$lib/features/task-forms/components/data-submission/query';
+	import { dataSubmissionQueries } from '$lib/features/task-forms/components/data-submission-major-alteration/query';
 
 	import ChecklistReunderwriting from './checklist-reunderwriting';
 	import TanggalFormulir from './tanggal-formulir';
@@ -16,7 +16,7 @@
 
 <div class="space-y-2">
 	<ChecklistReunderwriting data={query.data} />
-	<!-- <TanggalFormulir data={query.data} /> -->
-	<!-- <TandaTangan data={query.data} /> -->
-	<!-- <DCNotes data={query.data} /> -->
+	<TanggalFormulir data={query.data} />
+	<TandaTangan data={query.data} />
+	<DCNotes data={query.data} />
 </div>

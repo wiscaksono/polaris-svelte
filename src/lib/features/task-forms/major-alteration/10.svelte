@@ -1,8 +1,8 @@
 <script lang="ts">
 	import AlertIsReunderwriting from '$lib/features/task-forms/components/alert-is-reunderwriting';
-	import FurtherRequirement from '$lib/features/task-forms/components/akseptasi/further-requirement';
-	import HistoryEskalasiKeTL from '$lib/features/task-forms/components/akseptasi/history-eskalasi-ke-tl';
-	import DecisionPerProduct from '$lib/features/task-forms/components/akseptasi/decision-per-product';
+	import FurtherRequirement from '$lib/features/task-forms/components/further-requirement';
+	import HistoryEskalasiKeTL from '$lib/features/task-forms/components/history-eskalasi-ke-tl';
+	import DecisionPerProduct from '$lib/features/task-forms/components/decision-per-product';
 
 	import Approve from '../components/actions/approve';
 	import Pending from '../components/actions/pending';

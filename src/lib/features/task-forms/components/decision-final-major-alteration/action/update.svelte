@@ -13,7 +13,7 @@
 
 	import { decisionFinalMajorAlterationQueries } from '../query';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
-	import { decisionPerProductQueries } from '../../akseptasi/decision-per-product/query';
+	import { decisionPerProductQueries } from '../../decision-per-product/query';
 
 	import type { DecisionFinalMajorAlterationRes } from '../type';
 

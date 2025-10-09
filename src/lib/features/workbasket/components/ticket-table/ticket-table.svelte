@@ -11,7 +11,7 @@
 		queryResult: CreateBaseQueryResult<PolisListRes<T>, Error>;
 		listKey: T;
 		pageSize: number;
-		type: 'New Submission' | 'Further' | 'Filling';
+		type: 'New Submission' | 'Further' | 'Filling' | 'Flagged';
 	}
 
 	let { queryResult, listKey, pageSize, type }: $$Props = $props();

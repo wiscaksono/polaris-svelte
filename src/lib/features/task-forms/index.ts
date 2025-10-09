@@ -62,6 +62,39 @@ export const majorAlterationTaskForms = [
 	}
 ] as const satisfies TaskFormConfig[];
 
+export const withdrawalTaskForms = [
+	{
+		title: 'Data Submission',
+		slug: 'data-submission',
+		component: import('./withdrawal/1.svelte')
+	},
+	{
+		title: 'Verifikasi Dokumen',
+		slug: 'verifikasi-dokumen',
+		component: import('./withdrawal/2.svelte')
+	},
+	{
+		title: 'SPICA & Further',
+		slug: 'spica-further',
+		component: import('./withdrawal/3.svelte')
+	},
+	{
+		title: 'Data Investasi',
+		slug: 'data-investasi',
+		component: import('./withdrawal/1.svelte')
+	},
+	{
+		title: 'Instruksi Bayar',
+		slug: 'instruksi-bayar',
+		component: import('./withdrawal/1.svelte')
+	},
+	{
+		title: 'Worksheet',
+		slug: 'worksheet',
+		component: import('./withdrawal/1.svelte')
+	}
+] as const satisfies TaskFormConfig[]
+
 
 export const taskForms = {
 	'Major Alteration': majorAlterationTaskForms,
@@ -74,7 +107,7 @@ export const taskForms = {
 	// Financial Group
 	'Switching and Redirection': majorAlterationTaskForms,
 	Deduction: majorAlterationTaskForms,
-	Withdrawal: majorAlterationTaskForms,
+	Withdrawal: withdrawalTaskForms,
 	'Surrender Link': majorAlterationTaskForms,
 	Switching: majorAlterationTaskForms,
 	Redirection: majorAlterationTaskForms,

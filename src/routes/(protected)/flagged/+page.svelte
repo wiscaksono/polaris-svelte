@@ -89,4 +89,4 @@
 	</div>
 </section>
 
-<TicketTable queryResult={query} listKey="flagged" pageSize={queryParams.pageSize.current} />
+<TicketTable type="Flagged" queryResult={query} listKey="flagged" pageSize={queryParams.pageSize.current} />

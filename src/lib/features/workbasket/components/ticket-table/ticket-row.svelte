@@ -14,7 +14,7 @@
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import { searchPolisQueries } from '$lib/features/search-polis/queries';
 
-	let { item, type }: { item: Polis; type: 'New Submission' | 'Further' | 'Filling' } = $props();
+	let { item, type }: { item: Polis; type: 'New Submission' | 'Further' | 'Filling' | 'Flagged' } = $props();
 
 	const queryClient = useQueryClient();
 	const mutation = createMutation(() => workbasketQueries.toggleFlag());
@@ -49,6 +49,15 @@
 				);
 				break;
 			case 'Filling':
+				goto(
+					resolve('/(protected)/workbasket/filling/[caseID]/[tab]', {
+						caseID: String(item.case_id),
+						tab: taskForms[item.case_trx][0].slug
+					})
+				);
+				break;
+			case 'Flagged':
+				// TODO: Implement
 				goto(
 					resolve('/(protected)/workbasket/filling/[caseID]/[tab]', {
 						caseID: String(item.case_id),
