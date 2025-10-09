@@ -59,7 +59,7 @@
 			</div>
 		</div>
 		<nav class="mt-4 border-b">
-			<ul class="flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+			<ul class="-mb-0.5 flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<li class="sticky left-0 z-10 h-10 w-3 shrink-0 bg-gradient-to-r from-background to-transparent"></li>
 				{#each data.currentTaskForm as { title, slug }, i (title)}
 					{@const isActive = slug === data.currentTaskFormTab?.slug}
@@ -75,9 +75,15 @@
 							size="lg"
 							href={`/workbasket/new-submission/${data.taskFormParams.case_id}/${slug}`}
 							class={cn(
-								'relative gap-2 overflow-hidden rounded-b-none border-b-0',
-								'before:absolute before:top-0 before:h-0.5 before:w-full before:bg-destructive',
-								isActive ? '!border-t-destructive before:opacity-100' : 'before:opacity-0'
+								// Base
+								'relative overflow-hidden rounded-b-none border-b-0 transition-colors',
+								'data-[active=true]:border-t-destructive data-[active=true]:hover:bg-background',
+								// Before
+								'before:absolute before:top-0 before:h-px before:w-full before:bg-transparent',
+								'data-[active=true]:before:bg-destructive',
+								// After
+								'after:absolute after:bottom-px after:z-10 after:h-px after:w-full after:bg-border',
+								'data-[active=true]:after:bg-transparent'
 							)}
 						>
 							<div class="grid size-5 shrink-0 place-items-center rounded-full border border-foreground text-center text-xs leading-3">
@@ -138,7 +144,7 @@
 			</div>
 		</div>
 		<nav class="mt-4 border-b">
-			<ul class="flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+			<ul class="-mb-0.5 flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<li class="sticky left-0 z-10 h-10 w-3 shrink-0 bg-gradient-to-r from-background to-transparent"></li>
 				{#each tabs as { title, id, icon: Icon } (title)}
 					{@const isActive = id === rightTab}
@@ -154,9 +160,15 @@
 							size="lg"
 							onclick={() => (rightTab = id)}
 							class={cn(
-								'relative gap-2 overflow-hidden rounded-b-none border-b-0',
-								'before:absolute before:top-0 before:h-0.5 before:w-full before:bg-destructive',
-								isActive ? '!border-t-destructive before:opacity-100' : 'before:opacity-0'
+								// Base
+								'relative overflow-hidden rounded-b-none border-b-0 transition-colors',
+								'data-[active=true]:border-t-destructive data-[active=true]:hover:bg-background',
+								// Before
+								'before:absolute before:top-0 before:h-px before:w-full before:bg-transparent',
+								'data-[active=true]:before:bg-destructive',
+								// After
+								'after:absolute after:bottom-px after:z-10 after:h-px after:w-full after:bg-border',
+								'data-[active=true]:after:bg-transparent'
 							)}
 						>
 							<Icon class="h-4 w-4" />
