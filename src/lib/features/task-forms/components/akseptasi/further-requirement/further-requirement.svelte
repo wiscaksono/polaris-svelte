@@ -48,7 +48,7 @@
 		<!-- Further Table -->
 		<section class="space-y-2">
 			<div class="flex items-center justify-between gap-2">
-				<p class="font-medium">Further Requirements</p>
+				<p class="truncate font-medium">Further Requirements</p>
 
 				{#if !isCurrentTabWorksheet}
 					{#if furtherQuery.data}

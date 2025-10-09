@@ -94,7 +94,7 @@
 	>
 		<Dialog.Header>
 			<Dialog.Title>Update Decision Final</Dialog.Title>
-			<Dialog.Description>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum illum magnam aliquam reiciendis</Dialog.Description>
+			<Dialog.Description>Please review and confirm the effective date for your premium and coverage before finalizing this worksheet.</Dialog.Description>
 		</Dialog.Header>
 
 		<form class="space-y-4" onsubmit={handleSubmit}>
@@ -123,7 +123,7 @@
 					}
 				>
 					<Select.Trigger id="decision" class="w-full" bind:ref={decisionTrigger}>
-						{values.decision[0]?.label}
+						{values.decision[0]?.label ?? 'Decision'}
 					</Select.Trigger>
 					<Select.Content>
 						{#if listDecisionQuery.data?.length}

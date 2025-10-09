@@ -1,13 +1,15 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import { slide } from 'svelte/transition';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { BookText, Paperclip, GitPullRequest, Workflow } from '@lucide/svelte';
+	import { BookText, Paperclip, GitPullRequest, Workflow, ArrowLeft, ArrowRight, Equal } from '@lucide/svelte';
 
-	import { cn } from '$lib/utils';
 	import * as Table from '$lib/components/ui/table';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import AlertOtherTrx from '$lib/features/task-forms/components/alert-another-trx';
 
+	import { cn } from '$lib/utils';
+	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
 	import { taskFormQueries } from '$lib/features/task-forms/queries';
 	import { setTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
@@ -19,7 +21,10 @@
 	] as const;
 
 	let { children, data } = $props();
+	let expandedTab = $state<'left' | 'right' | 'equal'>('equal');
 	let rightTab = $state<(typeof tabs)[number]['id']>('history');
+
+	const isMobile = new IsMobile();
 
 	const query = createQuery(() =>
 		taskFormQueries.transactionHistories({
@@ -30,20 +35,27 @@
 		})
 	);
 
+	$effect(() => {
+		if (isMobile.current) expandedTab = 'left';
+		else expandedTab = 'equal';
+	});
+
 	setTaskFormContext({ taskFormParams: () => data.taskFormParams, currentTaskFormTab: () => data.currentTaskFormTab });
 </script>
 
-<div class="grid grid-cols-[1fr_1.25rem_1fr] overflow-hidden">
+<div
+	data-side={expandedTab}
+	class="grid overflow-hidden data-[side=equal]:grid-cols-[1fr_1.25rem_1fr] data-[side=left]:grid-cols-[1fr_1.25rem_0fr] data-[side=right]:grid-cols-[0fr_1.25rem_1fr]"
+	style="transition: grid-template-columns var(--default-transition-duration) var(--default-transition-timing-function)"
+>
 	<section class="flex h-[calc(100svh-var(--header-height))] w-full flex-col overflow-hidden bg-background">
 		<div class="flex items-center justify-between gap-5 border-b px-4 py-3.5">
-			<div>
-				<p class="text-lg font-medium text-primary">
-					{data.taskFormParams.case_trx}
-				</p>
-			</div>
-			<div class="flex items-center gap-2 text-sm text-muted-foreground">
-				<p>No. Temp: {data.taskFormParams.no_tmp}</p>
-				<p>Case ID: {data.taskFormParams.case_id}</p>
+			<p class="shrink-0 text-lg font-medium whitespace-nowrap text-primary">
+				{data.taskFormParams.case_trx}
+			</p>
+			<div class="hidden items-center gap-2 text-right text-sm text-muted-foreground lg:flex">
+				<p class="truncate">No. Temp: {data.taskFormParams.no_tmp}</p>
+				<p class="truncate">Case ID: {data.taskFormParams.case_id}</p>
 			</div>
 		</div>
 		<nav class="mt-4 border-b">
@@ -87,8 +99,35 @@
 	</section>
 
 	<div
-		class="h-full w-full border-x bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-border)] md:block dark:[--pattern-fg:var(--color-border)]"
-	></div>
+		class="relative h-full w-full border-x bg-[image:repeating-linear-gradient(315deg,_var(--pattern-fg)_0,_var(--pattern-fg)_1px,_transparent_0,_transparent_50%)] bg-[size:10px_10px] bg-fixed [--pattern-fg:var(--color-border)] md:block dark:[--pattern-fg:var(--color-border)]"
+	>
+		<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 divide-y border-y">
+			<button
+				disabled={expandedTab === 'right'}
+				class="grid size-4.5 cursor-pointer place-items-center bg-background text-muted-foreground transition-all not-disabled:hover:text-foreground disabled:cursor-not-allowed disabled:text-muted-foreground/50"
+				onclick={() => (expandedTab = 'right')}
+			>
+				<ArrowLeft class="size-4" />
+			</button>
+			{#if !isMobile.current}
+				<button
+					transition:slide={{ duration: 150 }}
+					disabled={expandedTab === 'equal'}
+					class="grid size-4.5 cursor-pointer place-items-center bg-background text-muted-foreground transition-all not-disabled:hover:text-foreground disabled:cursor-not-allowed disabled:text-muted-foreground/50"
+					onclick={() => (expandedTab = 'equal')}
+				>
+					<Equal class="size-4" />
+				</button>
+			{/if}
+			<button
+				disabled={expandedTab === 'left'}
+				class="grid size-4.5 cursor-pointer place-items-center bg-background text-muted-foreground transition-all not-disabled:hover:text-foreground disabled:cursor-not-allowed disabled:text-muted-foreground/50"
+				onclick={() => (expandedTab = 'left')}
+			>
+				<ArrowRight class="size-4" />
+			</button>
+		</div>
+	</div>
 
 	<section class="flex h-[calc(100svh-var(--header-height))] w-full flex-col overflow-hidden">
 		<div class="flex items-center justify-between gap-5 border-b px-4 py-3.5">

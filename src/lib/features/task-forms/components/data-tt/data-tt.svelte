@@ -51,9 +51,11 @@
 			<InfoGroup.Root>
 				<InfoGroup.Trigger title={`${item.nama_tertanggung} ${isDeleted ? '' : '- ' + item.after?.data_diri?.nama_lengkap}`}>
 					{#snippet leftChild()}
-						<Badge variant="secondary" class="uppercase">
-							{isDeleted ? 'Deleted' : item.action}
-						</Badge>
+						{#if item.action !== '-'}
+							<Badge variant="secondary" class="uppercase">
+								{isDeleted ? 'Deleted' : item.action}
+							</Badge>
+						{/if}
 					{/snippet}
 					{#snippet rightChild()}
 						{@const somethingChanged = !deepEqual(item.before, item.after)}

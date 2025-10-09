@@ -29,7 +29,7 @@
 					<InfoGroup.Content class="bg-background" wrapperClassName="divide-y">
 						{#each item.list_peserta as peserta, j (j)}
 							<div class="space-y-2 not-last:pb-2">
-								<p class="font-medium">{peserta.name}</p>
+								<p class="truncate font-medium">{peserta.name}</p>
 								<Table.Root variant="outline">
 									<Table.Header>
 										<Table.Row>

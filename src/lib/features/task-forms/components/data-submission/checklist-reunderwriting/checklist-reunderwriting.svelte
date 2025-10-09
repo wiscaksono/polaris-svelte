@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { Check, X } from '@lucide/svelte';
-
 	import * as InfoGroup from '$lib/components/ui/info-group';
 	import Update from './actions/update.svelte';
 
@@ -35,7 +33,7 @@
 	<InfoGroup.Content class="bg-background">
 		<div class="space-y-4">
 			<div class="divide-y">
-				<p class="min-h-8 font-medium">Seleksi Resiko Ulang (Re-Underwriting)</p>
+				<p class="min-h-8 truncate font-medium">Seleksi Resiko Ulang (Re-Underwriting)</p>
 				{#each allTertanggung as tertanggung (tertanggung)}
 					<div class="flex min-h-8 items-start justify-between gap-x-4 py-1 text-sm" role="group" aria-label={toTitleCase(tertanggung)}>
 						<div class="shrink-0 text-muted-foreground" aria-hidden="true">
@@ -43,35 +41,27 @@
 						</div>
 						<div class="flex items-center justify-end gap-2 font-mono">
 							<span class="text-right text-foreground">
-								{#if data?.[tertanggung] === 'true'}
-									<Check class="text-success" />
-								{:else}
-									<X class="text-destructive" />
-								{/if}
+								{data?.[tertanggung] === 'true' ? 'Yes' : 'No'}
 							</span>
 						</div>
 					</div>
 				{/each}
 			</div>
 			<div class="divide-y">
-				<p class="min-h-8 font-medium">Kelengkapan dokumen yang dibutuhkan</p>
+				<p class="min-h-8 truncate font-medium">Kelengkapan dokumen yang dibutuhkan</p>
 				{#each docCheckbox as { key, label } (key)}
 					<div class="flex min-h-8 items-start justify-between gap-x-4 py-1 text-sm" role="group" aria-label={label}>
 						<div class="shrink-0 text-muted-foreground" aria-hidden="true">{label}</div>
 						<div class="flex items-center justify-end gap-2 font-mono">
 							<span class="text-right text-foreground">
-								{#if data?.[key] === 'true'}
-									<Check class="text-success" />
-								{:else}
-									<X class="text-destructive" />
-								{/if}
+								{data?.[key] === 'true' ? 'Yes' : 'No'}
 							</span>
 						</div>
 					</div>
 				{/each}
 			</div>
 			<div class="divide-y">
-				<p class="min-h-8 font-medium">Keterangan pengajuan seleksi resiko ulang</p>
+				<p class="min-h-8 truncate font-medium">Keterangan pengajuan seleksi resiko ulang</p>
 				<div class="flex min-h-8 items-start justify-between gap-x-4 py-1 text-sm" role="group" aria-label="Notes">
 					<div class="shrink-0 text-muted-foreground" aria-hidden="true">Notes</div>
 					<div class="flex items-center justify-end gap-2 font-mono">

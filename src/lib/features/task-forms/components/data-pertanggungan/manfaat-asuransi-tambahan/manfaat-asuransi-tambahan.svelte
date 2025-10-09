@@ -143,7 +143,7 @@
 			{/each}
 		{:else}
 			<div class="grid h-16 place-items-center">
-				<p class="text-center">This policy has no additional insurance benefits data.</p>
+				<p class="truncate text-center">This policy has no additional insurance benefits data.</p>
 			</div>
 		{/if}
 	</InfoGroup.Content>

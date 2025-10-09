@@ -3,19 +3,22 @@
 	import { toast } from 'svelte-sonner';
 	import { goto } from '$app/navigation';
 	import { RotateCcw, LoaderCircle } from '@lucide/svelte';
-	import { createQuery, createMutation } from '@tanstack/svelte-query';
+	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 
+	import { userStore } from '$lib/stores';
 	import { actionQueries } from '../queries';
+	import { workbasketQueries } from '$lib/features/workbasket/queries';
+	import { searchPolisQueries } from '$lib/features/search-polis/queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 	import { furtherRequirementQueries } from '../../akseptasi/further-requirement/queries';
-	import { userStore } from '$lib/stores';
 
 	let open = $state(false);
 
+	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
 	const mutation = createMutation(() => actionQueries.pending());
 	const query = createQuery(() =>
@@ -37,8 +40,17 @@
 			},
 			{
 				onSuccess: async () => {
+					const furtherQueryKey = workbasketQueries.furtherList({}).queryKey;
+					const newSubQueryKey = workbasketQueries.newSubmissionList({}).queryKey;
+					const searchPolisQueryKey = searchPolisQueries.list(taskFormParams.case_id).queryKey;
+
+					await Promise.all([
+						queryClient.invalidateQueries({ queryKey: furtherQueryKey }),
+						queryClient.invalidateQueries({ queryKey: searchPolisQueryKey }),
+						queryClient.invalidateQueries({ queryKey: newSubQueryKey })
+					]);
+
 					open = false;
-					// TODO: Invalidate further list query
 
 					await goto(resolve('/workbasket/new-submission'));
 					toast.success('Ticket has been pending successfully.', { position: 'bottom-center' });

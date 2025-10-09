@@ -10,7 +10,6 @@
 
 	const { taskFormParams } = getTaskFormContext();
 	const query = createQuery(() => decisionFinalMajorAlterationQueries.get({ idDoc: taskFormParams.case_id }));
-	$inspect(query.data);
 </script>
 
 <InfoGroup.Root>

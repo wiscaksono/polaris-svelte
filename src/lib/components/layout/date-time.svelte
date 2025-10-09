@@ -22,7 +22,7 @@
 	});
 </script>
 
-<div class="hidden flex-col items-end text-right text-sm leading-tight md:flex">
+<div class="hidden flex-col items-end text-right text-sm leading-tight lg:flex">
 	<p class="font-medium">{timeFormatter.format(time)}</p>
 	<p class="text-muted-foreground">{dateFormatter.format(time)}</p>
 </div>

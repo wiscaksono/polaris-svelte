@@ -86,13 +86,13 @@
 
 		<form onsubmit={handleSubmit} class="space-y-4">
 			<div class="space-y-2">
-				<p class="mb-2 border-b pb-2">Seleksi Resiko Ulang (Re-underwriting)</p>
+				<p class="mb-2 text-sm font-medium">Seleksi Resiko Ulang (Re-underwriting)</p>
 				{#each allTertanggung as tertanggung (tertanggung)}
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 pl-2">
 						<Checkbox id={tertanggung} bind:checked={() => values[tertanggung] === 'true', (v) => (values[tertanggung] = v ? 'true' : 'false')} />
-						<Label for={tertanggung}>
+						<Label for={tertanggung} class="font-normal text-muted-foreground">
 							{toTitleCase(tertanggung)}
-							<span class="font-normal text-muted-foreground">
+							<span class="font-normal">
 								({data?.nama_tertanggung[tertanggung]})
 							</span>
 						</Label>
@@ -100,11 +100,11 @@
 				{/each}
 			</div>
 			<div class="space-y-2">
-				<p class="mb-2 border-b pb-2">Kelengkapan dokumen yang dibutuhkan</p>
+				<p class="mb-2 text-sm font-medium">Kelengkapan dokumen yang dibutuhkan</p>
 				{#each docCheckbox as { key, label } (label)}
-					<div class="flex items-center gap-2">
+					<div class="flex items-center gap-2 pl-2">
 						<Checkbox id={key} bind:checked={() => values[key] === 'true', (v) => (values = { ...values, [key]: v ? 'true' : 'false' })} />
-						<Label for={key}>{label}</Label>
+						<Label for={key} class="font-normal text-muted-foreground">{label}</Label>
 					</div>
 				{/each}
 			</div>

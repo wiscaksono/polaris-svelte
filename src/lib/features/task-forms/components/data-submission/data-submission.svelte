@@ -16,7 +16,7 @@
 
 <div class="space-y-2">
 	<ChecklistReunderwriting data={query.data} />
-	<TanggalFormulir data={query.data} />
-	<TandaTangan data={query.data} />
-	<DCNotes data={query.data} />
+	<!-- <TanggalFormulir data={query.data} /> -->
+	<!-- <TandaTangan data={query.data} /> -->
+	<!-- <DCNotes data={query.data} /> -->
 </div>

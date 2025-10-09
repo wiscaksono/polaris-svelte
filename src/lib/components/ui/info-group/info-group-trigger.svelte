@@ -24,7 +24,7 @@
 	bind:ref
 	data-slot="info-group-trigger"
 	class={cn(
-		'group relative flex h-10 w-full cursor-pointer items-center justify-between gap-2 rounded-md bg-primary px-4 py-2 text-primary-foreground transition-all select-none hover:opacity-90 data-[state=closed]:delay-200 data-[state=open]:rounded-b-none data-[state=open]:delay-0',
+		'group relative flex h-10 w-full cursor-pointer items-center justify-between gap-2 overflow-hidden rounded-md bg-primary px-4 py-2 text-primary-foreground transition-all select-none hover:opacity-90 data-[state=closed]:delay-200 data-[state=open]:rounded-b-none data-[state=open]:delay-0',
 		className
 	)}
 	{...restProps}
