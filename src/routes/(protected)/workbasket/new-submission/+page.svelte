@@ -42,7 +42,7 @@
 	<div class="flex w-full shrink-0 items-center gap-2 md:w-1/2">
 		<div class="relative flex-1">
 			<Search class="absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-			<Input placeholder="Search by case id" class="px-9" bind:value={queryParams.caseId.current} inputmode="numeric" type="number" />
+			<Input placeholder="Search by case id" class="px-9" bind:value={queryParams.caseId.current} inputmode="numeric" type="number" autofocus />
 			<TicketFilter />
 		</div>
 		<Select.Root
