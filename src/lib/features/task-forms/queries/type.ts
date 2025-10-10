@@ -12,6 +12,8 @@ export interface FinancialDataSubmissionRes {
 	policyHolderSignature: "1" | "0" | null
 	csBcAgentSignature: "1" | "0" | null
 	dcNotes: string | null
+	submittedDate: string | null
+	formDate: string | null
 	policyData: {
 		kdKurs: string
 		lsbsId: number
@@ -50,6 +52,10 @@ export interface FinancialDataSubmissionRes {
 		reasonId: number
 		reasonName: string
 	}>
-	submittedDate: string | null
-	formDate: string | null
+	transactionData: Array<{
+		fundCode: string
+		fundName: string
+		fundType: string
+		fundAmount: number
+	}>
 }
