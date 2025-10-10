@@ -54,7 +54,7 @@
 				{data.taskFormParams.case_trx}
 			</p>
 			<div class="hidden items-center gap-2 text-right text-sm text-muted-foreground lg:flex">
-				<p class="truncate">No. Temp: {data.taskFormParams.no_tmp}</p>
+				<p class="truncate">No. Trx: {data.taskFormParams.no_trx}</p>
 				<p class="truncate">Case ID: {data.taskFormParams.case_id}</p>
 			</div>
 		</div>

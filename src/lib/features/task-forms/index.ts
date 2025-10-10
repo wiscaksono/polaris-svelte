@@ -81,7 +81,7 @@ export const withdrawalTaskForms = [
 	{
 		title: 'Data Investasi',
 		slug: 'data-investasi',
-		component: import('./withdrawal/1.svelte')
+		component: import('./withdrawal/4.svelte')
 	},
 	{
 		title: 'Instruksi Bayar',
