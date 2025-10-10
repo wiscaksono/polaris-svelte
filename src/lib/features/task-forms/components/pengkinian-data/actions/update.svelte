@@ -26,7 +26,7 @@
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const listQuery = createQuery(() => commonQueries.allSelect());
+	const listQuery = createQuery(() => ({ ...commonQueries.allSelect(), enabled: open }));
 	const isFormDirty = $derived(!deepEqual(values, data.endorsement.after));
 	const mutation = createMutation(() =>
 		financialQueries.updateDataSubmission({
