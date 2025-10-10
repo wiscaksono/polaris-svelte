@@ -76,7 +76,7 @@
 				<Label for="ditandatangani-di">Ditandatangani Di</Label>
 				<Select.Root type="single" bind:value={values.ttd_tempat}>
 					<Select.Trigger class="w-full" id="ditandatangani-di" loading={query.isLoading}>
-						{values.ttd_tempat ?? 'Ditandatangani Di'}
+						{values.ttd_tempat && values.ttd_tempat !== '' ? values.ttd_tempat : 'Ditandatangani Di'}
 					</Select.Trigger>
 					<Select.Content>
 						{#if query.data}

@@ -200,7 +200,7 @@
 						<Table.Row>
 							<Table.Cell colspan={9} class="text-center">Error: {query.error.message}</Table.Cell>
 						</Table.Row>
-					{:else if query.data}
+					{:else if query.data.length}
 						{#each query.data as item, i (i)}
 							<Table.Row>
 								<Table.Head class="py-2">{dayjs(item.created_date).format('DD MMM YYYY')}</Table.Head>
@@ -210,7 +210,7 @@
 						{/each}
 					{:else}
 						<Table.Row>
-							<Table.Cell colspan={3} class="h-16 text-center">No tickets found</Table.Cell>
+							<Table.Cell colspan={3} class="h-16 text-center">No transactions history found</Table.Cell>
 						</Table.Row>
 					{/if}
 				</Table.Body>

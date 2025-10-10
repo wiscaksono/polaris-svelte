@@ -83,7 +83,7 @@
 						{/each}
 					{:else}
 						<Table.Row>
-							<Table.Cell colspan={5} class="h-16 text-center">No transfer out found</Table.Cell>
+							<Table.Cell colspan={5} class="h-16 text-center">No internal funding found</Table.Cell>
 						</Table.Row>
 					{/if}
 				</Table.Body>

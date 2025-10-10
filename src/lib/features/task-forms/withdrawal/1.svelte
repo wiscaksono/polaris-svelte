@@ -3,6 +3,9 @@
 	import TujuanPembayaran from '../components/tujuan-pembayaran';
 	import PengkinianData from '../components/pengkinian-data';
 	import AlasanTransaksi from '../components/alasan-transaksi';
+	import TanggalFormulir from '../components/tanggal-formulir';
+	import TandaTangan from '../components/tanda-tangan';
+	import DCNotes from '../components/dc-notes';
 </script>
 
 <div class="space-y-2">
@@ -10,4 +13,7 @@
 	<TujuanPembayaran />
 	<PengkinianData />
 	<AlasanTransaksi />
+	<TanggalFormulir />
+	<TandaTangan />
+	<DCNotes />
 </div>

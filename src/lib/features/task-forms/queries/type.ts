@@ -9,6 +9,9 @@ export interface TransactionHistoriesRes {
 }
 
 export interface FinancialDataSubmissionRes {
+	policyHolderSignature: "1" | "0" | null
+	csBcAgentSignature: "1" | "0" | null
+	dcNotes: string | null
 	policyData: {
 		kdKurs: string
 		lsbsId: number
@@ -47,4 +50,6 @@ export interface FinancialDataSubmissionRes {
 		reasonId: number
 		reasonName: string
 	}>
+	submittedDate: string | null
+	formDate: string | null
 }
