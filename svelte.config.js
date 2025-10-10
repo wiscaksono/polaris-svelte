@@ -9,7 +9,21 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		adapter: process.env.VERCEL ? adapterVercel() : adapterNode(),
-		experimental: { remoteFunctions: true }
+		experimental: { remoteFunctions: true },
+		typescript: {
+			config: conf => {
+				conf.exclude = [
+					"node_modules",
+					".svelte-kit",
+					"build",
+					"dist",
+					"coverage",
+					"test-results",
+					"**/*.test.ts",
+					"**/*.spec.ts",
+				]
+			}
+		}
 	},
 	vitePlugin: {
 		inspector: {
@@ -22,7 +36,7 @@ const config = {
 				prev: 'ArrowLeft'
 			}
 		}
-	}
+	},
 };
 
 export default config;

@@ -29,9 +29,12 @@
 				</Table.Header>
 				<Table.Body>
 					{#if query.isLoading}
+						<!-- TODO: Add loader -->
 						Loading
 					{:else if query.isError}
-						Error
+						<Table.Row>
+							<Table.Cell colspan={4} class="h-16 text-center">{query.error.message}</Table.Cell>
+						</Table.Row>
 					{:else if query.data?.transferOut.length}
 						{#each query.data.transferOut as item, i (i)}
 							<Table.Row>
@@ -65,7 +68,9 @@
 					{#if query.isLoading}
 						Loading
 					{:else if query.isError}
-						Error
+						<Table.Row>
+							<Table.Cell colspan={5} class="h-16 text-center">{query.error.message}</Table.Cell>
+						</Table.Row>
 					{:else if query.data?.internalFunding.length}
 						{#each query.data.internalFunding as item, i (i)}
 							<Table.Row>

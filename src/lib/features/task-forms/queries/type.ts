@@ -42,4 +42,9 @@ export interface FinancialDataSubmissionRes {
 		phoneNumberId: string | null
 		emailId: string | null
 	}>
+	reason: Array<{
+		notes: string
+		reasonId: number
+		reasonName: string
+	}>
 }
