@@ -155,7 +155,7 @@
 		</form>
 		<Dialog.Footer>
 			<Button onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending || !isAllInputFilled || isJumlahInvalid}>
-				Add
+				Update
 				{#if mutation.isPending}
 					<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />
 				{/if}

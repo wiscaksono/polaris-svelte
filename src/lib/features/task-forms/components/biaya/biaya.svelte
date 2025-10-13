@@ -4,6 +4,10 @@
 	import * as Table from '$lib/components/ui/table';
 	import * as InfoGroup from '$lib/components/ui/info-group';
 
+	import Create from './actions/create.svelte';
+	import Update from './actions/update.svelte';
+	import Delete from './actions/delete.svelte';
+
 	import { biayaQueries } from './query';
 	import { formatNumber } from '$lib/utils';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
@@ -13,7 +17,13 @@
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Biaya" />
+	<InfoGroup.Trigger title="Biaya">
+		{#snippet rightChild()}
+			{#if query.data}
+				<Create data={query.data} />
+			{/if}
+		{/snippet}
+	</InfoGroup.Trigger>
 	<InfoGroup.Content class="bg-background">
 		<Table.Root variant="outline">
 			<Table.Header>
@@ -42,7 +52,10 @@
 							<Table.Cell>{jenis_biaya}</Table.Cell>
 							<Table.Cell>{persen} %</Table.Cell>
 							<Table.Cell>{formatNumber(amount, 'id-ID')}</Table.Cell>
-							<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">TODO</Table.Cell>
+							<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+								<Update data={query.data[index]} />
+								<Delete data={query.data[index]} />
+							</Table.Cell>
 						</Table.Row>
 					{/each}
 				{:else}
