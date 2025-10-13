@@ -1,9 +1,9 @@
 import * as icon from '@lucide/svelte';
-import type { TransactionType } from './type';
+import type { TransactionType, SideMenu } from './type';
 
 export const IS_DEV = import.meta.env.MODE === 'development';
 
-export const sideMenu = [
+export const sideMenu: SideMenu = [
 	{
 		title: null,
 		subMenu: [

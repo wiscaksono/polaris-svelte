@@ -1,7 +1,19 @@
+import type { Component } from 'svelte';
+import type { IconProps } from '@lucide/svelte';
+
 export type WithoutChild<T> = T extends { child?: unknown } ? Omit<T, 'child'> : T;
 export type WithoutChildren<T> = T extends { children?: unknown } ? Omit<T, 'children'> : T;
 export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
 export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };
+
+export type SideMenu = Array<{
+	title: string | null
+	subMenu: Array<{
+		title: string
+		href: string
+		icon: Component<IconProps>
+	}>
+}>
 
 export interface BaseResponse<T> {
 	result: string;

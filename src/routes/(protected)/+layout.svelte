@@ -3,7 +3,8 @@
 	import AppSidebar from '$lib/components/layout/app-sidebar.svelte';
 	import AppUserMenu from '$lib/components/layout/app-user-menu.svelte';
 	import AppBreadcrumb from '$lib/components/layout/app-breadcrumb.svelte';
-	import Notification from '$lib/components/layout/notification.svelte';
+	import AppQuickMenu from '$lib/components/layout/app-quick-menu.svelte';
+	import Notification from '$lib/features/notification/notification.svelte';
 	import DateTime from '$lib/components/layout/date-time.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import ThemeSwitcher from '$lib/components/layout/theme-switcher.svelte';
@@ -32,4 +33,5 @@
 		</header>
 		{@render children?.()}
 	</Sidebar.Inset>
+	<AppQuickMenu />
 </Sidebar.Provider>
