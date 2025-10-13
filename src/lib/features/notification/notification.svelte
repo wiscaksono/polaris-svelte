@@ -1,7 +1,9 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import { mode } from 'mode-watcher';
 	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
+	import { MediaQuery } from 'svelte/reactivity';
 	import { Bell, Clock, LoaderCircle } from '@lucide/svelte';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import { createQuery, useQueryClient, createMutation } from '@tanstack/svelte-query';
@@ -9,6 +11,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
+	import * as Drawer from '$lib/components/ui/drawer/index.js';
 
 	import { cn } from '$lib/utils';
 	import { userStore } from '$lib/stores';
@@ -19,7 +22,8 @@
 
 	dayjs.extend(relativeTime);
 
-	let open = $state(false);
+	let open = $state(true);
+	const isDesktop = new MediaQuery('(min-width: 768px)');
 
 	function formatNotificationDate(date: string | Date): string {
 		const notificationDate = dayjs(date);
@@ -76,65 +80,99 @@
 	}
 </script>
 
-<Sheet.Root bind:open onOpenChange={() => handleRefetch()}>
-	<Sheet.Trigger>
-		{#snippet child({ props })}
-			<Button {...props} size="icon" variant="outline" class="relative">
-				<Bell />
-				{#if notifCountQuery.data && notifCountQuery.data !== 0}
-					<Badge class="absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
-						{notifCountQuery.data > 99 ? '99+' : notifCountQuery.data}
-					</Badge>
-				{/if}
-			</Button>
-		{/snippet}
-	</Sheet.Trigger>
-	<Sheet.Content showCloseButton={false} class="top-1/2 right-2.5 h-[calc(100dvh-1.25rem)] -translate-y-1/2 gap-0 overflow-hidden rounded-lg border">
-		<Sheet.Header class="border-b pb-2.5">
-			<Sheet.Title class="flex items-center justify-between gap-2">
-				<span>Notifications</span>
-				{#if notifCountQuery.data !== 0}
-					<Button size="sm" variant="ghost" class="font-normal text-muted-foreground" onclick={handleReadAll} disabled={readAllNotifMutation.isPending}>
-						Read all
-						{#if readAllNotifMutation.isPending}
-							<LoaderCircle class="animate-spin" />
-						{/if}
-					</Button>
-				{/if}
-			</Sheet.Title>
-		</Sheet.Header>
-		<div class="relative overflow-y-auto">
-			<div aria-hidden="true" class="sticky top-0 z-10 h-3.5 w-full bg-gradient-to-b from-background"></div>
-			<ul class="-my-3.5 divide-y">
-				{#if notifQuery.data}
-					{#each notifQuery.data as notif, i (i)}
-						<li>
-							<button
-								class={cn(
-									'cursor-pointer space-y-1 px-4 py-2 text-left text-sm opacity-100 transition-opacity hover:opacity-60 dark:hover:opacity-80',
-									notif.status === 0 ? 'bg-muted' : ''
-								)}
-								onpointerenter={() => handlePrefetch(notif)}
-								onclick={() => handleRedirect(notif)}
-							>
-								<div class="flex items-center justify-between gap-2">
-									<p class="font-medium">{notif.jenis_trx} - {notif.no_trx}</p>
-									<span class="flex items-center justify-between gap-1 text-right text-xs text-muted-foreground">
-										<Clock size={12} />
-										<time datetime={dayjs(notif.sent_date).toISOString()}>
-											{formatNotificationDate(notif.sent_date)}
-										</time>
-									</span>
-								</div>
-								<span class="line-clamp-2 text-muted-foreground">
-									{notif.message}
+<Button size="icon" variant="outline" class="relative" onclick={() => (open = true)}>
+	<Bell />
+	{#if notifCountQuery.data && notifCountQuery.data !== 0}
+		<Badge class="absolute -top-2 -right-2 h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
+			{notifCountQuery.data > 99 ? '99+' : notifCountQuery.data}
+		</Badge>
+	{/if}
+</Button>
+
+{#if isDesktop.current}
+	<Sheet.Root bind:open onOpenChange={() => handleRefetch()}>
+		<Sheet.Content showCloseButton={false} class="top-1/2 right-2.5 h-[calc(100dvh-1.25rem)] -translate-y-1/2 gap-0 overflow-hidden rounded-lg border">
+			<Sheet.Header class="border-b pb-2.5">
+				<Sheet.Title class="flex items-center justify-between gap-2">
+					<span>Notifications</span>
+					{#if notifCountQuery.data !== 0}
+						<Button size="sm" variant="ghost" class="font-normal text-muted-foreground" onclick={handleReadAll} disabled={readAllNotifMutation.isPending}>
+							Read all
+							{#if readAllNotifMutation.isPending}
+								<LoaderCircle class="animate-spin" />
+							{/if}
+						</Button>
+					{/if}
+				</Sheet.Title>
+			</Sheet.Header>
+			{@render notificationItems()}
+		</Sheet.Content>
+	</Sheet.Root>
+{:else}
+	<Drawer.Root bind:open>
+		<Drawer.Content class="h-full">
+			<Drawer.Header class="border-b">
+				<Drawer.Title class="flex items-center justify-between gap-2">
+					Notification
+					{#if notifCountQuery.data !== 0}
+						<Button size="sm" variant="ghost" class="font-normal text-muted-foreground" onclick={handleReadAll} disabled={readAllNotifMutation.isPending}>
+							Read all
+							{#if readAllNotifMutation.isPending}
+								<LoaderCircle class="animate-spin" />
+							{/if}
+						</Button>
+					{/if}
+				</Drawer.Title>
+			</Drawer.Header>
+			{@render notificationItems()}
+		</Drawer.Content>
+	</Drawer.Root>
+{/if}
+
+{#snippet notificationItems()}
+	<div class="relative flex flex-1 flex-col overflow-y-auto">
+		<div aria-hidden="true" class="sticky top-0 z-10 h-3.5 w-full shrink-0 bg-gradient-to-b from-background"></div>
+		{#if notifQuery.data?.length}
+			<ul class="-my-3.5 flex-1 divide-y">
+				{#each notifQuery.data as notif, i (i)}
+					<li>
+						<button
+							class={cn(
+								'cursor-pointer space-y-1 px-4 py-2 text-left text-sm opacity-100 transition-opacity hover:opacity-60 dark:hover:opacity-80',
+								notif.status === 0 ? 'bg-muted' : ''
+							)}
+							onpointerenter={() => handlePrefetch(notif)}
+							onclick={() => handleRedirect(notif)}
+						>
+							<div class="flex items-center justify-between gap-2">
+								<p class="font-medium">{notif.jenis_trx} - {notif.no_trx}</p>
+								<span class="flex items-center justify-between gap-1 text-right text-xs text-muted-foreground">
+									<Clock size={12} />
+									<time datetime={dayjs(notif.sent_date).toISOString()}>
+										{formatNotificationDate(notif.sent_date)}
+									</time>
 								</span>
-							</button>
-						</li>
-					{/each}
-				{/if}
+							</div>
+							<span class="line-clamp-2 text-muted-foreground">
+								{notif.message}
+							</span>
+						</button>
+					</li>
+				{/each}
 			</ul>
-			<div aria-hidden="true" class="sticky bottom-0 z-10 h-3.5 w-full bg-gradient-to-t from-background"></div>
-		</div>
-	</Sheet.Content>
-</Sheet.Root>
+		{:else}
+			<div class="grid flex-1 place-items-center select-none">
+				<div class="flex flex-col items-center justify-center gap-4">
+					<img
+						draggable={false}
+						src={mode.current === 'light' ? '/empty-notification-light.svg ' : '/empty-notification-dark.svg'}
+						alt="Empty Notification"
+						class="w-1/4"
+					/>
+					<p class="text-sm text-muted-foreground">There are no notifications</p>
+				</div>
+			</div>
+		{/if}
+		<div aria-hidden="true" class="sticky bottom-0 z-10 h-3.5 w-full shrink-0 bg-gradient-to-t from-background"></div>
+	</div>
+{/snippet}
