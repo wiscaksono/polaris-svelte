@@ -12,15 +12,18 @@
 	import { formatNumber } from '$lib/utils';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 	const query = createQuery(() => biayaQueries.get({ noTrx: taskFormParams.no_trx, regSpaj: taskFormParams.reg_spaj }));
+	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
 </script>
 
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Biaya">
 		{#snippet rightChild()}
-			{#if query.data}
-				<Create data={query.data} />
+			{#if !isCurrentTabWorksheet}
+				{#if query.data}
+					<Create data={query.data} />
+				{/if}
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
@@ -31,9 +34,11 @@
 					<Table.Head>Jenis</Table.Head>
 					<Table.Head>Persentase</Table.Head>
 					<Table.Head>Amount</Table.Head>
-					<Table.Head class="sticky right-0 z-20 w-px !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-						Action
-					</Table.Head>
+					{#if !isCurrentTabWorksheet}
+						<Table.Head class="sticky right-0 z-20 w-px !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+							Action
+						</Table.Head>
+					{/if}
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -42,7 +47,7 @@
 					Loading
 				{:else if query.isError}
 					<Table.Row>
-						<Table.Cell colspan={4} class="h-16 text-center">
+						<Table.Cell colspan={isCurrentTabWorksheet ? 4 : 3} class="h-16 text-center">
 							{query.error.message}
 						</Table.Cell>
 					</Table.Row>
@@ -52,15 +57,17 @@
 							<Table.Cell>{jenis_biaya}</Table.Cell>
 							<Table.Cell>{persen} %</Table.Cell>
 							<Table.Cell>{formatNumber(amount, 'id-ID')}</Table.Cell>
-							<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-								<Update data={query.data[index]} />
-								<Delete data={query.data[index]} />
-							</Table.Cell>
+							{#if !isCurrentTabWorksheet}
+								<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+									<Update data={query.data[index]} />
+									<Delete data={query.data[index]} />
+								</Table.Cell>
+							{/if}
 						</Table.Row>
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={4} class="h-16 text-center">No data found</Table.Cell>
+						<Table.Cell colspan={isCurrentTabWorksheet ? 4 : 3} class="h-16 text-center">No data found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>

@@ -53,12 +53,13 @@
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Spica Result" />
+	<InfoGroup.Trigger title="SPICA Result" />
 	<InfoGroup.Content class="bg-background">
 		<div class="flex items-center justify-between gap-2">
 			<div class="grid flex-1 grid-cols-3 gap-2">
 				<Select.Root
 					allowDeselect
+					disabled={!spicaKeOptions.length}
 					type="single"
 					bind:value={
 						() => values.spicaKe,
@@ -77,6 +78,7 @@
 				</Select.Root>
 				<Select.Root
 					allowDeselect
+					disabled={!spicaRuleOptions.length}
 					type="single"
 					bind:value={
 						() => values.spicaRule,
@@ -101,6 +103,7 @@
 				</Select.Root>
 				<Select.Root
 					allowDeselect
+					disabled={!spicaResultOptions.length}
 					type="single"
 					bind:value={
 						() => values.spicaResult,

@@ -86,12 +86,12 @@ export const withdrawalTaskForms = [
 	{
 		title: 'Instruksi Bayar',
 		slug: 'instruksi-bayar',
-		component: import('./withdrawal/1.svelte')
+		component: import('./withdrawal/5.svelte')
 	},
 	{
 		title: 'Worksheet',
 		slug: 'worksheet',
-		component: import('./withdrawal/1.svelte')
+		component: import('./withdrawal/6.svelte')
 	}
 ] as const satisfies TaskFormConfig[]
 

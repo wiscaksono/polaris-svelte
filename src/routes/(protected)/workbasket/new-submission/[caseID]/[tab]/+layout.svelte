@@ -76,7 +76,7 @@
 							href={`/workbasket/new-submission/${data.taskFormParams.case_id}/${slug}`}
 							class={cn(
 								// Base
-								'relative overflow-hidden rounded-b-none border-b-0 transition-colors',
+								'relative overflow-hidden rounded-b-none border-b-0 transition-colors dark:bg-background',
 								'data-[active=true]:border-t-destructive data-[active=true]:hover:bg-background',
 								// Before
 								'before:absolute before:top-0 before:h-px before:w-full before:bg-transparent',
@@ -161,7 +161,7 @@
 							onclick={() => (rightTab = id)}
 							class={cn(
 								// Base
-								'relative overflow-hidden rounded-b-none border-b-0 transition-colors',
+								'relative overflow-hidden rounded-b-none border-b-0 transition-colors dark:bg-background',
 								'data-[active=true]:border-t-destructive data-[active=true]:hover:bg-background',
 								// Before
 								'before:absolute before:top-0 before:h-px before:w-full before:bg-transparent',

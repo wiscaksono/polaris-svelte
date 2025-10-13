@@ -10,7 +10,7 @@
 	import { dataInvestasiPolisQueries } from './query';
 	import { getTaskFormContext } from '../../context.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 	const query = createQuery(() => dataInvestasiPolisQueries.get({ regSpaj: taskFormParams.reg_spaj }));
 	const total = $derived(query.data?.saldoInvestasi.reduce((acc, item) => acc + item.nilaiInvestasi, 0) ?? 0);
 </script>
@@ -18,12 +18,14 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Data Investasi Polis" />
 	<InfoGroup.Content class="bg-background" wrapperClassName="divide-y">
-		<div class="divide-y">
-			<DetailItem label="Jumlah Switching" value={query.data?.jumlahSwitching} />
-			<DetailItem label="Last Switching" value={query.data?.lastWithdrawal ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
-			<DetailItem label="Jumlah Withdrawal" value={query.data?.jumlahSwitching} />
-			<DetailItem label="Last Withdrawal" value={query.data?.jumlahSwitching ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
-		</div>
+		{#if currentTaskFormTab.slug !== 'worksheet'}
+			<div class="divide-y">
+				<DetailItem label="Jumlah Switching" value={query.data?.jumlahSwitching} />
+				<DetailItem label="Last Switching" value={query.data?.lastWithdrawal ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
+				<DetailItem label="Jumlah Withdrawal" value={query.data?.jumlahSwitching} />
+				<DetailItem label="Last Withdrawal" value={query.data?.jumlahSwitching ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
+			</div>
+		{/if}
 		<div class="space-y-2">
 			<p class="truncate font-medium">Saldo Investasi</p>
 			<Table.Root variant="outline">
