@@ -22,7 +22,7 @@
 
 	dayjs.extend(relativeTime);
 
-	let open = $state(true);
+	let open = $state(false);
 	const isDesktop = new MediaQuery('(min-width: 768px)');
 
 	function formatNotificationDate(date: string | Date): string {
