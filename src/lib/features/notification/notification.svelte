@@ -138,7 +138,7 @@
 					<li>
 						<button
 							class={cn(
-								'cursor-pointer space-y-1 px-4 py-2 text-left text-sm opacity-100 transition-opacity hover:opacity-60 dark:hover:opacity-80',
+								'w-full cursor-pointer space-y-1 px-4 py-2 text-left text-sm opacity-100 transition-opacity hover:opacity-60 dark:hover:opacity-80',
 								notif.status === 0 ? 'bg-muted' : ''
 							)}
 							onpointerenter={() => handlePrefetch(notif)}
