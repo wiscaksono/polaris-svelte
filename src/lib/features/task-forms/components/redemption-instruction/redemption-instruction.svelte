@@ -10,7 +10,7 @@
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams } = getTaskFormContext();
-	const query = createQuery(() => redemptionInstructionQueries.get({ noTrx: taskFormParams.no_trx }));
+	const query = createQuery(() => redemptionInstructionQueries.get({ noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx }));
 	const totalUnit = $derived(query.data?.reduce((acc, item) => acc + (item.unit ? item.unit : 0), 0) ?? 0);
 	const totalAmount = $derived(query.data?.reduce((acc, item) => acc + (item.amount ? item.amount : 0), 0) ?? 0);
 </script>
@@ -57,7 +57,7 @@
 					<Table.Row>
 						<Table.Cell class="font-medium" colspan={3}>Total</Table.Cell>
 						<Table.Cell class="font-medium">{totalAmount}</Table.Cell>
-						<Table.Cell class="font-medium" colspan={5}>{totalUnit}</Table.Cell>
+						<Table.Cell class="font-medium" colspan={5}>{formatCurrency(totalUnit, 'IDR', 'id-ID')}</Table.Cell>
 					</Table.Row>
 				{:else}
 					<Table.Row>

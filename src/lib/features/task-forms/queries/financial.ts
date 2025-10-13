@@ -1,6 +1,6 @@
 import { queryOptions } from "@tanstack/svelte-query"
 
-import { api, mutationOptions } from "$lib/utils"
+import { api, mutationOptions, transactionIDs, type TransactionType } from "$lib/utils"
 import type { FinancialDataSubmissionRes } from "./type"
 
 export const financialQueries = {
@@ -19,11 +19,10 @@ export const financialQueries = {
       }
     })
   },
-  updateDataSubmission: ({ lusId, noTrx, regSpaj, }: { lusId: number, noTrx: string, regSpaj: string, }) => {
+  updateDataSubmission: ({ lusId, noTrx, regSpaj, transaction }: { lusId: number, noTrx: string, regSpaj: string, transaction: TransactionType }) => {
     return mutationOptions({
       mutationFn: async ({ payload, initialData }: { payload: FinancialDataSubmissionRes, initialData: FinancialDataSubmissionRes }) => {
-        // TODO: Bind the right transaction ID
-        await api.post(`/polaris/api-financial-polaris/v1/financial/saveFinancialDataNewSub?transaction=3`, {
+        await api.post(`/polaris/api-financial-polaris/v1/financial/saveFinancialDataNewSub?transaction=${transactionIDs[transaction]}`, {
           ...payload,
           before: initialData,
           lusId,
@@ -32,5 +31,24 @@ export const financialQueries = {
         })
       }
     })
-  }
+  },
+  isButtonRedemptionEnabled: ({ noTrx }: { noTrx: string }) => {
+    return queryOptions({
+      queryKey: ['is-button-redemption-enabled', noTrx],
+      queryFn: async () => {
+        const { data } = await api.get<boolean>(`/polaris/api-financial-polaris/financial/buttonRedemptionEnable?noTransaksi=${noTrx}`)
+        return data
+      }
+    })
+  },
+  isButtonRealocationEnabled: ({ noTrx, transaction }: { noTrx: string, transaction: TransactionType }) => {
+    return queryOptions({
+      queryKey: ['is-button-realocation-enabled', noTrx, transaction],
+      queryFn: async () => {
+        if (transaction === 'Redirection') return true
+        const { data } = await api.get<boolean>(`/polaris/api-financial-polaris/financial/buttonRealocationEnable?noTransaksi=${noTrx}`)
+        return data
+      }
+    })
+  },
 }

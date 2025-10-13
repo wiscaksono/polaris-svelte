@@ -55,7 +55,7 @@
 			{/each}
 		{:else if queryResult.isError}
 			<Table.Row>
-				<Table.Cell colspan={9} class="text-center">Error: {queryResult.error.message}</Table.Cell>
+				<Table.Cell colspan={9} class="h-16 text-center">Error: {queryResult.error.message}</Table.Cell>
 			</Table.Row>
 		{:else if queryResult.data[listKey].length}
 			{#each queryResult.data[listKey] as item, i (i)}

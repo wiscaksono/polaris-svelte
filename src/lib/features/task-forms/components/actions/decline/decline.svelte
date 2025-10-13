@@ -16,14 +16,16 @@
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} class="!pl-2.5" onclick={handleOpen}>
-				{#if true}
-					<Ban />
-				{:else}
-					<LoaderCircle class="animate-spin" />
-				{/if}
-				Decline
-			</Button>
+			<div {...props}>
+				<Button class="!pl-2.5" onclick={handleOpen}>
+					{#if true}
+						<Ban />
+					{:else}
+						<LoaderCircle class="animate-spin" />
+					{/if}
+					Decline
+				</Button>
+			</div>
 		{/snippet}
 	</Tooltip.Trigger>
 	<Tooltip.Content>Untuk melakukan reject transaksi</Tooltip.Content>

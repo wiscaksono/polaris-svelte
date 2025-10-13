@@ -97,7 +97,7 @@ class API {
 			} catch {
 				errorMessage = `[${response.status}] Invalid response format`;
 			}
-			throw new Error(errorMessage);
+			throw new Error(errorMessage ?? 'Internal Server Error');
 		}
 
 		return response.json() as Promise<BaseResponse<T>>;

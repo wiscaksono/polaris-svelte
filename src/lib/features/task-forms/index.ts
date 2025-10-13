@@ -108,7 +108,7 @@ export const taskForms = {
 	'Switching and Redirection': majorAlterationTaskForms,
 	Deduction: majorAlterationTaskForms,
 	Withdrawal: withdrawalTaskForms,
-	'Surrender Link': majorAlterationTaskForms,
+	'Surrender Link': withdrawalTaskForms,
 	Switching: majorAlterationTaskForms,
 	Redirection: majorAlterationTaskForms,
 	'Cancel Free Look Link': majorAlterationTaskForms,

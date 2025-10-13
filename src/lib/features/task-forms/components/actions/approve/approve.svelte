@@ -47,14 +47,16 @@
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} class="!pl-2.5" disabled={true} onclick={handleOpen}>
-				{#if true}
-					<Check />
-				{:else}
-					<LoaderCircle class="animate-spin" />
-				{/if}
-				Approve
-			</Button>
+			<div {...props}>
+				<Button class="!pl-2.5" disabled={true} onclick={handleOpen}>
+					{#if true}
+						<Check />
+					{:else}
+						<LoaderCircle class="animate-spin" />
+					{/if}
+					Approve
+				</Button>
+			</div>
 		{/snippet}
 	</Tooltip.Trigger>
 	<Tooltip.Content>Jika tidak ada gantungan Further, SPM dan Decision</Tooltip.Content>

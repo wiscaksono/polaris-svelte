@@ -21,9 +21,9 @@
 		{#if currentTaskFormTab.slug !== 'worksheet'}
 			<div class="divide-y">
 				<DetailItem label="Jumlah Switching" value={query.data?.jumlahSwitching} />
-				<DetailItem label="Last Switching" value={query.data?.lastWithdrawal ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
+				<DetailItem label="Last Switching" value={query.data?.lastSwitching ? dayjs(query.data?.lastSwitching).format('DD MMM YYYY') : ''} />
 				<DetailItem label="Jumlah Withdrawal" value={query.data?.jumlahSwitching} />
-				<DetailItem label="Last Withdrawal" value={query.data?.jumlahSwitching ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
+				<DetailItem label="Last Withdrawal" value={query.data?.lastWithdrawal ? dayjs(query.data?.lastWithdrawal).format('DD MMM YYYY') : ''} />
 			</div>
 		{/if}
 		<div class="space-y-2">

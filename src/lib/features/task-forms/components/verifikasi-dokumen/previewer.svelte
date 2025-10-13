@@ -25,21 +25,34 @@
 	let previewUrl = $state<string | null>(null);
 
 	$effect(() => {
-		if (!documentQuery.data) return;
+		const data = documentQuery.data;
+		if (!data) return;
 
-		if (documentQuery.data.contentType?.startsWith('application/pdf')) {
-			thumbnailUrl = mode.current === 'dark' ? '/pdf-placeholder-dark.png' : '/pdf-placeholder-light.png';
-			previewUrl = URL.createObjectURL(documentQuery.data.blob);
-		} else if (documentQuery.data.contentType?.startsWith('image/')) {
-			thumbnailUrl = URL.createObjectURL(documentQuery.data.blob);
-		} else if (documentQuery.data.contentType?.startsWith('application/json')) {
-			thumbnailUrl = mode.current === 'dark' ? '/broken-file-dark.png' : '/broken-file-light.png';
+		const ct = data.contentType ?? '';
+		const dark = mode.current === 'dark';
+		const pdfPlaceholder = dark ? '/pdf-placeholder-dark.png' : '/pdf-placeholder-light.png';
+		const brokenPlaceholder = dark ? '/broken-file-dark.png' : '/broken-file-light.png';
+
+		let url: string | null = null;
+
+		if (ct.startsWith('application/pdf')) {
+			thumbnailUrl = pdfPlaceholder;
+			url = URL.createObjectURL(data.blob);
+			previewUrl = url;
+		} else if (ct.startsWith('image/')) {
+			url = URL.createObjectURL(data.blob);
+			thumbnailUrl = url;
+			previewUrl = url;
+		} else if (ct.startsWith('application/json')) {
+			thumbnailUrl = brokenPlaceholder;
+			previewUrl = null;
+		} else {
+			thumbnailUrl = brokenPlaceholder;
 			previewUrl = null;
 		}
 
 		return () => {
-			URL.revokeObjectURL(thumbnailUrl);
-			thumbnailUrl = '';
+			if (url) URL.revokeObjectURL(url);
 		};
 	});
 </script>

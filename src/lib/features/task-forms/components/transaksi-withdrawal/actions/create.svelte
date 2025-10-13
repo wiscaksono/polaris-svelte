@@ -42,7 +42,8 @@
 		financialQueries.updateDataSubmission({
 			lusId: userStore.current!.lus_id,
 			noTrx: taskFormParams.no_trx,
-			regSpaj: taskFormParams.reg_spaj
+			regSpaj: taskFormParams.reg_spaj,
+			transaction: taskFormParams.case_trx
 		})
 	);
 
