@@ -24,9 +24,15 @@
 	import * as Popover from '$lib/components/ui/popover/index.js';
 
 	import { commonQueries } from '$lib/queries';
+	import { userStore } from '$lib/stores';
+
+	const isAdmin = userStore.current!.role_name === 'POLARIS Admin';
 
 	const queryParams = useQueryStates(ticketFilterParams);
-	const listUserQuery = createQuery(() => commonQueries.listUser());
+	const listUserQuery = createQuery(() => ({
+		...commonQueries.listUser(),
+		enabled: isAdmin
+	}));
 	const listTransactionQuery = createQuery(() => commonQueries.listTransaction());
 
 	let open = $state(false);
@@ -116,25 +122,27 @@
 				<Input id="start-at" data-testid="input-start-at" class="w-full" type="date" bind:value={localParams.from} />
 				<Input id="end-at" data-testid="input-end-at" class="w-full" type="date" bind:value={localParams.until} />
 			</div>
-			<div class="grid grid-cols-3 items-center gap-4">
-				<Label for="user-assign">User Assign</Label>
-				<Select.Root type="single" bind:value={localParams.user}>
-					<Select.Trigger id="user-assign" data-testid="select-user-assign" class="col-span-2 w-full">
-						{#if listUserQuery.data}
-							{toTitleCase(listUserQuery.data.find((item) => String(item.LUS_ID) === localParams.user)?.LUS_FULL_NAME ?? '')}
-						{/if}
-					</Select.Trigger>
-					<Select.Content align="end">
-						{#if listUserQuery.data}
-							{#each listUserQuery.data as item, i (i)}
-								<Select.Item value={String(item.LUS_ID)}>{toTitleCase(item.LUS_FULL_NAME)}</Select.Item>
-							{/each}
-						{:else}
-							<Select.Item value="loading">Loading...</Select.Item>
-						{/if}
-					</Select.Content>
-				</Select.Root>
-			</div>
+			{#if isAdmin}
+				<div class="grid grid-cols-3 items-center gap-4">
+					<Label for="user-assign">User Assign</Label>
+					<Select.Root type="single" bind:value={localParams.user}>
+						<Select.Trigger id="user-assign" data-testid="select-user-assign" class="col-span-2 w-full">
+							{#if listUserQuery.data}
+								{toTitleCase(listUserQuery.data.find((item) => String(item.LUS_ID) === localParams.user)?.LUS_FULL_NAME ?? '')}
+							{/if}
+						</Select.Trigger>
+						<Select.Content align="end">
+							{#if listUserQuery.data}
+								{#each listUserQuery.data as item, i (i)}
+									<Select.Item value={String(item.LUS_ID)}>{toTitleCase(item.LUS_FULL_NAME)}</Select.Item>
+								{/each}
+							{:else}
+								<Select.Item value="loading">Loading...</Select.Item>
+							{/if}
+						</Select.Content>
+					</Select.Root>
+				</div>
+			{/if}
 			<div class="ml-auto flex items-center gap-2">
 				<Button type="submit" class="ml-auto" variant="outline" data-testid="button-filter">Filter</Button>
 				<Button type="reset" variant="outline" data-testid="button-reset">Reset</Button>

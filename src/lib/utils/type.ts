@@ -76,8 +76,22 @@ export type PolisListRes<T extends string> = {
 	[key in T]: Polis[];
 };
 
+export type UserRoles =
+	| 'COO'
+	| 'CEO'
+	| 'POLARIS Analyst Financial'
+	| 'POLARIS Team Leader Financial'
+	| 'POLARIS Analyst Alteration'
+	| 'POLARIS Team Leader Alteration'
+	| 'POLARIS Manager of PAS'
+	| 'POLARIS Head of PAS'
+	| 'POLARIS Head of OPS'
+	| 'POLARIS Guest'
+	| 'POLARIS Document Center'
+	| 'POLARIS Admin';
+
 export interface User {
-	role_name: string;
+	role_name: UserRoles;
 	lus_id: number;
 	user_login_name: string;
 	user_full_name: string;
