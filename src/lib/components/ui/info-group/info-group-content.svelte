@@ -14,7 +14,10 @@
 	hiddenUntilFound
 	data-slot="info-group-content"
 	class={cn(
-		'overflow-hidden rounded-b-md border border-t-0 bg-muted transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down ',
+		`overflow-hidden rounded-b-md border border-t-0 bg-muted transition-all data-[state=closed]:animate-collapsible-up
+		data-[state=closed]:border-b-0 data-[state=open]:animate-collapsible-down data-[state=open]:border-t-0
+		dark:bg-background 
+		`,
 		className
 	)}
 	{...restProps}

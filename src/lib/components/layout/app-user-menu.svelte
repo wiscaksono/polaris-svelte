@@ -1,11 +1,15 @@
 <script lang="ts">
+	import { mode } from 'mode-watcher';
+	import { goto } from '$app/navigation';
 	import { Lock, LogOut } from '@lucide/svelte';
 	import { useQueryClient } from '@tanstack/svelte-query';
 
+	import { userStore } from '$lib/stores';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import { goto } from '$app/navigation';
+
+	import { IS_DEV } from '$lib/utils';
 
 	const queryClient = useQueryClient();
 
@@ -23,15 +27,29 @@
 
 		goto('/login', { replaceState: true });
 	};
+
+	const avatarUrl = $derived.by(() => {
+		if (IS_DEV) {
+			if (mode.current === 'dark') {
+				return '/avatar-dark.png';
+			} else {
+				return '/avatar-light.png';
+			}
+		} else {
+			return userStore.current!.pathfile_ceres;
+		}
+	});
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		{#snippet child({ props })}
-			<Button {...props} size="icon" variant="outline">
-				<Avatar.Root class="size-9 rounded-lg border">
-					<Avatar.Image src="https://www.shadcn-svelte.com/avatars/shadcn.jpg" alt="shadcn" />
-					<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
+			<Button {...props} size="icon" variant="outline" class="overflow-hidden">
+				<Avatar.Root class="size-9 rounded-lg">
+					<Avatar.Image src={avatarUrl} alt="shadcn" />
+					<Avatar.Fallback class="rounded-lg">
+						{userStore.current!.user_full_name[0]}
+					</Avatar.Fallback>
 				</Avatar.Root>
 			</Button>
 		{/snippet}
@@ -39,13 +57,13 @@
 	<DropdownMenu.Content class="w-(--bits-dropdown-menu-anchor-width) min-w-56 rounded-lg" align="end" sideOffset={4}>
 		<DropdownMenu.Label class="p-0 font-normal">
 			<div class="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-				<Avatar.Root class="size-8 rounded-lg">
-					<Avatar.Image src="https://www.shadcn-svelte.com/avatars/shadcn.jpg" alt="shadcn" />
+				<Avatar.Root class="size-8 rounded-lg border">
+					<Avatar.Image src={avatarUrl} alt={userStore.current!.user_full_name} />
 					<Avatar.Fallback class="rounded-lg">CN</Avatar.Fallback>
 				</Avatar.Root>
 				<div class="grid flex-1 text-left text-sm leading-tight">
-					<span class="truncate font-medium">shadcn</span>
-					<span class="truncate text-xs">m@example.com</span>
+					<span class="truncate font-medium">{userStore.current!.user_full_name}</span>
+					<span class="truncate text-xs">{userStore.current!.role_name}</span>
 				</div>
 			</div>
 		</DropdownMenu.Label>
