@@ -58,7 +58,7 @@
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={3} class="h-16 text-center">Tidak ada alasan transaksi yang ditemukan</Table.Cell>
+						<Table.Cell colspan={3} class="h-16 text-center">There is no reason found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>

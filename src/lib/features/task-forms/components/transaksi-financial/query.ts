@@ -1,12 +1,12 @@
 import { api } from '$lib/utils';
-import type { TransaksiWithdrawalListfundRes } from './type';
+import type { TransaksiFinancialListFundRes } from './type';
 
-export const transaksiWithdrawalQueries = {
+export const transaksiFinancialQueries = {
 	listFund: ({ regSpaj }: { regSpaj: string }) => {
 		return {
 			queryKey: ['transaksi-withdrawal', regSpaj],
 			queryFn: async () => {
-				const { data } = await api.get<TransaksiWithdrawalListfundRes>(
+				const { data } = await api.get<TransaksiFinancialListFundRes>(
 					`/polaris/api-data-entry-polaris/v1/financial/getExistingFundSources?regSpaj=${regSpaj}`
 				);
 				return data;

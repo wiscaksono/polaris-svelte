@@ -104,17 +104,17 @@ export const taskForms = {
 	'Re-Alokasi Investasi': majorTaskForms,
 
 	// Financial Group
-	'Switching and Redirection': financialTaskForms,
+	'Switching and Redirection': financialTaskForms.filter((item) => item.slug !== 'instruksi-bayar'),
 	Deduction: financialTaskForms,
 	Withdrawal: financialTaskForms,
 	'Surrender Link': financialTaskForms,
-	Switching: financialTaskForms,
-	Redirection: financialTaskForms,
+	Switching: financialTaskForms.filter((item) => item.slug !== 'instruksi-bayar'),
+	Redirection: financialTaskForms.filter((item) => item.slug !== 'instruksi-bayar' && item.slug !== 'data-investasi'),
 	'Cancel Free Look Link': financialTaskForms,
 	'Maturity Link': financialTaskForms,
 	'Auto Maturity Link': financialTaskForms,
 	'Refund UL': financialTaskForms,
-	'Top Up UL': financialTaskForms,
+	'Top Up UL': financialTaskForms.filter((item) => item.slug !== 'instruksi-bayar'),
 
 	// Traditional Group
 	'Cancel Free Look Trad': majorTaskForms,

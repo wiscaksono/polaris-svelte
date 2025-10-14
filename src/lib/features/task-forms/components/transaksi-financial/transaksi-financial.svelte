@@ -7,6 +7,7 @@
 	import Update from './actions/update.svelte';
 	import Delete from './actions/delete.svelte';
 
+	import { formatNumber } from '$lib/utils';
 	import { getTaskFormContext } from '../../context.svelte';
 	import { financialQueries } from '../../queries/financial';
 
@@ -16,7 +17,7 @@
 </script>
 
 <InfoGroup.Root>
-	<InfoGroup.Trigger title="Transaksi Withdrawal">
+	<InfoGroup.Trigger title={`Transaksi ${taskFormParams.case_trx}`}>
 		{#snippet rightChild()}
 			{#if query.data}
 				<Create data={query.data} />
@@ -50,7 +51,7 @@
 						<Table.Row>
 							<Table.Cell>{fundName}</Table.Cell>
 							<Table.Cell>{fundType}</Table.Cell>
-							<Table.Cell>{fundAmount}</Table.Cell>
+							<Table.Cell>{formatNumber(fundAmount, 'id-ID')}</Table.Cell>
 							<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
 								<Update data={query.data} {index} />
 								<Delete data={query.data} {index} />

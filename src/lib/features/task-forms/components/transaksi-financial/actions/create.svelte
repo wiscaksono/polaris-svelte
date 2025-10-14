@@ -13,7 +13,7 @@
 	import { userStore } from '$lib/stores';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 	import { financialQueries } from '$lib/features/task-forms/queries/financial';
-	import { transaksiWithdrawalQueries } from '$lib/features/task-forms/components/transaksi-withdrawal/query';
+	import { transaksiFinancialQueries } from '$lib/features/task-forms/components/transaksi-financial/query';
 
 	import type { FinancialDataSubmissionRes } from '$lib/features/task-forms/queries/type';
 
@@ -37,7 +37,7 @@
 	const isJumlahInvalid = $derived(values.fundType === 'Persentase' && (values.fundAmount ?? 0) > 100);
 
 	const alreadySelectedFund = $derived(data.transactionData.map((item) => item.fundCode));
-	const query = createQuery(() => ({ ...transaksiWithdrawalQueries.listFund({ regSpaj: taskFormParams.reg_spaj }), enabled: open }));
+	const query = createQuery(() => ({ ...transaksiFinancialQueries.listFund({ regSpaj: taskFormParams.reg_spaj }), enabled: open }));
 	const mutation = createMutation(() =>
 		financialQueries.updateDataSubmission({
 			lusId: userStore.current!.lus_id,
