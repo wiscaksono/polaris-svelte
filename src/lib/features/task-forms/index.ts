@@ -71,7 +71,7 @@ export const majorRightTaskForms = [
 		title: 'Document Transaction',
 		slug: 'document-transaction',
 		icon: Icon.BookText,
-		component: import('./components/spica-result')
+		component: import('./components/document-transaction')
 	},
 	{
 		title: 'SPICA Result',
@@ -83,7 +83,7 @@ export const majorRightTaskForms = [
 		title: 'Workflow History',
 		slug: 'workflow-history',
 		icon: Icon.GalleryHorizontalEnd,
-		component: import('./components/spica-result')
+		component: import('./components/workflow-history')
 	},
 ] as const satisfies TaskFormRightConfig[];
 

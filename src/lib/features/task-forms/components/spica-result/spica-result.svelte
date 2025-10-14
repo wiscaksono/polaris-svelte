@@ -17,7 +17,7 @@
 	const { taskFormParams } = getTaskFormContext();
 
 	let ruleNameSearch = $state('');
-	let values = $state<SpicaResultFilter>({ pageNumber: 1, perPage: 50, spicaKe: '', spicaResult: '', spicaRule: '', view: 'list' });
+	let values = $state<SpicaResultFilter>({ pageNumber: 1, perPage: 50, spicaKe: '', spicaResult: '', spicaRule: '', view: 'table' });
 
 	const query = createQuery(() => spicaQueries.get({ noTrx: taskFormParams.no_trx }));
 

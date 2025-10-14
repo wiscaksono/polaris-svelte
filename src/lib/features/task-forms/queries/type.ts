@@ -1,13 +1,5 @@
 import type { TrackedData } from '$lib/utils';
 
-export interface TransactionHistoriesRes {
-	status_transaksi: Array<{
-		created_date: string;
-		status_internal: string;
-		status_transaksi: string;
-	}>;
-}
-
 export interface FinancialDataSubmissionRes {
 	policyHolderSignature: '1' | '0' | null;
 	csBcAgentSignature: '1' | '0' | null;
