@@ -5,9 +5,7 @@
 </script>
 
 {#if data.currentTaskFormTab}
-	{#await data.currentTaskFormTab.component}
-		<p>Loading...</p>
-	{:then { default: Component }}
+	{#await data.currentTaskFormTab.component then { default: Component }}
 		<Component />
 	{/await}
 {:else}

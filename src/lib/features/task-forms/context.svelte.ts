@@ -12,6 +12,7 @@ type Getter<T> = () => T;
 export type TaskFormStateProps = {
 	taskFormParams: Getter<TaskFormProps['taskFormParams']>;
 	currentTaskFormTab: Getter<TaskFormProps['currentTaskFormTab']>;
+	currentTaskFormRightTabs: Getter<TaskFormProps['currentTaskFormRightTabs']>;
 };
 
 class TaskFormContext {
@@ -19,6 +20,7 @@ class TaskFormContext {
 	readonly isReUnderwriting: CreateQueryResult<boolean>;
 	taskFormParams = $derived.by(() => this.props.taskFormParams());
 	currentTaskFormTab = $derived.by(() => this.props.currentTaskFormTab());
+	currentTaskFormRightTabs = $derived.by(() => this.props.currentTaskFormRightTabs());
 
 	constructor(props: TaskFormStateProps) {
 		this.props = props;

@@ -1,80 +1,32 @@
 <script lang="ts">
-	import jsPDF from 'jspdf';
-	import { snapdom } from '@zumer/snapdom';
-	import { FileText, LoaderCircle } from '@lucide/svelte';
-	import { createMutation } from '@tanstack/svelte-query';
+	import AlertIsReunderwriting from '$lib/features/task-forms/components/alert-is-reunderwriting';
+	import FurtherRequirement from '$lib/features/task-forms/components/further-requirement';
+	import HistoryEskalasiKeTL from '$lib/features/task-forms/components/history-eskalasi-ke-tl';
+	import DecisionPerProduct from '$lib/features/task-forms/components/decision-per-product';
 
-	import TabTwo from './2.svelte';
-	import TabThree from './3.svelte';
-	import TabFour from './4.svelte';
-	import TabFive from './5.svelte';
-	import TabEight from './8.svelte';
-	import TabTen from './10.svelte';
+	import Approve from '../components/actions/approve';
+	import Pending from '../components/actions/pending';
+	import CancelTicket from '../components/actions/cancel-ticket-major';
+	import EskalasiKeTL from '../components/actions/eskalasi-ke-tl';
 
-	import Approver from '../components/approver';
-	import HistoryApproval from '../components/history-approval';
-	import UnderwrittingNote from '../components/underwritting-note';
-	import DecisionFinalMajorAlteration from '../components/decision-final-major-alteration';
+	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { getTaskFormContext } from '../context.svelte';
-
-	let element: HTMLElement;
-
-	const { taskFormParams } = getTaskFormContext();
-
-	const mutation = createMutation(() => ({
-		mutationFn: async () => {
-			const paddingMm = 5; // Amount of padding in millimeters
-
-			const canvas = await snapdom.toCanvas(element);
-
-			const imgWidthPx = canvas.width;
-			const imgHeightPx = canvas.height;
-
-			// Convert px to mm (assuming 96dpi)
-			const pxToMm = (px: number) => (px * 25.4) / 96;
-			const imgWidthMm = pxToMm(imgWidthPx);
-			const imgHeightMm = pxToMm(imgHeightPx);
-
-			const pdfWidth = imgWidthMm + paddingMm * 2;
-			const pdfHeight = imgHeightMm + paddingMm * 2;
-
-			const dataUrl = canvas.toDataURL('image/png');
-
-			const pdf = new jsPDF({
-				orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
-				unit: 'mm',
-				format: [pdfWidth, pdfHeight]
-			});
-
-			pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm);
-			pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
-		}
-	}));
+	const { currentTaskFormTab } = getTaskFormContext();
 </script>
 
+<AlertIsReunderwriting />
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
-		<Button onclick={() => mutation.mutate()} class="!pl-2" disabled={mutation.isPending}>
-			{#if mutation.isPending}
-				<LoaderCircle class="animate-spin" />
-			{:else}
-				<FileText />
-			{/if}
-			Generate PDF
-		</Button>
-	</div>
-	<div class="space-y-2" bind:this={element}>
-		<TabTwo />
-		<TabThree />
-		<TabFour />
-		<TabFive />
-		<TabEight />
-		<TabTen />
-		<UnderwrittingNote />
-		<DecisionFinalMajorAlteration />
-		<Approver />
-		<HistoryApproval />
-	</div>
+	{#if currentTaskFormTab.slug !== 'worksheet'}
+		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
+			<EskalasiKeTL />
+			<Approve />
+			<Pending />
+			<CancelTicket />
+		</div>
+	{/if}
+	<FurtherRequirement />
+	{#if currentTaskFormTab.slug !== 'worksheet'}
+		<HistoryEskalasiKeTL />
+	{/if}
+	<DecisionPerProduct />
 </div>

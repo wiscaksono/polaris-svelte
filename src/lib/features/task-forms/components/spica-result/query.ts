@@ -8,7 +8,9 @@ export const spicaQueries = {
 		return queryOptions({
 			queryKey: ['spica-result', noTrx],
 			queryFn: async () => {
-				const { data } = await api.get<SpicaResultRes>(`/polaris/api-consumer-polaris/financial/spicaResult?trxMajor=${noTrx}`);
+				// const noTrx = 202510CMJR00004985
+				// const { data } = await api.get<SpicaResultRes>(`/polaris/api-consumer-polaris/financial/spicaResult?trxMajor=${noTrx}`);
+				const { data } = await api.get<SpicaResultRes>(`/polaris/api-consumer-polaris/financial/spicaResult?trxMajor=202510CMJR00004985`);
 				return data;
 			}
 		});

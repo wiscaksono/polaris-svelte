@@ -10,7 +10,6 @@
 	import HistorySummaryTransaksi from '../components/history-summary-transaksi';
 	import DataInvestasi from '../components/data-investasi-polis';
 	import VerifikasiDokumen from '../components/verifikasi-dokumen';
-	import SpicaResult from '../components/spica';
 	import FurtherRequirement from '../components/further-requirement';
 	import RedemptionInstruction from '../components/redemption-instruction';
 	import Biaya from '../components/biaya';
@@ -85,7 +84,6 @@
 		<HistorySummaryTransaksi />
 		<DataInvestasi />
 		<VerifikasiDokumen />
-		<SpicaResult />
 		<FurtherRequirement />
 		<RedemptionInstruction />
 		<Biaya />

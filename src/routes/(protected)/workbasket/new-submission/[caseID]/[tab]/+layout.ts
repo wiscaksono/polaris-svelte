@@ -1,6 +1,7 @@
-import { redirect } from '@sveltejs/kit';
-import type { LayoutLoad } from './$types';
 import { resolve } from '$app/paths';
+import { redirect } from '@sveltejs/kit';
+
+import type { LayoutLoad } from './$types';
 
 export const prerender = false;
 

@@ -1,7 +1,7 @@
 import { resolve } from '$app/paths';
 import { redirect } from '@sveltejs/kit';
 
-import { taskForms } from '$lib/features/task-forms';
+import { taskFormRightTabs, taskForms } from '$lib/features/task-forms';
 import { searchPolisQueries } from '$lib/features/search-polis/queries';
 
 import type { LayoutLoad } from './$types';
@@ -19,6 +19,7 @@ export const load: LayoutLoad = async ({ parent, params }) => {
 	}
 
 	const currentTaskForm = taskForms[taskFormParams.case_trx];
+	const currentTaskFormRightTabs = taskFormRightTabs[taskFormParams.case_trx];
 
-	return { taskFormParams, currentTaskForm };
+	return { taskFormParams, currentTaskForm, currentTaskFormRightTabs };
 };

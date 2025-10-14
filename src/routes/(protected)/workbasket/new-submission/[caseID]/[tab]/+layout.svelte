@@ -1,46 +1,31 @@
 <script lang="ts">
-	import dayjs from 'dayjs';
 	import { slide } from 'svelte/transition';
-	import { createQuery } from '@tanstack/svelte-query';
-	import { BookText, Paperclip, GitPullRequest, Workflow, ArrowLeft, ArrowRight, Equal } from '@lucide/svelte';
+	import { ArrowLeft, ArrowRight, Equal } from '@lucide/svelte';
 
-	import * as Table from '$lib/components/ui/table';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import AlertOtherTrx from '$lib/features/task-forms/components/alert-another-trx';
 
 	import { cn } from '$lib/utils';
 	import { IsMobile } from '$lib/hooks/is-mobile.svelte.js';
-	import { taskFormQueries } from '$lib/features/task-forms/queries';
 	import { setTaskFormContext } from '$lib/features/task-forms/context.svelte';
-
-	const tabs = [
-		{ id: 'document-trx', title: 'Dokumen Transaksi', icon: BookText },
-		{ id: 'document-polis', title: 'Dokumen Polis', icon: Paperclip },
-		{ id: 'history', title: 'Riwayat Transaksi', icon: GitPullRequest },
-		{ id: 'workflow', title: 'Workflow', icon: Workflow }
-	] as const;
+	import type { TaskFormRightTabs } from '$lib/features/task-forms/index.js';
 
 	let { children, data } = $props();
 	let expandedTab = $state<'left' | 'right' | 'equal'>('equal');
-	let rightTab = $state<(typeof tabs)[number]['id']>('history');
+	let rightTab = $state<TaskFormRightTabs[number]['slug']>(data.currentTaskFormRightTabs[0].slug);
 
 	const isMobile = new IsMobile();
-
-	const query = createQuery(() =>
-		taskFormQueries.transactionHistories({
-			case_id: data.taskFormParams.case_id,
-			id_doc_temp: data.taskFormParams.id_doc_tmp,
-			no_temp: data.taskFormParams.no_tmp,
-			trx_major: data.taskFormParams.no_trx
-		})
-	);
 
 	$effect(() => {
 		if (isMobile.current) expandedTab = 'left';
 		else expandedTab = 'equal';
 	});
 
-	setTaskFormContext({ taskFormParams: () => data.taskFormParams, currentTaskFormTab: () => data.currentTaskFormTab });
+	setTaskFormContext({
+		taskFormParams: () => data.taskFormParams,
+		currentTaskFormTab: () => data.currentTaskFormTab,
+		currentTaskFormRightTabs: () => data.currentTaskFormRightTabs
+	});
 </script>
 
 <div
@@ -139,15 +124,15 @@
 		<div class="flex items-center justify-between gap-5 border-b px-4 py-3.5">
 			<div>
 				<p class="text-lg font-medium text-primary">
-					{tabs.find(({ id }) => id === rightTab)?.title}
+					{data.currentTaskFormRightTabs.find(({ slug }) => slug === rightTab)?.title}
 				</p>
 			</div>
 		</div>
 		<nav class="mt-4 border-b">
 			<ul class="-mb-0.5 flex gap-1 overflow-x-auto overflow-y-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				<li class="sticky left-0 z-10 h-10 w-3 shrink-0 bg-gradient-to-r from-background to-transparent"></li>
-				{#each tabs as { title, id, icon: Icon } (title)}
-					{@const isActive = id === rightTab}
+				{#each data.currentTaskFormRightTabs as { title, icon: Icon, slug } (slug)}
+					{@const isActive = slug === rightTab}
 					<li
 						{@attach (el) => {
 							if (isActive) el.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
@@ -158,10 +143,10 @@
 							data-active={isActive}
 							variant="outline"
 							size="lg"
-							onclick={() => (rightTab = id)}
+							onclick={() => (rightTab = slug)}
 							class={cn(
 								// Base
-								'relative overflow-hidden rounded-b-none border-b-0 transition-colors dark:bg-background',
+								'relative overflow-hidden rounded-b-none border-b-0 !px-6 transition-colors dark:bg-background',
 								'data-[active=true]:border-t-destructive data-[active=true]:hover:bg-background',
 								// Before
 								'before:absolute before:top-0 before:h-px before:w-full before:bg-transparent',
@@ -179,43 +164,17 @@
 				<li class="sticky right-0 z-10 h-10 w-3 shrink-0 bg-gradient-to-l from-background to-transparent"></li>
 			</ul>
 		</nav>
-		<section class="flex-1 overflow-y-auto px-4">
-			<div aria-hidden="true" class="sticky top-0 z-10 h-3.5 w-full bg-gradient-to-b from-background"></div>
-			<Table.Root class="bg-background" variant="outline">
-				<Table.Header class="sticky top-0 z-10 bg-background">
-					<Table.Row>
-						<Table.Head>Tanggal</Table.Head>
-						<Table.Head>Status Transaksi</Table.Head>
-						<Table.Head>Status Internal</Table.Head>
-					</Table.Row>
-				</Table.Header>
-				<Table.Body>
-					{#if query.isPending || query.isPlaceholderData}
-						{#each Array.from({ length: 10 }, (_, i) => i) as i (i)}
-							<Table.Row>
-								<Table.Head colspan={3}>TODO LOADER</Table.Head>
-							</Table.Row>
-						{/each}
-					{:else if query.isError}
-						<Table.Row>
-							<Table.Cell colspan={9} class="text-center">Error: {query.error.message}</Table.Cell>
-						</Table.Row>
-					{:else if query.data.length}
-						{#each query.data as item, i (i)}
-							<Table.Row>
-								<Table.Head class="py-2">{dayjs(item.created_date).format('DD MMM YYYY')}</Table.Head>
-								<Table.Head class="py-2">{item.status_transaksi}</Table.Head>
-								<Table.Head class="py-2">{item.status_internal}</Table.Head>
-							</Table.Row>
-						{/each}
-					{:else}
-						<Table.Row>
-							<Table.Cell colspan={3} class="h-16 text-center">No transactions history found</Table.Cell>
-						</Table.Row>
-					{/if}
-				</Table.Body>
-			</Table.Root>
-			<div aria-hidden="true" class="sticky bottom-0 z-10 h-3.5 w-full bg-gradient-to-t from-background"></div>
+		<section class="flex-1 space-y-2 overflow-y-auto px-4">
+			<div aria-hidden="true" class="sticky top-0 z-10 mb-0 h-3.5 w-full bg-gradient-to-b from-background"></div>
+			{#if data.currentTaskFormRightTabs}
+				{@const component = data.currentTaskFormRightTabs.find(({ slug }) => slug === rightTab)?.component}
+				{#if component}
+					{#await component then { default: Component }}
+						<Component />
+					{/await}
+				{/if}
+			{/if}
+			<div aria-hidden="true" class="sticky bottom-0 z-10 mb-0 h-3.5 w-full bg-gradient-to-t from-background"></div>
 		</section>
 	</section>
 </div>

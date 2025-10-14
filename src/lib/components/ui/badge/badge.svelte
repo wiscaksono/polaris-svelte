@@ -9,7 +9,11 @@
 				secondary: 'bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90 border-transparent',
 				destructive:
 					'bg-destructive [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/70 border-transparent text-white',
-				outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground'
+				'destructive-outline': 'bg-destructive/10 border-destructive text-destructive',
+				outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
+				success:
+					'bg-success [a&]:hover:bg-success/90 focus-visible:ring-success/20 dark:focus-visible:ring-success/40 dark:bg-success/70 border-transparent text-white',
+				'success-outline': 'bg-success/10 border-success text-success'
 			}
 		},
 		defaultVariants: {
