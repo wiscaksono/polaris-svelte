@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
+	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 	import { HandCoins, LoaderCircle } from '@lucide/svelte';
 	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
 
@@ -41,14 +44,17 @@
 			{
 				onSuccess: async () => {
 					const furtherQueryKey = workbasketQueries.furtherList({}).queryKey;
-
 					await Promise.all([
 						queryClient.invalidateQueries({ queryKey: furtherQueryKey }),
 						isButtonRedemptionEnabledQuery.refetch(),
 						checkTransDetQuery.refetch()
 					]);
-
 					open = false;
+					toast.success('Redemption completed.', {
+						description: 'Funds will be transferred to your registered bank account per policy terms.',
+						position: 'bottom-center'
+					});
+					goto(resolve('/(protected)/workbasket/new-submission'));
 				}
 			}
 		);

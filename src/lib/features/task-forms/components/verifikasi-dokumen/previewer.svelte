@@ -2,7 +2,7 @@
 	import dayjs from 'dayjs';
 	import { mode } from 'mode-watcher';
 	import { createQuery } from '@tanstack/svelte-query';
-	import { EllipsisVertical, LoaderCircle } from '@lucide/svelte';
+	import { EllipsisVertical, LoaderCircle, Download } from '@lucide/svelte';
 
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
@@ -55,6 +55,15 @@
 			if (url) URL.revokeObjectURL(url);
 		};
 	});
+
+	function handleDownload() {
+		if (!previewUrl) return;
+
+		const link = document.createElement('a');
+		link.href = previewUrl;
+		link.download = data.JENIS_DOC;
+		link.click();
+	}
 </script>
 
 <Dialog.Root>
@@ -86,6 +95,10 @@
 									<DropdownMenu.Label>Actions</DropdownMenu.Label>
 									<DropdownMenu.Separator />
 									<Update {data} />
+									<DropdownMenu.Item onclick={handleDownload}>
+										<Download />
+										Download
+									</DropdownMenu.Item>
 									<DropdownMenu.Separator />
 									<Delete idDoc={data.ID_DOC} />
 								</DropdownMenu.Group>
