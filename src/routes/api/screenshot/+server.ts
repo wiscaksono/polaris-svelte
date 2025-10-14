@@ -1,47 +1,65 @@
-import puppeteer, { type Browser } from 'puppeteer';
+import puppeteer, { type Browser, type Page } from 'puppeteer';
 import { error, type RequestHandler } from '@sveltejs/kit';
 
-// Helper function to launch a Puppeteer browser instance.
-// It's defined outside the request handler to allow for potential reuse or caching.
-async function launchBrowser(): Promise<Browser> {
-	return puppeteer.launch({
-		headless: true,
-		args: ['--no-sandbox', '--disable-setuid-sandbox']
-	});
+let browserPromise: Promise<Browser> | null = null;
+let idleTimeout: NodeJS.Timeout | null = null;
+
+function getBrowser(): Promise<Browser> {
+	if (!browserPromise) {
+		console.log('No active browser found. Initializing new shared instance...');
+		browserPromise = puppeteer.launch({
+			headless: true,
+			args: [
+				'--no-sandbox',
+				'--disable-setuid-sandbox',
+				'--disable-dev-shm-usage',
+				'--disable-accelerated-2d-canvas',
+				'--no-first-run',
+				'--no-zygote',
+				'--disable-gpu'
+			]
+		});
+	}
+	return browserPromise;
+}
+
+async function closeBrowser() {
+	if (!browserPromise) return;
+	console.log('Browser has been idle. Closing instance to free resources...');
+	const browser = await browserPromise;
+	await browser.close();
+	browserPromise = null;
+	if (idleTimeout) {
+		clearTimeout(idleTimeout);
+		idleTimeout = null;
+	}
 }
 
 export const POST: RequestHandler = async ({ request }) => {
+	if (idleTimeout) {
+		clearTimeout(idleTimeout);
+		idleTimeout = null;
+	}
+
 	const { url, selector } = (await request.json()) as { url?: string; selector?: string };
 
-	// Validate 'url' and 'selector' query parameters.
-	if (!url || !/^https?:\/\/.+/.test(url)) {
-		return error(400, 'Invalid or missing URL parameter.');
-	}
-	if (!selector) {
-		return error(400, 'Missing selector parameter for element capture.');
-	}
+	if (!url || !/^https?:\/\/.+/.test(url)) return error(400, 'Invalid or missing URL parameter.');
+	if (!selector) return error(400, 'Missing selector parameter for element capture.');
 
-	let browser: Browser | null = null;
+	let page: Page | null = null;
 
 	try {
-		browser = await launchBrowser();
-		const page = await browser.newPage();
+		const browser = await getBrowser();
+		page = await browser.newPage();
 
-		// Set a standard viewport size.
 		await page.setViewport({ width: 1920, height: 1080 });
-
-		// Navigate to the URL and wait for the network to be idle.
-		// Increased timeout for SPAs that might have longer loading times.
 		await page.goto(url, { waitUntil: 'networkidle0', timeout: 90000 });
 
-		// Wait for the specified element to be rendered on the page.
 		const element = await page.waitForSelector(selector, { timeout: 90000 });
 		if (!element) return error(404, 'The specified element was not found on the page.');
 
-		// Take a screenshot of the element.
 		const screenshot = await element.screenshot({ encoding: 'binary' });
 
-		// Return the screenshot as a PNG image.
 		return new Response(screenshot, {
 			status: 200,
 			headers: {
@@ -50,21 +68,13 @@ export const POST: RequestHandler = async ({ request }) => {
 			}
 		});
 	} catch (err: unknown) {
-		// More detailed error handling.
 		let errorMessage = 'An unknown error occurred while capturing the screenshot.';
-		if (err instanceof Error) {
-			if (err.name === 'TimeoutError') {
-				errorMessage = `Navigation or element selection timed out: ${err.message}`;
-			} else {
-				errorMessage = `An error occurred: ${err.message}`;
-			}
-		}
-		console.error(errorMessage); // Log the error for debugging.
+		if (err instanceof Error) errorMessage = `An error occurred: ${err.message}`;
+		console.error(errorMessage);
 		return error(500, errorMessage);
 	} finally {
-		// Ensure the browser is closed, even if an error occurred.
-		if (browser) {
-			await browser.close();
-		}
+		if (page) await page.close();
+		console.log('Request finished. Setting idle timeout for 60 seconds.');
+		idleTimeout = setTimeout(closeBrowser, 30000); // 30 seconds
 	}
 };
