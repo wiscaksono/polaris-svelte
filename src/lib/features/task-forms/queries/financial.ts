@@ -34,10 +34,13 @@ export const financialQueries = {
 			}
 		});
 	},
-	isButtonRedemptionEnabled: ({ noTrx }: { noTrx: string }) => {
+	isButtonRedemptionEnabled: ({ noTrx, transaction }: { noTrx: string, transaction: TransactionType }) => {
 		return queryOptions({
-			queryKey: ['is-button-redemption-enabled', noTrx],
+			queryKey: ['is-button-redemption-enabled', noTrx, transaction],
 			queryFn: async () => {
+				if (transaction === 'Redirection') return true;
+				if (transaction.includes('Trad')) return true;
+
 				const { data } = await api.get<boolean>(`/polaris/api-financial-polaris/financial/buttonRedemptionEnable?noTransaksi=${noTrx}`);
 				return data;
 			}

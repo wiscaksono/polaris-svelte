@@ -6,7 +6,7 @@
 
 	import Approve from '../components/actions/approve';
 	import Pending from '../components/actions/pending';
-	import CancelTicket from '../components/actions/cancel-ticket';
+	import CancelTicket from '../components/actions/cancel-ticket-major';
 	import EskalasiKeTL from '../components/actions/eskalasi-ke-tl';
 
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';

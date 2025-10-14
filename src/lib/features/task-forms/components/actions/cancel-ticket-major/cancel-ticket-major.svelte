@@ -17,6 +17,7 @@
 	import { actionQueries } from '../queries';
 	import { workbasketQueries } from '$lib/features/workbasket/queries';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
+	import { searchPolisQueries } from '$lib/features/search-polis/queries';
 
 	const initialValues = { remarks: '', reason: '', file: undefined };
 
@@ -28,12 +29,13 @@
 	const isFormDirty = $derived(!deepEqual(values, initialValues));
 	const { taskFormParams } = getTaskFormContext();
 	const mutation = createMutation(() =>
-		actionQueries.cancelTicket({
+		actionQueries.cancelTicketMajor({
 			lusId: userStore.current!.lus_id,
 			noTrx: taskFormParams.no_trx,
 			regSpaj: taskFormParams.reg_spaj,
 			docId: taskFormParams.case_id,
-			nopol: taskFormParams.nopol
+			nopol: taskFormParams.nopol,
+			transaction: taskFormParams.case_trx
 		})
 	);
 
@@ -52,8 +54,13 @@
 				open = false;
 				const newSubmissionListQuery = workbasketQueries.newSubmissionList({}).queryKey;
 				const fillingListQuery = workbasketQueries.fillingList({}).queryKey;
+				const searchPolisQuery = searchPolisQueries.list(String(taskFormParams.case_id)).queryKey;
 
-				await Promise.all([queryClient.invalidateQueries({ queryKey: newSubmissionListQuery }), queryClient.invalidateQueries({ queryKey: fillingListQuery })]);
+				await Promise.all([
+					queryClient.invalidateQueries({ queryKey: newSubmissionListQuery }),
+					queryClient.invalidateQueries({ queryKey: fillingListQuery }),
+					queryClient.invalidateQueries({ queryKey: searchPolisQuery })
+				]);
 
 				await goto(resolve('/workbasket/new-submission'));
 				toast.success('Ticket has been cancelled successfully.', { position: 'bottom-center' });

@@ -1,11 +1,11 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api, mutationOptions, IS_DEV } from '$lib/utils';
+import { api, mutationOptions, IS_DEV, type TransactionType, transactionIDs } from '$lib/utils';
 
 import * as Type from './type';
 
 export const actionQueries = {
-	cancelTicket: ({ lusId, noTrx, regSpaj, docId, nopol }: { lusId: number; noTrx: string; regSpaj: string; docId: number; nopol: string }) => {
+	cancelTicketMajor: ({ lusId, noTrx, regSpaj, docId, nopol, transaction }: { lusId: number; noTrx: string; regSpaj: string; docId: number; nopol: string, transaction: TransactionType }) => {
 		return mutationOptions({
 			mutationFn: async ({ remarks, reason, file }: { remarks: string; reason: string; file: FileList | undefined }) => {
 				const promises: Promise<unknown>[] = [];
@@ -26,7 +26,7 @@ export const actionQueries = {
 					formData.append('file', file[0], file[0].name);
 					formData.append('regSpaj', regSpaj);
 					formData.append('noTrx', noTrx);
-					formData.append('idTrx', '1');
+					formData.append('idTrx', String(transactionIDs[transaction]));
 					formData.append('idJn', '303');
 					formData.append('flag', '2');
 					formData.append('purpose', 'STORAGE');
@@ -106,5 +106,38 @@ export const actionQueries = {
 				});
 			}
 		});
+	},
+	cancelTicketFinancial: ({ lusId, noTrx, regSpaj, caseId, transaction }: { lusId: number, noTrx: string, regSpaj: string, caseId: number, transaction: TransactionType }) => {
+		return mutationOptions({
+			mutationFn: async (file: FileList) => {
+				const cancel = api.post('/polaris/api-financial-polaris/v1/financial/action/buttonCancel', {
+					docId: caseId,
+					lusId,
+					trxFinancial: noTrx,
+					regSpaj
+				})
+
+				const formData = new FormData();
+				formData.append('file', file[0], file[0].name);
+				formData.append('regSpaj', regSpaj);
+				formData.append('noTrx', noTrx);
+				formData.append('idTrx', String(transactionIDs[transaction]));
+				formData.append('idJn', '303');
+				formData.append('flag', '2');
+				formData.append('purpose', 'STORAGE');
+
+				const upload = api.post('/polaris/api-document-polaris/v1/main/upload', formData);
+
+				await Promise.all([cancel, upload])
+
+				return cancel;
+
+			}
+		})
+	},
+	decline: ({ noTrx, regSpaj, caseId }: { noTrx: string; regSpaj: string; caseId: number }) => {
+		return mutationOptions({
+			mutationFn: async () => await api.post(`/polaris/api-financial-polaris/v1/financial/action/buttonDecline`, { docId: caseId, regSpaj, trxFinancial: noTrx })
+		})
 	}
 };

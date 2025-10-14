@@ -24,7 +24,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 
 	import Approve from '../components/actions/approve';
-	import CancelTicket from '../components/actions/cancel-ticket';
+	import CancelTicket from '../components/actions/cancel-ticket-financial';
 	import Decline from '../components/actions/decline';
 
 	import { getTaskFormContext } from '../context.svelte';

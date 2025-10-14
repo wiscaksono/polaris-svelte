@@ -22,7 +22,10 @@
 	const { taskFormParams } = getTaskFormContext();
 	const mutation = createMutation(() => redemptionQueries.redempt());
 
-	const isButtonRedemptionEnabledQuery = createQuery(() => financialQueries.isButtonRedemptionEnabled({ noTrx: taskFormParams.no_trx }));
+	const isButtonRedemptionEnabledQuery = createQuery(() =>
+		financialQueries.isButtonRedemptionEnabled({ noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
+	);
+
 	const checkTransDetQuery = createQuery(() => ({
 		...redemptionQueries.checkTransDet({ noTrx: taskFormParams.no_trx }),
 		enabled: isButtonRedemptionEnabledQuery.data === true
