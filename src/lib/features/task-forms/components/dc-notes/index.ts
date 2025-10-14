@@ -1,2 +1,2 @@
-import DCNotes from "./dc-notes.svelte"
-export default DCNotes
+import DCNotes from './dc-notes.svelte';
+export default DCNotes;

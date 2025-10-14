@@ -1,16 +1,16 @@
-import { queryOptions } from "@tanstack/svelte-query"
+import { queryOptions } from '@tanstack/svelte-query';
 
-import { api } from "$lib/utils"
-import type { SpicaResultRes } from "./type"
+import { api } from '$lib/utils';
+import type { SpicaResultRes } from './type';
 
 export const spicaQueries = {
-  get: ({ noTrx }: { noTrx: string }) => {
-    return queryOptions({
-      queryKey: ['spica-result', noTrx],
-      queryFn: async () => {
-        const { data } = await api.get<SpicaResultRes>(`/polaris/api-consumer-polaris/financial/spicaResult?trxMajor=${noTrx}`)
-        return data
-      }
-    })
-  }
-}
+	get: ({ noTrx }: { noTrx: string }) => {
+		return queryOptions({
+			queryKey: ['spica-result', noTrx],
+			queryFn: async () => {
+				const { data } = await api.get<SpicaResultRes>(`/polaris/api-consumer-polaris/financial/spicaResult?trxMajor=${noTrx}`);
+				return data;
+			}
+		});
+	}
+};

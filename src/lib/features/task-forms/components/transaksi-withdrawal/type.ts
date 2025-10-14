@@ -1,4 +1,4 @@
 export type TransaksiWithdrawalListfundRes = Array<{
-  kdFund: string
-  nmFund: string
-}>
+	kdFund: string;
+	nmFund: string;
+}>;

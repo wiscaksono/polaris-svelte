@@ -1,2 +1,2 @@
-import Approve from "./approve.svelte"
-export default Approve
+import Approve from './approve.svelte';
+export default Approve;

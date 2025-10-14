@@ -23,9 +23,9 @@ export const taskFormQueries = {
 		return queryOptions({
 			queryKey: ['task-form', 'check-is-re-underwriting', noTrx],
 			queryFn: async () => {
-				const { data } = await api.get<boolean>(`/polaris/api-business-polaris/major/alteration/checkReunderwriting?noTrx=${noTrx}`)
-				return data
+				const { data } = await api.get<boolean>(`/polaris/api-business-polaris/major/alteration/checkReunderwriting?noTrx=${noTrx}`);
+				return data;
 			}
-		})
+		});
 	}
 };

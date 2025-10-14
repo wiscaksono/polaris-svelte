@@ -101,7 +101,6 @@ class API {
 		}
 
 		return response.json() as Promise<BaseResponse<T>>;
-
 	}
 
 	private isTokenExpired(token: string) {

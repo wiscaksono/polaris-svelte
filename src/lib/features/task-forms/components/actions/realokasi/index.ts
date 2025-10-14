@@ -1,2 +1,2 @@
-import Realokasi from './realokasi.svelte'
-export default Realokasi
+import Realokasi from './realokasi.svelte';
+export default Realokasi;

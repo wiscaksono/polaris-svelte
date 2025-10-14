@@ -93,8 +93,7 @@ export const withdrawalTaskForms = [
 		slug: 'worksheet',
 		component: import('./withdrawal/6.svelte')
 	}
-] as const satisfies TaskFormConfig[]
-
+] as const satisfies TaskFormConfig[];
 
 export const taskForms = {
 	'Major Alteration': majorAlterationTaskForms,

@@ -1,10 +1,9 @@
 export type ApproveButtonStateRes = {
-  button_approval: boolean
-  need_illustration: boolean
-} | null
-
+	button_approval: boolean;
+	need_illustration: boolean;
+} | null;
 
 export interface ApproveButtonLimitValidationRes {
-  approvable: boolean
-  message: string
-} 
+	approvable: boolean;
+	message: string;
+}

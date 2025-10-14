@@ -1,2 +1,2 @@
-import Redemption from './redemption.svelte'
-export default Redemption
+import Redemption from './redemption.svelte';
+export default Redemption;

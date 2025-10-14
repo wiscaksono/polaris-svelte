@@ -1,2 +1,2 @@
-import DataInvestasiPolis from './data-investasi-polis.svelte'
-export default DataInvestasiPolis 
+import DataInvestasiPolis from './data-investasi-polis.svelte';
+export default DataInvestasiPolis;

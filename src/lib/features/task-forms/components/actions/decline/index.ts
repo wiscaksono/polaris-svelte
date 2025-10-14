@@ -1,2 +1,2 @@
-import Decline from './decline.svelte'
-export default Decline
+import Decline from './decline.svelte';
+export default Decline;

@@ -61,9 +61,9 @@ export const kycSarMedicalQueries = {
 		return {
 			queryKey: ['kyc-sar', reg_spaj, trx_major, id_doc],
 			queryFn: async () => {
-				const { data } = await api.post<KycSarMedicalRes>(`/polaris/api-business-polaris/major/alteration/viewKycSar`, { reg_spaj, trx_major, id_doc })
-				return data
+				const { data } = await api.post<KycSarMedicalRes>(`/polaris/api-business-polaris/major/alteration/viewKycSar`, { reg_spaj, trx_major, id_doc });
+				return data;
 			}
 		};
-	},
-}
+	}
+};

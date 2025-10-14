@@ -1,4 +1,3 @@
 export interface ApproverNotesRes {
-  remarks: string | null
+	remarks: string | null;
 }
-

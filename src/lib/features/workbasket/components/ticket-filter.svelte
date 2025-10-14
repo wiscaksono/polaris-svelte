@@ -29,10 +29,7 @@
 	const isAdmin = userStore.current!.role_name === 'POLARIS Admin';
 
 	const queryParams = useQueryStates(ticketFilterParams);
-	const listUserQuery = createQuery(() => ({
-		...commonQueries.listUser(),
-		enabled: isAdmin
-	}));
+	const listUserQuery = createQuery(() => ({ ...commonQueries.listUser(), enabled: isAdmin }));
 	const listTransactionQuery = createQuery(() => commonQueries.listTransaction());
 
 	let open = $state(false);

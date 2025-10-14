@@ -1,2 +1,2 @@
-import SAR from './sar.svelte'
-export default SAR
+import SAR from './sar.svelte';
+export default SAR;

@@ -5,6 +5,6 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ parent, params }) => {
 	const { currentTaskForm } = await parent();
-	const resolvedUrl = resolve('/(protected)/workbasket/further/[caseID]/[tab]', { caseID: params.caseID, tab: currentTaskForm[0].slug })
+	const resolvedUrl = resolve('/(protected)/workbasket/further/[caseID]/[tab]', { caseID: params.caseID, tab: currentTaskForm[0].slug });
 	throw redirect(303, resolvedUrl);
 };

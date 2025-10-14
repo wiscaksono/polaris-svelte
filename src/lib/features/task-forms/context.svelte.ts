@@ -25,7 +25,7 @@ class TaskFormContext {
 		this.isReUnderwriting = createQuery(() => ({
 			...taskFormQueries.checkIsReUnderwriting({ noTrx: props.taskFormParams().no_trx }),
 			enabled: props.taskFormParams().case_trx === 'Major Alteration'
-		}))
+		}));
 	}
 }
 
@@ -37,8 +37,8 @@ export function setTaskFormContext(data: TaskFormStateProps) {
 
 export function getTaskFormContext() {
 	if (!hasContext(key)) {
-		goto(resolve('/workbasket/new-submission'))
-		throw new Error('User context not found')
-	};
+		goto(resolve('/workbasket/new-submission'));
+		throw new Error('User context not found');
+	}
 	return getContext<TaskFormContext>(key);
 }

@@ -22,4 +22,3 @@ export const load: LayoutLoad = async ({ parent, params }) => {
 
 	return { taskFormParams, currentTaskForm };
 };
-

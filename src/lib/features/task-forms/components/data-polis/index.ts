@@ -1,2 +1,2 @@
-import DataPolis from "./data-polis.svelte"
-export default DataPolis
+import DataPolis from './data-polis.svelte';
+export default DataPolis;

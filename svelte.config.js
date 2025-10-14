@@ -11,17 +11,8 @@ const config = {
 		adapter: process.env.VERCEL ? adapterVercel() : adapterNode(),
 		experimental: { remoteFunctions: true },
 		typescript: {
-			config: conf => {
-				conf.exclude = [
-					"node_modules",
-					".svelte-kit",
-					"build",
-					"dist",
-					"coverage",
-					"test-results",
-					"**/*.test.ts",
-					"**/*.spec.ts",
-				]
+			config: (conf) => {
+				conf.exclude = ['node_modules', '.svelte-kit', 'build', 'dist', 'coverage', 'test-results', '**/*.test.ts', '**/*.spec.ts'];
 			}
 		}
 	},
@@ -36,7 +27,7 @@ const config = {
 				prev: 'ArrowLeft'
 			}
 		}
-	},
+	}
 };
 
 export default config;

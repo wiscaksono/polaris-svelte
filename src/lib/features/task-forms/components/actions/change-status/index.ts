@@ -1,2 +1,2 @@
-import ChangeStatus from './change-status.svelte'
-export default ChangeStatus
+import ChangeStatus from './change-status.svelte';
+export default ChangeStatus;

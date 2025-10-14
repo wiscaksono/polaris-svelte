@@ -1,5 +1,4 @@
 export type AlasanTransaksiListReasonRes = Array<{
-  reasonId: number
-  keterangan: string
-}>
-
+	reasonId: number;
+	keterangan: string;
+}>;

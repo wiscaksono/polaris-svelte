@@ -7,13 +7,13 @@ export type WithoutChildrenOrChild<T> = WithoutChildren<WithoutChild<T>>;
 export type WithElementRef<T, U extends HTMLElement = HTMLElement> = T & { ref?: U | null };
 
 export type SideMenu = Array<{
-	title: string | null
+	title: string | null;
 	subMenu: Array<{
-		title: string
-		href: string
-		icon: Component<IconProps>
-	}>
-}>
+		title: string;
+		href: string;
+		icon: Component<IconProps>;
+	}>;
+}>;
 
 export interface BaseResponse<T> {
 	result: string;
