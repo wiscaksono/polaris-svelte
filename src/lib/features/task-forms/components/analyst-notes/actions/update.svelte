@@ -57,7 +57,16 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChangeComplete={() => (values = data)}>
+<Dialog.Root
+	bind:open
+	onOpenChangeComplete={() =>
+		(values = {
+			eddCheck: data?.eddCheck ?? '',
+			suspiciousTransaction: data?.suspiciousTransaction ?? '',
+			validationCall: data?.validationCall ?? '',
+			otherNotes: data?.otherNotes ?? ''
+		})}
+>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
