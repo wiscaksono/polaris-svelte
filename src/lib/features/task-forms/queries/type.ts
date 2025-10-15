@@ -49,7 +49,21 @@ export interface FinancialDataSubmissionRes {
 		fundName: string;
 		fundType: string;
 		fundAmount: number;
+		target: Array<{
+			id: number
+			fundCode: string
+			fundName: string
+			fundType: string
+			fundAmount: number
+		}> | null
 	}>;
+	redirection: TrackedData<Array<{
+		fundCode: string
+		fundName: string
+		fundAmount: number
+	}>> & {
+		flagEdit: boolean;
+	}
 }
 
 export interface FinancialPerhitunganOrPengembalianNialaiTunai {

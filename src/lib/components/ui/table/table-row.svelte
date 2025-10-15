@@ -8,7 +8,7 @@
 <tr
 	bind:this={ref}
 	data-slot="table-row"
-	class={cn('border-b transition-colors data-[state=selected]:bg-muted hover:[&,&>svelte-css-wrapper]:[&>th,td]:bg-muted/50', className)}
+	class={cn('border-b transition-colors last:border-b-0 data-[state=selected]:bg-muted hover:[&,&>svelte-css-wrapper]:[&>th,td]:bg-muted/50', className)}
 	{...restProps}
 >
 	{@render children?.()}
