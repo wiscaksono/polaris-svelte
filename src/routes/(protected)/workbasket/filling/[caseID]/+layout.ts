@@ -1,4 +1,7 @@
-import { taskForms } from '$lib/features/task-forms';
+import { resolve } from '$app/paths';
+import { redirect } from '@sveltejs/kit';
+
+import { taskFormRightTabs, taskForms } from '$lib/features/task-forms';
 import { searchPolisQueries } from '$lib/features/search-polis/queries';
 
 import type { LayoutLoad } from './$types';
@@ -8,7 +11,15 @@ export const prerender = false;
 export const load: LayoutLoad = async ({ parent, params }) => {
 	const { queryClient } = await parent();
 	const [taskFormParams] = await queryClient.fetchQuery(searchPolisQueries.list(params.caseID));
-	const currentTaskForm = taskForms[taskFormParams.case_trx];
 
-	return { taskFormParams, currentTaskForm };
+	if (taskFormParams.kind === 'New Submission') {
+		throw redirect(307, resolve('/(protected)/workbasket/new-submission/[caseID]', { caseID: String(taskFormParams.case_id) }));
+	} else if (taskFormParams.kind === 'Further') {
+		throw redirect(307, resolve('/(protected)/workbasket/further/[caseID]', { caseID: String(taskFormParams.case_id) }));
+	}
+
+	const currentTaskForm = taskForms[taskFormParams.case_trx];
+	const currentTaskFormRightTabs = taskFormRightTabs[taskFormParams.case_trx];
+
+	return { taskFormParams, currentTaskForm, currentTaskFormRightTabs };
 };

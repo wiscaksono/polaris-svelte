@@ -9,11 +9,13 @@
 	import Delete from './actions/delete.svelte';
 
 	import { biayaQueries } from './query';
-	import { formatNumber } from '$lib/utils';
+	import { formatCurrency, formatNumber } from '$lib/utils';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
 	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 	const query = createQuery(() => biayaQueries.get({ noTrx: taskFormParams.no_trx, regSpaj: taskFormParams.reg_spaj }));
+
+	const isCurrentTrxTraditional = $derived(taskFormParams.case_trx.includes('Trad'));
 	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
 </script>
 
@@ -32,7 +34,9 @@
 			<Table.Header>
 				<Table.Row>
 					<Table.Head>Jenis</Table.Head>
-					<Table.Head>Persentase</Table.Head>
+					{#if !isCurrentTrxTraditional}
+						<Table.Head>Persentase</Table.Head>
+					{/if}
 					<Table.Head>Amount</Table.Head>
 					{#if !isCurrentTabWorksheet}
 						<Table.Head class="sticky right-0 z-20 w-px !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
@@ -52,11 +56,21 @@
 						</Table.Cell>
 					</Table.Row>
 				{:else if query.data?.length}
-					{#each query.data as { jenis_biaya, persen, amount }, index (index)}
+					{#each query.data as { jenis_biaya, persen, amount, lku_id }, index (index)}
 						<Table.Row>
 							<Table.Cell>{jenis_biaya}</Table.Cell>
-							<Table.Cell>{persen} %</Table.Cell>
-							<Table.Cell>{formatNumber(amount, 'id-ID')}</Table.Cell>
+							{#if !isCurrentTrxTraditional}
+								<Table.Cell>{persen} %</Table.Cell>
+							{/if}
+							<Table.Cell>
+								{#if lku_id === '01'}
+									{formatCurrency(amount, 'IDR', 'id-ID')}
+								{:else if lku_id === '02'}
+									{formatCurrency(amount, 'USD', 'en-US')}
+								{:else}
+									{formatNumber(amount, 'id-ID')}
+								{/if}
+							</Table.Cell>
 							{#if !isCurrentTabWorksheet}
 								<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
 									<Update data={query.data[index]} />

@@ -14,7 +14,9 @@
 
 	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
 
-	const query = createQuery(() => financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, type: '3' }));
+	const query = createQuery(() =>
+		financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
+	);
 
 	const diffMap = $derived([
 		{ label: 'Nama Pemilik Rekening', before: query.data?.endorsement?.before.accountHolderName, after: query.data?.endorsement?.after.accountHolderName },

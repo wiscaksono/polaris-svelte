@@ -4,6 +4,7 @@ export type BiayaRes = Array<{
 	jenis_biaya: string;
 	jenis_biaya_id: number;
 	persen: number;
+	lku_id: string
 }>;
 
 export type BiayaListJenisTransaksiRes = Array<{

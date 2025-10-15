@@ -26,6 +26,8 @@
 	import CancelTicket from '../components/actions/cancel-ticket-financial';
 	import Decline from '../components/actions/decline';
 
+	import { captureInstruksiBayar } from '../components/instruksi-bayar/instruksi-bayar.svelte';
+
 	import { getTaskFormContext } from '../context.svelte';
 
 	let element: HTMLElement;
@@ -34,32 +36,45 @@
 
 	const mutation = createMutation(() => ({
 		mutationFn: async () => {
-			const paddingMm = 5; // Amount of padding in millimeters
+			const paddingMm = 5;
+			const iframe = element.querySelector('#instruksi-bayar') as HTMLIFrameElement;
 
-			const canvas = await snapdom.toCanvas(element);
+			if (!iframe) throw new Error('Instruksi Bayar iframe not found');
 
-			const imgWidthPx = canvas.width;
-			const imgHeightPx = canvas.height;
+			const iframeImageBase64 = await captureInstruksiBayar();
+			const imgReplacement = document.createElement('img');
+			imgReplacement.src = iframeImageBase64;
+			imgReplacement.style.height = iframe.clientHeight + 'px';
+			imgReplacement.style.width = iframe.clientWidth + 'px';
+			imgReplacement.style.display = 'block';
 
-			// Convert px to mm (assuming 96dpi)
-			const pxToMm = (px: number) => (px * 25.4) / 96;
-			const imgWidthMm = pxToMm(imgWidthPx);
-			const imgHeightMm = pxToMm(imgHeightPx);
+			try {
+				iframe.parentNode?.replaceChild(imgReplacement, iframe);
 
-			const pdfWidth = imgWidthMm + paddingMm * 2;
-			const pdfHeight = imgHeightMm + paddingMm * 2;
+				const canvas = await snapdom.toCanvas(element);
 
-			const dataUrl = canvas.toDataURL('image/png');
+				const imgWidthPx = canvas.width;
+				const imgHeightPx = canvas.height;
+				const pxToMm = (px: number) => (px * 25.4) / 96;
+				const imgWidthMm = pxToMm(imgWidthPx);
+				const imgHeightMm = pxToMm(imgHeightPx);
 
-			const pdf = new jsPDF({
-				orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
-				unit: 'mm',
-				format: [pdfWidth, pdfHeight]
-			});
+				const pdfWidth = imgWidthMm + paddingMm * 2;
+				const pdfHeight = imgHeightMm + paddingMm * 2;
+				const dataUrl = canvas.toDataURL('image/png');
+				const pdf = new jsPDF({
+					orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+					unit: 'mm',
+					format: [pdfWidth, pdfHeight]
+				});
 
-			pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm);
-			pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
-		}
+				pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm);
+				pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
+			} finally {
+				if (imgReplacement.parentNode) imgReplacement.parentNode.replaceChild(iframe, imgReplacement);
+			}
+		},
+		onSuccess: () => element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}));
 </script>
 

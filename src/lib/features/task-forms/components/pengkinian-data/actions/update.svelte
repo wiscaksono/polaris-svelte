@@ -80,7 +80,11 @@
 			},
 			{
 				onSuccess: async () => {
-					const queryKey = financialQueries.getDataSubmission({ noTrx: taskFormParams.no_trx, regSpaj: taskFormParams.reg_spaj, type: '3' }).queryKey;
+					const queryKey = financialQueries.getDataSubmission({
+						noTrx: taskFormParams.no_trx,
+						regSpaj: taskFormParams.reg_spaj,
+						transaction: taskFormParams.case_trx
+					}).queryKey;
 					await queryClient.invalidateQueries({ queryKey });
 					open = false;
 				}

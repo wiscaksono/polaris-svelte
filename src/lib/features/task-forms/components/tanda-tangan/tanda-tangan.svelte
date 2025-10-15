@@ -10,7 +10,9 @@
 
 	const { taskFormParams } = getTaskFormContext();
 
-	const query = createQuery(() => financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, type: '3' }));
+	const query = createQuery(() =>
+		financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
+	);
 
 	function getAnswer(signature: '1' | '0' | null | undefined) {
 		if (signature === '1') return 'Yes';

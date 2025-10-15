@@ -67,8 +67,7 @@
 		"onlyBuiltDependencies": [
 			"@tailwindcss/oxide",
 			"core-js",
-			"esbuild",
-			"puppeteer"
+			"esbuild"
 		]
 	},
 	"dependencies": {
@@ -86,7 +85,6 @@
 		"jwt-decode": "^4.0.0",
 		"mode-watcher": "^1.1.0",
 		"nuqs-svelte": "^1.2.2",
-		"puppeteer": "^24.24.0",
 		"runed": "^0.34.0",
 		"tailwind-merge": "^3.3.1"
 	}

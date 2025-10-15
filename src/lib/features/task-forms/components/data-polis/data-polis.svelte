@@ -10,7 +10,13 @@
 
 	const { taskFormParams } = getTaskFormContext();
 
-	const query = createQuery(() => financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, type: '3' }));
+	const query = createQuery(() =>
+		financialQueries.getDataSubmission({
+			regSpaj: taskFormParams.reg_spaj,
+			noTrx: taskFormParams.no_trx,
+			transaction: taskFormParams.case_trx
+		})
+	);
 	const policyData = $derived(query.data?.policyData);
 </script>
 
@@ -24,6 +30,14 @@
 			<DetailItem label="Nama Pemegang Polis" isLoading={query.isLoading} value={policyData?.policyHolderName} />
 			<DetailItem label="Status Polis" isLoading={query.isLoading} value={policyData?.policyStatus} />
 			<DetailItem label="Issue Date" isLoading={query.isLoading} value={policyData?.issueDate ? dayjs(policyData.issueDate).format('DD MMM YYYY') : '-'} />
+			{#if policyData?.agentPenutupPolis}
+				<DetailItem label="Closing Agent Code" isLoading={query.isLoading} value={policyData?.agentPenutupPolis} />
+				<DetailItem label="Closing Agent Name" isLoading={query.isLoading} value={policyData?.namaPenutupPolis} />
+			{/if}
+			{#if policyData?.agentServicingPolis}
+				<DetailItem label="Servicing Agent Code" isLoading={query.isLoading} value={policyData?.agentServicingPolis} />
+				<DetailItem label="Servicing Agent Name" isLoading={query.isLoading} value={policyData?.namaServicingPolis} />
+			{/if}
 		</div>
 	</InfoGroup.Content>
 </InfoGroup.Root>

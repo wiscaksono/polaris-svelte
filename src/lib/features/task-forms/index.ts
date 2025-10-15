@@ -15,6 +15,8 @@ export interface TaskFormRightConfig {
 	title: string;
 	slug: string;
 	icon: typeof import('@lucide/svelte').Icon;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore - not sure what is wrong here
 	component: Promise<typeof import('*.svelte')>;
 }
 
@@ -99,8 +101,8 @@ export const financialTaskForms = [
 		component: import('./financial/2.svelte')
 	},
 	{
-		title: 'SPICA & Further',
-		slug: 'spica-further',
+		title: 'Further',
+		slug: 'further',
 		component: import('./financial/3.svelte')
 	},
 	{
@@ -125,19 +127,19 @@ export const financialRightTaskForms = [
 		title: 'Document Transaction',
 		slug: 'document-transaction',
 		icon: Icon.BookText,
-		component: import('./major/1.svelte')
+		component: import('./components/document-transaction')
 	},
 	{
 		title: 'SPICA Result',
 		slug: 'spica-result',
 		icon: Icon.SquareFunction,
-		component: import('./major/2.svelte')
+		component: import('./components/spica-result')
 	},
 	{
 		title: 'Workflow History',
 		slug: 'workflow-history',
 		icon: Icon.GalleryHorizontalEnd,
-		component: import('./major/3.svelte')
+		component: import('./components/workflow-history')
 	},
 ] as const satisfies TaskFormRightConfig[];
 
@@ -163,12 +165,12 @@ export const taskForms = {
 	'Top Up UL': financialTaskForms.filter((item) => item.slug !== 'instruksi-bayar'),
 
 	// Traditional Group
-	'Cancel Free Look Trad': majorTaskForms,
-	'Auto Maturity Trad': majorTaskForms,
-	'Surrender Trad': majorTaskForms,
-	'Maturity Trad': majorTaskForms,
-	'Tolakan Trad': majorTaskForms,
-	'Refund Trad': majorTaskForms
+	'Cancel Free Look Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item),
+	'Auto Maturity Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item),
+	'Surrender Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item),
+	'Maturity Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item),
+	'Tolakan Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item),
+	'Refund Trad': financialTaskForms.map(item => item.slug === 'data-investasi' ? { ...item, slug: 'data-nilai-tunai', title: 'Data Nilai Tunai' } as const : item)
 } satisfies Record<TransactionType, readonly TaskFormConfig[]>;
 
 export const taskFormRightTabs = {
@@ -193,12 +195,12 @@ export const taskFormRightTabs = {
 	'Top Up UL': financialRightTaskForms,
 
 	// Traditional Group
-	'Cancel Free Look Trad': majorRightTaskForms,
-	'Auto Maturity Trad': majorRightTaskForms,
-	'Surrender Trad': majorRightTaskForms,
-	'Maturity Trad': majorRightTaskForms,
-	'Tolakan Trad': majorRightTaskForms,
-	'Refund Trad': majorRightTaskForms
+	'Cancel Free Look Trad': financialRightTaskForms,
+	'Auto Maturity Trad': financialRightTaskForms,
+	'Surrender Trad': financialRightTaskForms,
+	'Maturity Trad': financialRightTaskForms,
+	'Tolakan Trad': financialRightTaskForms,
+	'Refund Trad': financialRightTaskForms
 } satisfies Record<TransactionType, readonly TaskFormRightConfig[]>;
 
 export type TaskForms = (typeof taskForms)[TransactionType];

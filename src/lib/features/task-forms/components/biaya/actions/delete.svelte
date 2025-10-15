@@ -51,7 +51,7 @@
 	</AlertDialog.Trigger>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title>Are sure want to delete this further requirement?</AlertDialog.Title>
+			<AlertDialog.Title>Are sure want to delete this expense?</AlertDialog.Title>
 			<AlertDialog.Description>This action cannot be undone. This will permanently delete the further requirement you are deleting.</AlertDialog.Description>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>

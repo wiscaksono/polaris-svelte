@@ -51,3 +51,11 @@ export interface FinancialDataSubmissionRes {
 		fundAmount: number;
 	}>;
 }
+
+export interface FinancialPerhitunganOrPengembalianNialaiTunai {
+	nilaiTunai: number
+	tahun: number
+	lkuId: string
+	tanggalTrx: string
+	status: 'EDITED' | 'UNEDITED'
+}

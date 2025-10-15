@@ -25,7 +25,14 @@
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
 	const isFormDirty = $derived(!deepEqual(values, initialValues));
-	const isAllInputFilled = $derived(values.amount !== 0 && values.ljbId !== 0 && values.persen !== 0);
+	const isCurrentTrxTraditional = $derived(taskFormParams.case_trx.includes('Trad'));
+	const isAllInputFilled = $derived.by(() => {
+		if (isCurrentTrxTraditional) {
+			return values.amount !== 0 && values.ljbId !== 0;
+		} else {
+			return values.amount !== 0 && values.ljbId !== 0 && values.persen !== 0;
+		}
+	});
 
 	const mutation = createMutation(() => biayaQueries.crud('CREATE'));
 	const listJenisTransaksiQuery = createQuery(() => ({ ...biayaQueries.listJenisTransaksi(), enabled: open }));
@@ -81,7 +88,7 @@
 	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
 			<Dialog.Title>Add Biaya</Dialog.Title>
-			<Dialog.Description>Add a new expense for this transaction. Please enter the type, percentage, and amount.</Dialog.Description>
+			<Dialog.Description>Add a new expense for this transaction.</Dialog.Description>
 		</Dialog.Header>
 
 		<form class="space-y-4" onsubmit={handleSubmit}>
@@ -108,27 +115,29 @@
 					</Select.Content>
 				</Select.Root>
 			</div>
-			<div class="space-y-2">
-				<Label for="persentase" required>Persentase</Label>
-				<Input
-					id="persentase"
-					placeholder="Persentase"
-					type="number"
-					required
-					bind:value={
-						() => (values.persen ? values.persen : undefined),
-						(v) => {
-							if (v === undefined) return;
+			{#if !isCurrentTrxTraditional}
+				<div class="space-y-2">
+					<Label for="persentase" required>Persentase</Label>
+					<Input
+						id="persentase"
+						placeholder="Persentase"
+						type="number"
+						required
+						bind:value={
+							() => (values.persen ? values.persen : undefined),
+							(v) => {
+								if (v === undefined) return;
 
-							if (v > 100) {
-								values.persen = 100;
-							} else {
-								values.persen = v;
+								if (v > 100) {
+									values.persen = 100;
+								} else {
+									values.persen = v;
+								}
 							}
 						}
-					}
-				/>
-			</div>
+					/>
+				</div>
+			{/if}
 			<div class="mb-0 space-y-2">
 				<Label for="amount" required>Amount</Label>
 				<Input

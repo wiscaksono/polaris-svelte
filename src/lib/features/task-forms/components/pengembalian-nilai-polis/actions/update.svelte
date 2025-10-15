@@ -1,5 +1,4 @@
 <script lang="ts">
-	import dayjs from 'dayjs';
 	import deepEqual from 'deep-equal';
 	import { LoaderCircle, Pencil } from '@lucide/svelte';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
@@ -9,29 +8,35 @@
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
 
-	import { userStore } from '$lib/stores';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 	import { financialQueries } from '$lib/features/task-forms/queries/financial';
 
-	import type { FinancialDataSubmissionRes } from '$lib/features/task-forms/queries/type';
+	import type { FinancialPerhitunganOrPengembalianNialaiTunai } from '$lib/features/task-forms/queries/type';
 
-	let { data }: { data: FinancialDataSubmissionRes } = $props();
+	let { data }: { data?: FinancialPerhitunganOrPengembalianNialaiTunai } = $props();
 
 	let open = $state(false);
-	let values = $state(data.formDate);
+	let values = $state<FinancialPerhitunganOrPengembalianNialaiTunai>({
+		lkuId: data?.lkuId ?? '',
+		status: data?.status ?? 'UNEDITED',
+		tanggalTrx: data?.tanggalTrx ?? '',
+		nilaiTunai: data?.nilaiTunai ?? 0,
+		tahun: data?.tahun ?? 0
+	});
 	let submitButton: HTMLButtonElement;
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const isFormDirty = $derived(!deepEqual(values, data.formDate));
-	const mutation = createMutation(() =>
-		financialQueries.updateDataSubmission({
-			lusId: userStore.current!.lus_id,
-			noTrx: taskFormParams.no_trx,
-			regSpaj: taskFormParams.reg_spaj,
-			transaction: taskFormParams.case_trx
+	const isFormDirty = $derived(
+		!deepEqual(values, {
+			lkuId: data?.lkuId ?? '',
+			status: data?.status ?? 'UNEDITED',
+			tanggalTrx: data?.tanggalTrx ?? '',
+			nilaiTunai: data?.nilaiTunai ?? 0,
+			tahun: data?.tahun ?? 0
 		})
 	);
+	const mutation = createMutation(() => financialQueries.updatePerhitunganOrPengembalianNialaiTunai({ noTrx: taskFormParams.no_trx }));
 
 	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
 		if (isFormDirty) {
@@ -45,24 +50,27 @@
 		e.preventDefault();
 		if (!isFormDirty) return;
 
-		mutation.mutate(
-			{ payload: { ...data, formDate: values }, initialData: data },
-			{
-				onSuccess: async () => {
-					const queryKey = financialQueries.getDataSubmission({
-						noTrx: taskFormParams.no_trx,
-						regSpaj: taskFormParams.reg_spaj,
-						transaction: taskFormParams.case_trx
-					}).queryKey;
-					await queryClient.invalidateQueries({ queryKey });
-					open = false;
-				}
+		mutation.mutate(values, {
+			onSuccess: async () => {
+				const queryKey = financialQueries.perhitunganOrPengembalianNialaiTunai({ noTrx: taskFormParams.no_trx }).queryKey;
+				await queryClient.invalidateQueries({ queryKey });
+				open = false;
 			}
-		);
+		});
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChangeComplete={() => (values = data.formDate)}>
+<Dialog.Root
+	bind:open
+	onOpenChangeComplete={() =>
+		(values = {
+			lkuId: data?.lkuId ?? '',
+			status: data?.status ?? 'UNEDITED',
+			tanggalTrx: data?.tanggalTrx ?? '',
+			nilaiTunai: data?.nilaiTunai ?? 0,
+			tahun: data?.tahun ?? 0
+		})}
+>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -81,18 +89,14 @@
 	</Dialog.Trigger>
 	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
-			<Dialog.Title>Update Tanggal Formulir</Dialog.Title>
-			<Dialog.Description>Make sure the form date is correct before proceeding.</Dialog.Description>
+			<Dialog.Title>Update Nilai Tunai</Dialog.Title>
+			<Dialog.Description>Enter the cash value you wish to modify in the field below.</Dialog.Description>
 		</Dialog.Header>
 
 		<form onsubmit={handleSubmit}>
 			<div class="space-y-2">
-				<Label for="tanggal-formulir">Tanggal Formulir</Label>
-				<Input
-					id="tanggal-formulir"
-					type="date"
-					bind:value={() => dayjs(values).format('YYYY-MM-DD'), (v) => (values = dayjs(v, 'YYYY-MM-DD').format('YYYY-MM-DD'))}
-				/>
+				<Label required>Nilai Tunai</Label>
+				<Input type="number" bind:value={values.nilaiTunai} />
 			</div>
 			<button type="submit" class="hidden" bind:this={submitButton}>submit</button>
 		</form>

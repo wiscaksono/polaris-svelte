@@ -3,8 +3,6 @@
 	import { documentTransactionQueries } from './query';
 
 	const query = createQuery(() => documentTransactionQueries.get());
-
-	$inspect(query.data);
 </script>
 
 {#if query.isLoading}
