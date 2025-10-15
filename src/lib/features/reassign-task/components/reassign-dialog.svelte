@@ -21,8 +21,12 @@
 	let selectedUser = $state<number | null>(null);
 
 	const queryClient = useQueryClient();
+
 	const query = reassignTaskQueries.users({ jenis_trx: data.jenis_trx, lus_id: userStore.current!.lus_id });
-	const queryResult = createQuery(() => query);
+	const queryResult = createQuery(() => ({
+		...query,
+		enabled: open
+	}));
 	const mutation = createMutation(() => ({
 		...reassignTaskQueries.assign(),
 		onSuccess: () => {
