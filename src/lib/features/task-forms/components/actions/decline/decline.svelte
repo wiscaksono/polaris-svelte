@@ -77,7 +77,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-			<AlertDialog.Action variant="destructive" onclick={handleDecline}>
+			<AlertDialog.Action variant="destructive" onclick={handleDecline} disabled={mutation.isPending}>
 				Confirm
 				{#if mutation.isPending}
 					<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />

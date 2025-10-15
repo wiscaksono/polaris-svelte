@@ -68,7 +68,7 @@
 					format: [pdfWidth, pdfHeight]
 				});
 
-				pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm);
+				pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm, '', 'MEDIUM');
 				pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
 			} finally {
 				if (imgReplacement.parentNode) imgReplacement.parentNode.replaceChild(iframe, imgReplacement);

@@ -6,6 +6,8 @@
 	import ViewBilling from '../components/view-billing';
 	import PengembalianNilaiPolis from '../components/pengembalian-nilai-polis';
 	import DataNilaiTunai from '../components/data-nilai-tunai';
+	import SubscriptionInstructions from '../components/subscription-instructions';
+	import FaktorPenambah from '../components/faktor-penambah';
 
 	import Realokasi from '../components/actions/realokasi';
 	import Redemption from '../components/actions/redemption';
@@ -32,7 +34,13 @@
 			<DataInvestasiPolis />
 			<SuspendedPremium />
 			<RedemptionInstruction />
+			{#if taskFormParams.case_trx === 'Switching' || taskFormParams.case_trx === 'Switching and Redirection'}
+				<SubscriptionInstructions />
+			{/if}
 			<Biaya />
+			{#if taskFormParams.case_trx === 'Cancel Free Look Link'}
+				<FaktorPenambah />
+			{/if}
 		</div>
 	{:else if currentTaskFormTab.slug === 'data-nilai-tunai'}
 		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">

@@ -61,7 +61,7 @@
 					</Table.Row>
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={8} class="h-16 text-center">No data found</Table.Cell>
+						<Table.Cell colspan={9} class="h-16 text-center">No data found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>
