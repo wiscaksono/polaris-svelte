@@ -15,11 +15,12 @@
 	import { financialQueries } from '$lib/features/task-forms/queries/financial';
 	import { transaksiFinancialQueries } from '$lib/features/task-forms/components/transaksi-financial/query';
 
+	import type { Prettify } from '$lib/utils';
 	import type { FinancialDataSubmissionRes } from '$lib/features/task-forms/queries/type';
 
 	let { data }: { data: FinancialDataSubmissionRes } = $props();
 
-	const initialValues: Omit<FinancialDataSubmissionRes['transactionData'][number], 'fundAmount'> & { fundAmount: number | null } = {
+	const initialValues: Prettify<Omit<FinancialDataSubmissionRes['transactionData'][number], 'fundAmount' | 'target'> & { fundAmount: number | null }> = {
 		fundCode: '',
 		fundName: '',
 		fundType: '',

@@ -49,13 +49,13 @@ export interface FinancialDataSubmissionRes {
 		fundName: string;
 		fundType: string;
 		fundAmount: number;
-		target: Array<{
+		target?: Array<{
 			id: number
 			fundCode: string
 			fundName: string
 			fundType: string
 			fundAmount: number
-		}> | null
+		}>
 	}>;
 	redirection: TrackedData<Array<{
 		fundCode: string

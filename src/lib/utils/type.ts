@@ -27,6 +27,11 @@ export interface TrackedData<T> {
 	after: T;
 }
 
+
+export type Prettify<T> = {
+	[K in keyof T]: T[K];
+} & {};
+
 export type DeepKeys<T, Prev extends string = ''> = {
 	[K in keyof T & string]: T[K] extends object ? `${Prev}${K}` | DeepKeys<T[K], `${Prev}${K}.`> : `${Prev}${K}`;
 }[keyof T & string];
