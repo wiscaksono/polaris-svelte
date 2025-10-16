@@ -162,7 +162,7 @@
 					<Table.Cell>{item.case_id}</Table.Cell>
 					<Table.Cell>{toTitleCase(item.nama_user)}</Table.Cell>
 					<Table.Cell>
-						<ReassignDialog data={item} />
+						<ReassignDialog data={item} refetch={query.refetch} />
 					</Table.Cell>
 				</Table.Row>
 			{/each}

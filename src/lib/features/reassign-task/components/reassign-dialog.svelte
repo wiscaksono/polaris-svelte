@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { UserPen, LoaderCircle } from '@lucide/svelte';
-	import { createQuery, createMutation, useQueryClient } from '@tanstack/svelte-query';
+	import { createQuery, createMutation, useQueryClient, type QueryObserverBaseResult } from '@tanstack/svelte-query';
 
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
@@ -14,19 +14,18 @@
 
 	interface Props {
 		data: ReassignTaskListRes['listTransaksi'][number];
+		refetch: QueryObserverBaseResult<ReassignTaskListRes, Error>['refetch'];
 	}
 
-	let { data }: Props = $props();
+	let { data, refetch }: Props = $props();
 	let open = $state(false);
 	let selectedUser = $state<number | null>(null);
 
 	const queryClient = useQueryClient();
 
 	const query = reassignTaskQueries.users({ jenis_trx: data.jenis_trx, lus_id: userStore.current!.lus_id });
-	const queryResult = createQuery(() => ({
-		...query,
-		enabled: open
-	}));
+	const queryResult = createQuery(() => ({ ...query, enabled: open }));
+
 	const mutation = createMutation(() => ({
 		...reassignTaskQueries.assign(),
 		onSuccess: () => {
@@ -40,9 +39,17 @@
 		if (!isCached) queryClient.prefetchQuery(query);
 	}
 
+	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
+		if (selectedUser !== null) {
+			e.preventDefault();
+			if (confirm('Unsaved changes. Are you sure you want to close this dialog?')) open = false;
+			return;
+		}
+	}
+
 	function handleAssign() {
 		if (!selectedUser) return;
-		mutation.mutate({ caseId: data.case_id, lusId: selectedUser });
+		mutation.mutate({ caseId: data.case_id, lusId: selectedUser }, { onSuccess: async () => await refetch() });
 	}
 </script>
 
@@ -54,15 +61,15 @@
 			</Button>
 		{/snippet}
 	</Dialog.Trigger>
-	<Dialog.Content>
+	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
 			<Dialog.Title>Reassign Task</Dialog.Title>
 			<Dialog.Description>
-				Case ID 1639312, currently assigned to Eri Dwi Pratiwi, will be reassigned. Please ensure the data you enter is correct.
+				Case ID <b>1639312</b>, currently assigned to <b>{data.nama_user}</b>, will be reassigned. Please ensure the data you enter is correct.
 			</Dialog.Description>
 		</Dialog.Header>
 
-		<div class="space-y-1">
+		<div class="space-y-2">
 			<Label for="jenis-trx">Jenis Trx</Label>
 			<Select.Root type="single" bind:value={() => String(selectedUser), (v) => (selectedUser = Number(v))}>
 				<Select.Trigger class={cn({ 'text-muted-foreground': !selectedUser }, 'w-full')}>
@@ -75,7 +82,7 @@
 				<Select.Content>
 					{#if queryResult.data}
 						{#each queryResult.data['user-polaris'] as item (item.LUS_ID)}
-							<Select.Item value={String(item.LUS_ID)}>{item.NAMA_USER}</Select.Item>
+							<Select.Item value={String(item.LUS_ID)} disabled={data.lus_id === item.LUS_ID}>{item.NAMA_USER}</Select.Item>
 						{/each}
 					{/if}
 				</Select.Content>
@@ -83,7 +90,7 @@
 		</div>
 
 		<Dialog.Footer>
-			<Button onclick={handleAssign} disabled={mutation.isPending}>
+			<Button onclick={handleAssign} disabled={mutation.isPending || selectedUser === null}>
 				Assign
 				{#if mutation.isPending}
 					<LoaderCircle class="animate-spin" />
