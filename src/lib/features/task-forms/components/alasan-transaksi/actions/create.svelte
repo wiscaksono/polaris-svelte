@@ -28,7 +28,7 @@
 	const isFormDirty = $derived(!deepEqual(values, data.reason));
 	const isAllRemarkFilled = $derived(values.every((item) => item.notes));
 
-	const query = createQuery(() => ({ ...alasanTransaksiQueries.listReason(), enabled: open }));
+	const query = createQuery(() => ({ ...alasanTransaksiQueries.listReason({ transaction: taskFormParams.case_trx }), enabled: open }));
 	const mutation = createMutation(() =>
 		financialQueries.updateDataSubmission({
 			lusId: userStore.current!.lus_id,
@@ -39,8 +39,8 @@
 	);
 
 	const filteredReason = $derived.by(() => {
-		const alreadySelectedReason = data.reason.map((item) => item.reasonId);
-		const excludedReason = query.data?.filter((item) => !alreadySelectedReason.includes(item.reasonId)) ?? [];
+		const alreadySelectedReason = data.reason.map((item) => item.reasonName);
+		const excludedReason = query.data?.filter((item) => !alreadySelectedReason.includes(item.keterangan)) ?? [];
 		return excludedReason ?? [];
 	});
 

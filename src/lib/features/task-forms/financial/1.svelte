@@ -12,12 +12,17 @@
 	import TandaTangan from '../components/tanda-tangan';
 	import DCNotes from '../components/dc-notes';
 
+	import type { TransactionType } from '$lib/utils';
+
 	const { taskFormParams } = getTaskFormContext();
+
+	const SHOW_TUJUAN_PEMBAYARAN: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
 </script>
 
 <div class="space-y-2">
 	<DataPolis />
 	{#if !taskFormParams.case_trx.includes('Trad') && !taskFormParams.case_trx.includes('Switching') && !taskFormParams.case_trx.includes('Redirection')}
+		<!-- The rest goes here -->
 		<TransaksiFinancial />
 	{:else if taskFormParams.case_trx === 'Switching'}
 		<TransaksiSwitching />
@@ -27,8 +32,14 @@
 		<TransaksiSwitching />
 		<TransaksiRedirection />
 	{/if}
-	<TujuanPembayaran />
-	<PengkinianData />
+
+	{#if SHOW_TUJUAN_PEMBAYARAN.includes(taskFormParams.case_trx)}
+		<TujuanPembayaran />
+	{/if}
+
+	{#if taskFormParams.case_trx !== 'Top Up UL'}
+		<PengkinianData />
+	{/if}
 	<AlasanTransaksi />
 	<TanggalFormulir />
 	<TandaTangan />

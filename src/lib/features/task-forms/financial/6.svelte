@@ -6,12 +6,18 @@
 
 	import DataPolis from '../components/data-polis';
 	import AhliWaris from '../components/ahli-waris';
+	import TransaksiFinancial from '../components/transaksi-financial';
+	import TransaksiSwitching from '../components/transaksi-switching';
+	import TransaksiRedirection from '../components/transaksi-redirection/transaksi-redirection.svelte';
 	import SuspendedPremium from '../components/suspended-premium';
 	import HistorySummaryTransaksi from '../components/history-summary-transaksi';
 	import DataInvestasi from '../components/data-investasi-polis';
 	import VerifikasiDokumen from '../components/verifikasi-dokumen';
 	import FurtherRequirement from '../components/further-requirement';
 	import RedemptionInstruction from '../components/redemption-instruction';
+	import FaktorPenambah from '../components/faktor-penambah';
+	import JumlahYangDibayarkan from '../components/jumlah-yang-dibayarkan';
+	import SubscriptionInstructions from '../components/subscription-instructions';
 	import Biaya from '../components/biaya';
 	import PengkinianData from '../components/pengkinian-data';
 	import HistoryPerubahanRekeningManfaat from '../components/history-perubahan-rekening-manfaat';
@@ -29,6 +35,7 @@
 	import { captureInstruksiBayar } from '../components/instruksi-bayar/instruksi-bayar.svelte';
 
 	import { getTaskFormContext } from '../context.svelte';
+	import type { TransactionType } from '$lib/utils';
 
 	let element: HTMLElement;
 
@@ -76,6 +83,16 @@
 		},
 		onSuccess: () => element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 	}));
+
+	const SHOW_INSTRUKSI_BAYAR: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
+	const SHOW_JUMLAH_DIBAYARKAN: TransactionType[] = [
+		'Withdrawal',
+		'Surrender Link',
+		'Cancel Free Look Link',
+		'Maturity Link',
+		'Auto Maturity Link',
+		'Top Up UL'
+	];
 </script>
 
 <div class="space-y-2">
@@ -95,16 +112,40 @@
 	<div class="space-y-2" bind:this={element}>
 		<DataPolis />
 		<AhliWaris />
+
+		{#if !taskFormParams.case_trx.includes('Trad') && !taskFormParams.case_trx.includes('Switching') && !taskFormParams.case_trx.includes('Redirection') && !taskFormParams.case_trx.includes('Cancel')}
+			<TransaksiFinancial />
+		{:else if taskFormParams.case_trx === 'Switching'}
+			<TransaksiSwitching />
+		{:else if taskFormParams.case_trx === 'Redirection'}
+			<TransaksiRedirection />
+		{:else if taskFormParams.case_trx === 'Switching and Redirection'}
+			<TransaksiSwitching />
+			<TransaksiRedirection />
+		{/if}
+
 		<SuspendedPremium />
 		<HistorySummaryTransaksi />
 		<DataInvestasi />
 		<VerifikasiDokumen />
 		<FurtherRequirement />
-		<RedemptionInstruction />
+		{#if taskFormParams.case_trx === 'Top Up UL'}
+			<SubscriptionInstructions />
+		{:else}
+			<RedemptionInstruction />
+		{/if}
+		{#if taskFormParams.case_trx === 'Cancel Free Look Link'}
+			<FaktorPenambah />
+		{/if}
 		<Biaya />
+		{#if SHOW_JUMLAH_DIBAYARKAN.includes(taskFormParams.case_trx)}
+			<JumlahYangDibayarkan />
+		{/if}
 		<PengkinianData />
 		<HistoryPerubahanRekeningManfaat />
-		<InstruksiBayar />
+		{#if SHOW_INSTRUKSI_BAYAR.includes(taskFormParams.case_trx)}
+			<InstruksiBayar />
+		{/if}
 		<AnalystNotes />
 		<Approver />
 		<HistoryApproval />
