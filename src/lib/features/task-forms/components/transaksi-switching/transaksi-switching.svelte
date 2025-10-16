@@ -30,7 +30,7 @@
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
-	<InfoGroup.Content>
+	<InfoGroup.Content class={query.data?.transactionData.length ? '' : 'bg-background'}>
 		{#if query.isLoading}
 			Loading...
 		{:else if query.isError}
@@ -71,7 +71,7 @@
 			{/each}
 		{:else}
 			<div class="grid h-16 place-items-center">
-				<p class="text-center text-muted-foreground">No data found</p>
+				<p class="text-center text-sm">No data found</p>
 			</div>
 		{/if}
 	</InfoGroup.Content>
