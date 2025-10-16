@@ -25,7 +25,7 @@
 
 	import deepEqual from 'deep-equal';
 	import { slide } from 'svelte/transition';
-	import { LoaderCircle, Plus, Trash, CircleAlert } from '@lucide/svelte';
+	import { LoaderCircle, Pencil, Plus, Trash, CircleAlert } from '@lucide/svelte';
 	import { createMutation, createQuery, useQueryClient } from '@tanstack/svelte-query';
 
 	import * as Alert from '$lib/components/ui/alert';
@@ -41,13 +41,11 @@
 
 	import { transaksiSwitchingQuery } from '../query';
 
-	import type { Prettify } from '$lib/utils';
 	import type { FinancialDataSubmissionRes } from '$lib/features/task-forms/queries/type';
 
-	let { data }: { data: FinancialDataSubmissionRes } = $props();
+	let { data, index }: { data: FinancialDataSubmissionRes; index: number } = $props();
 
 	type Target = NonNullable<FinancialDataSubmissionRes['transactionData'][number]['target']>[number];
-	type Values = Prettify<Omit<FinancialDataSubmissionRes['transactionData'][number], 'target'> & { target: Target[] }>;
 
 	const initialTarget: Target = {
 		fundCode: '',
@@ -57,21 +55,13 @@
 		id: 0
 	};
 
-	const initialValues: Values = {
-		fundCode: '',
-		fundName: '',
-		fundType: '',
-		fundAmount: 0,
-		target: [initialTarget]
-	};
-
 	let open = $state(false);
-	let values = $state(initialValues);
+	let values = $state(data.transactionData[index]);
 	let submitButton: HTMLButtonElement;
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const isFormDirty = $derived(!deepEqual(values, initialValues));
+	const isFormDirty = $derived(!deepEqual(values, data.transactionData[index]));
 
 	const fundSourcesQuery = createQuery(() => ({ ...transaksiSwitchingQuery.existingFundSources({ regSpaj: taskFormParams.reg_spaj }), enabled: open }));
 	const fundDestinationQuery = createQuery(() => ({
@@ -119,7 +109,7 @@
 			{
 				payload: {
 					...data,
-					transactionData: [...data.transactionData, values]
+					transactionData: data.transactionData.map((item, i) => (i === index ? { ...item, ...values } : item))
 				},
 				initialData: data
 			},
@@ -138,7 +128,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChangeComplete={() => (values = initialValues)}>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = data.transactionData[index])}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -151,15 +141,16 @@
 					open = true;
 				}}
 			>
-				<Plus />
+				<Pencil />
 			</Button>
 		{/snippet}
 	</Dialog.Trigger>
 	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
-			<Dialog.Title>Add Fund</Dialog.Title>
+			<Dialog.Title>Update Fund</Dialog.Title>
 			<Dialog.Description>
-				Add the details below to initiate a fund transfer. Please ensure all required fields are completed and the total allocation equals 100.
+				Edit the fund details as needed. Update the allocation so the total equals 100, and make sure all fields are filled in correctly before saving your
+				changes.
 			</Dialog.Description>
 		</Dialog.Header>
 
@@ -326,7 +317,7 @@
 				onclick={() => submitButton.click()}
 				disabled={!values || !isFormDirty || mutation.isPending || !isJumlahValid || !isTotalFundDestinationValid || !areAllTargetsValid || !isSourceFundValid}
 			>
-				Add
+				Update
 				{#if mutation.isPending}
 					<LoaderCircle class="animate-spin" />
 				{/if}

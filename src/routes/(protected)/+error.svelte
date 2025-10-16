@@ -8,6 +8,7 @@
 			<h1 class="text-3xl font-bold">{page.status}</h1>
 			<p class="text-muted-foreground">
 				{page.error?.message}
+				{page.error?.errorId}
 			</p>
 		</div>
 	</div>

@@ -3,7 +3,10 @@
 
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message: string;
+			errorId: string;
+		}
 		// interface Locals { }
 		// interface PageData {}
 		// interface PageState {}
@@ -230,13 +233,13 @@ declare global {
 type WidenLiteral<T> = T extends string
 	? string
 	: T extends number
-		? number
-		: T extends boolean
-			? boolean
-			: T extends bigint
-				? bigint
-				: T extends symbol
-					? symbol
-					: T;
+	? number
+	: T extends boolean
+	? boolean
+	: T extends bigint
+	? bigint
+	: T extends symbol
+	? symbol
+	: T;
 
-export {};
+export { };

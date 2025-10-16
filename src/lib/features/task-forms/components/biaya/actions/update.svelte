@@ -125,7 +125,10 @@
 					bind:value={
 						() => (values.amount ? values.amount : undefined),
 						(v) => {
-							if (v === undefined) return;
+							if (v === undefined || v === null) {
+								values.amount = 0;
+								return;
+							}
 							values.amount = v;
 						}
 					}

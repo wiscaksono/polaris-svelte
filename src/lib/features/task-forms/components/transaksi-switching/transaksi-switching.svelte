@@ -6,6 +6,7 @@
 	import DetailItem from '$lib/features/data-polis/components/detail-item.svelte';
 
 	import Create from './actions/create.svelte';
+	import Update from './actions/update.svelte';
 	import Delete from './actions/delete.svelte';
 
 	import { formatNumber } from '$lib/utils';
@@ -40,6 +41,7 @@
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.fundName}>
 						{#snippet rightChild()}
+							<Update data={query.data} index={i} />
 							<Delete data={query.data} index={i} />
 						{/snippet}
 					</InfoGroup.Trigger>
