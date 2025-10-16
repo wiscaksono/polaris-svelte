@@ -70,7 +70,7 @@
 		</Dialog.Header>
 
 		<div class="space-y-2">
-			<Label for="jenis-trx">Jenis Trx</Label>
+			<Label for="jenis-trx" required>Jenis Trx</Label>
 			<Select.Root type="single" bind:value={() => String(selectedUser), (v) => (selectedUser = Number(v))}>
 				<Select.Trigger class={cn({ 'text-muted-foreground': !selectedUser }, 'w-full')}>
 					{#if selectedUser && queryResult.data}
