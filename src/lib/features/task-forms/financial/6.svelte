@@ -13,7 +13,7 @@
 	import HistorySummaryTransaksi from '../components/history-summary-transaksi';
 	import DataInvestasi from '../components/data-investasi-polis';
 	import VerifikasiDokumen from '../components/verifikasi-dokumen';
-	import FurtherRequirement from '../components/further-requirement';
+	import FurtherRequirementsFinancial from '../components/further-requirements-financial';
 	import RedemptionInstruction from '../components/redemption-instruction';
 	import FaktorPenambah from '../components/faktor-penambah';
 	import JumlahYangDibayarkan from '../components/jumlah-yang-dibayarkan';
@@ -112,7 +112,6 @@
 	<div class="space-y-2" bind:this={element}>
 		<DataPolis />
 		<AhliWaris />
-
 		{#if !taskFormParams.case_trx.includes('Trad') && !taskFormParams.case_trx.includes('Switching') && !taskFormParams.case_trx.includes('Redirection') && !taskFormParams.case_trx.includes('Cancel')}
 			<TransaksiFinancial />
 		{:else if taskFormParams.case_trx === 'Switching'}
@@ -123,12 +122,11 @@
 			<TransaksiSwitching />
 			<TransaksiRedirection />
 		{/if}
-
 		<SuspendedPremium />
 		<HistorySummaryTransaksi />
 		<DataInvestasi />
 		<VerifikasiDokumen />
-		<FurtherRequirement />
+		<FurtherRequirementsFinancial />
 		{#if taskFormParams.case_trx === 'Top Up UL'}
 			<SubscriptionInstructions />
 		{:else}

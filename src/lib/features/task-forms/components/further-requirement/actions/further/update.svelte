@@ -24,6 +24,14 @@
 	const isFormDirty = $derived(values.remarks !== data.remarks);
 	const mutation = createMutation(() => furtherRequirementQueries.deleteOrUpdate('update'));
 
+	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
+		if (isFormDirty) {
+			e.preventDefault();
+			if (confirm('Unsaved changes. Are you sure you want to close this dialog?')) open = false;
+			return;
+		}
+	}
+
 	function handleSubmit(e: Event) {
 		e.preventDefault();
 		if (!isFormDirty) return;
@@ -63,7 +71,7 @@
 			</Button>
 		{/snippet}
 	</Dialog.Trigger>
-	<Dialog.Content>
+	<Dialog.Content onEscapeKeydown={handleCloseAttempt} onInteractOutside={handleCloseAttempt}>
 		<Dialog.Header>
 			<Dialog.Title>Update Remarks Further Requirement</Dialog.Title>
 			<Dialog.Description>Update the remarks for this requirement. You can update them anytime.</Dialog.Description>
