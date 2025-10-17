@@ -11,7 +11,7 @@
 	import { getTaskFormContext } from '../../context.svelte';
 	import { financialQueries } from '../../queries/financial';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const query = createQuery(() =>
 		financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
@@ -21,7 +21,7 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title={`Transaksi ${taskFormParams.case_trx}`}>
 		{#snippet rightChild()}
-			{#if query.data}
+			{#if query.data && meta.isActionAllowed}
 				<Create data={query.data} />
 			{/if}
 		{/snippet}
@@ -33,9 +33,11 @@
 					<Table.Head class="w-px">Nama Fund</Table.Head>
 					<Table.Head>Jenis</Table.Head>
 					<Table.Head>Jumlah</Table.Head>
-					<Table.Head class="sticky right-0 z-20 w-20 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-						Action
-					</Table.Head>
+					{#if meta.isActionAllowed}
+						<Table.Head class="sticky right-0 z-20 w-20 !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+							Action
+						</Table.Head>
+					{/if}
 				</Table.Row>
 			</Table.Header>
 			<Table.Body>
@@ -44,7 +46,7 @@
 					Loading
 				{:else if query.isError}
 					<Table.Row>
-						<Table.Cell colspan={3} class="h-16 text-center">
+						<Table.Cell colspan={meta.isActionAllowed ? 5 : 4} class="h-16 text-center">
 							{query.error.message}
 						</Table.Cell>
 					</Table.Row>
@@ -54,15 +56,17 @@
 							<Table.Cell>{fundName}</Table.Cell>
 							<Table.Cell>{fundType}</Table.Cell>
 							<Table.Cell>{formatNumber(fundAmount, 'id-ID')}</Table.Cell>
-							<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
-								<Update data={query.data} {index} />
-								<Delete data={query.data} {index} />
-							</Table.Cell>
+							{#if meta.isActionAllowed}
+								<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
+									<Update data={query.data} {index} />
+									<Delete data={query.data} {index} />
+								</Table.Cell>
+							{/if}
 						</Table.Row>
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={4} class="h-16 text-center">No transaction found</Table.Cell>
+						<Table.Cell colspan={meta.isActionAllowed ? 5 : 4} class="h-16 text-center">No transaction found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>

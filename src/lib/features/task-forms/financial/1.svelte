@@ -14,7 +14,7 @@
 
 	import type { TransactionType } from '$lib/utils';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const SHOW_TUJUAN_PEMBAYARAN: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
 </script>

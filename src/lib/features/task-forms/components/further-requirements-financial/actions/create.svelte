@@ -36,11 +36,7 @@
 	let open = $state(false);
 	let values = $state<CreatePayload>([]);
 	let submitButton: HTMLButtonElement;
-	let selectedMenuFurther = $state<Type.FurtherRequirementFinancialMenuListRes[number] | null>({
-		lssa_id: 45,
-		sub_id: 1,
-		sub_desc: 'Pending Requirement'
-	});
+	let selectedMenuFurther = $state<Type.FurtherRequirementFinancialMenuListRes[number] | null>(null);
 
 	const queryClient = useQueryClient();
 	const isFormDirty = $derived(!deepEqual(selectedMenuFurther, null) && !deepEqual(values, []));
@@ -109,6 +105,7 @@
 						const newValue = menuFurtherQuery.data?.find((item) => String(item.sub_id) === v);
 						if (!newValue) return;
 						selectedMenuFurther = newValue;
+						values = [];
 					}
 				}
 			>

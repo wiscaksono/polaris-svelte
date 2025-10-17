@@ -9,7 +9,7 @@
 	import { getTaskFormContext } from '../../context.svelte';
 	import { financialQueries } from '../../queries/financial';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const query = createQuery(() =>
 		financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
@@ -19,7 +19,7 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Tanggal Formulir">
 		{#snippet rightChild()}
-			{#if query.data}
+			{#if query.data && meta.isActionAllowed}
 				<Update data={query.data} />
 			{/if}
 		{/snippet}

@@ -26,7 +26,9 @@
 		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
 			{#if !excludedChangeStatusTrx.includes(taskFormParams.case_trx)}
 				<ChangeStatus />
-				<Redemption />
+			{/if}
+			<Redemption />
+			{#if taskFormParams.case_trx !== 'Maturity Link'}
 				<Realokasi />
 			{/if}
 		</div>

@@ -12,17 +12,23 @@
 	import { formatCurrency, formatNumber } from '$lib/utils';
 	import { getTaskFormContext } from '$lib/features/task-forms/context.svelte';
 
-	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 	const query = createQuery(() => biayaQueries.get({ noTrx: taskFormParams.no_trx, regSpaj: taskFormParams.reg_spaj }));
 
 	const isCurrentTrxTraditional = $derived(taskFormParams.case_trx.includes('Trad'));
-	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
+
+	const colspan = $derived(
+		1 + // Jenis column
+			(isCurrentTrxTraditional ? 0 : 1) + // Persentase column if NOT traditional
+			1 + // Amount column
+			(meta.isActionAllowed ? 0 : 1) // Action column if NOT worksheet tab
+	);
 </script>
 
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Biaya">
 		{#snippet rightChild()}
-			{#if !isCurrentTabWorksheet}
+			{#if meta.isActionAllowed}
 				{#if query.data}
 					<Create data={query.data} />
 				{/if}
@@ -38,7 +44,7 @@
 						<Table.Head>Persentase</Table.Head>
 					{/if}
 					<Table.Head>Amount</Table.Head>
-					{#if !isCurrentTabWorksheet}
+					{#if meta.isActionAllowed}
 						<Table.Head class="sticky right-0 z-20 w-px !bg-background text-center" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
 							Action
 						</Table.Head>
@@ -51,7 +57,7 @@
 					Loading
 				{:else if query.isError}
 					<Table.Row>
-						<Table.Cell colspan={isCurrentTabWorksheet ? 4 : 3} class="h-16 text-center">
+						<Table.Cell {colspan} class="h-16 text-center">
 							{query.error.message}
 						</Table.Cell>
 					</Table.Row>
@@ -71,7 +77,7 @@
 									{formatNumber(amount, 'id-ID')}
 								{/if}
 							</Table.Cell>
-							{#if !isCurrentTabWorksheet}
+							{#if meta.isActionAllowed}
 								<Table.Cell class="sticky right-0 z-20 w-20 !bg-background" style="box-shadow: 4px 0 4px -6px var(--muted-foreground) inset">
 									<Update data={query.data[index]} />
 									<Delete data={query.data[index]} />
@@ -81,7 +87,7 @@
 					{/each}
 				{:else}
 					<Table.Row>
-						<Table.Cell colspan={isCurrentTabWorksheet ? 4 : 3} class="h-16 text-center">No data found</Table.Cell>
+						<Table.Cell {colspan} class="h-16 text-center">No data found</Table.Cell>
 					</Table.Row>
 				{/if}
 			</Table.Body>

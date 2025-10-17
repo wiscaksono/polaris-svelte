@@ -20,13 +20,8 @@
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const mutation = createMutation(() => actionQueries.pending());
-	const query = createQuery(() =>
-		furtherRequirementQueries.get({
-			caseId: taskFormParams.case_id,
-			regSpaj: taskFormParams.reg_spaj
-		})
-	);
+	const mutation = createMutation(() => actionQueries.pendingMajor());
+	const query = createQuery(() => furtherRequirementQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 
 	const hasFurther = $derived(query.data?.length);
 

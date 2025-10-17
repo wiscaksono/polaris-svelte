@@ -74,7 +74,7 @@
 
 <Dialog.Root
 	bind:open
-	onOpenChange={() => {
+	onOpenChangeComplete={() => {
 		inputValue = '';
 		inputValueThrottled = '';
 	}}

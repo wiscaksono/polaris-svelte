@@ -15,18 +15,20 @@
 
 	let { data }: { data?: AnalystNotesRes } = $props();
 
-	let open = $state(false);
-	let values = $state<AnalystNotesRes>({
+	const getInitialvalues = (): AnalystNotesRes => ({
 		eddCheck: data?.eddCheck ?? '',
 		suspiciousTransaction: data?.suspiciousTransaction ?? '',
 		validationCall: data?.validationCall ?? '',
 		otherNotes: data?.otherNotes ?? ''
 	});
+
+	let open = $state(false);
+	let values = $state<AnalystNotesRes>(getInitialvalues());
 	let submitButton: HTMLButtonElement;
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const isFormDirty = $derived(!deepEqual(values, data));
+	const isFormDirty = $derived(!deepEqual(values, getInitialvalues()));
 	const mutation = createMutation(() =>
 		analystNotesQueries.update({
 			caseId: taskFormParams.case_id,
@@ -57,16 +59,7 @@
 	}
 </script>
 
-<Dialog.Root
-	bind:open
-	onOpenChangeComplete={() =>
-		(values = {
-			eddCheck: data?.eddCheck ?? '',
-			suspiciousTransaction: data?.suspiciousTransaction ?? '',
-			validationCall: data?.validationCall ?? '',
-			otherNotes: data?.otherNotes ?? ''
-		})}
->
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = getInitialvalues())}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button

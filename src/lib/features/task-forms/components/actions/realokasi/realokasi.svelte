@@ -25,6 +25,8 @@
 		financialQueries.isButtonRealocationEnabled({ noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
 	);
 
+	$inspect(isButtonRealocationEnabledQuery.data);
+
 	function handleRealocation() {
 		mutation.mutate(
 			{ transaction: taskFormParams.case_trx, noTrx: taskFormParams.no_trx, lusId: userStore.current!.lus_id, regSpaj: taskFormParams.reg_spaj },

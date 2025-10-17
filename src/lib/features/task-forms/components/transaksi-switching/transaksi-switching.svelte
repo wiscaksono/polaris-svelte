@@ -13,7 +13,7 @@
 	import { financialQueries } from '../../queries/financial';
 	import { getTaskFormContext } from '../../context.svelte';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 	const query = createQuery(() =>
 		financialQueries.getDataSubmission({
 			noTrx: taskFormParams.no_trx,
@@ -26,8 +26,10 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Transaksi Switching">
 		{#snippet rightChild()}
-			{#if query.data}
-				<Create data={query.data} />
+			{#if meta.isActionAllowed}
+				{#if query.data}
+					<Create data={query.data} />
+				{/if}
 			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
@@ -41,8 +43,10 @@
 				<InfoGroup.Root>
 					<InfoGroup.Trigger title={item.fundName}>
 						{#snippet rightChild()}
-							<Update data={query.data} index={i} />
-							<Delete data={query.data} index={i} />
+							{#if meta.isActionAllowed}
+								<Update data={query.data} index={i} />
+								<Delete data={query.data} index={i} />
+							{/if}
 						{/snippet}
 					</InfoGroup.Trigger>
 					<InfoGroup.Content class="bg-background">

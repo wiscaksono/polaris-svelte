@@ -95,7 +95,7 @@ export const actionQueries = {
 			}
 		});
 	},
-	pending: () => {
+	pendingMajor: () => {
 		return mutationOptions({
 			mutationFn: async ({ regSpaj, docId, trxMajor, lusId }: { regSpaj: string; docId: number; trxMajor: string; lusId: number }) => {
 				await api.post('/polaris/api-business-polaris/major/alteration/pendingFurther', {
@@ -103,6 +103,15 @@ export const actionQueries = {
 					docId,
 					lusId,
 					trxMajor
+				});
+			}
+		});
+	},
+	pendingFinancial: () => {
+		return mutationOptions({
+			mutationFn: async ({ regSpaj, docId, trxMajor, lusId }: { regSpaj: string; docId: number; trxMajor: string; lusId: number }) => {
+				await api.post('/polaris/api-financial-polaris/v1/financial/action/pendingFurther', {
+					regSpaj, lusId, docId, trxFin: trxMajor
 				});
 			}
 		});

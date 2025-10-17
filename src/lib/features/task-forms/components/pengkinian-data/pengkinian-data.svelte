@@ -12,7 +12,7 @@
 	import { financialQueries } from '../../queries/financial';
 	import { getTaskFormContext } from '../../context.svelte';
 
-	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const query = createQuery(() =>
 		financialQueries.getDataSubmission({ regSpaj: taskFormParams.reg_spaj, noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
@@ -37,7 +37,7 @@
 					<CircleAlert class="size-5 text-destructive" />
 				</div>
 			{/if}
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				{#if query.data}
 					<Update data={query.data} />
 				{:else}

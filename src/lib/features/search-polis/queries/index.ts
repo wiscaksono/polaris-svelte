@@ -13,10 +13,13 @@ export const searchPolisQueries = {
 				return data;
 			},
 			enabled: () => {
+				if (!search) return false;
 				if (typeof search === 'string' && search.length > 2) return true;
 				if (typeof search === 'number' && search > 0) return true;
 				return false;
-			}
+			},
+			staleTime: 0,
+			refetchOnWindowFocus: true
 		});
 	}
 };

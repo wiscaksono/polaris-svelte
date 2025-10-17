@@ -5,7 +5,7 @@
 	import DecisionPerProduct from '$lib/features/task-forms/components/decision-per-product';
 
 	import Approve from '../components/actions/approve';
-	import Pending from '../components/actions/pending';
+	import PendingMajor from '../components/actions/pending-major';
 	import CancelTicket from '../components/actions/cancel-ticket-major';
 	import EskalasiKeTL from '../components/actions/eskalasi-ke-tl';
 
@@ -20,7 +20,7 @@
 		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
 			<EskalasiKeTL />
 			<Approve />
-			<Pending />
+			<PendingMajor />
 			<CancelTicket />
 		</div>
 	{/if}

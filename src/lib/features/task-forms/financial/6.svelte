@@ -35,28 +35,52 @@
 	import { captureInstruksiBayar } from '../components/instruksi-bayar/instruksi-bayar.svelte';
 
 	import { getTaskFormContext } from '../context.svelte';
+	import { taskFormQueries } from '../queries';
+
 	import type { TransactionType } from '$lib/utils';
 
 	let element: HTMLElement;
 
 	const { taskFormParams } = getTaskFormContext();
 
+	const SHOW_INSTRUKSI_BAYAR: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
+	const SHOW_JUMLAH_DIBAYARKAN: TransactionType[] = [
+		'Withdrawal',
+		'Surrender Link',
+		'Cancel Free Look Link',
+		'Maturity Link',
+		'Auto Maturity Link',
+		'Top Up UL'
+	];
+
+	const uploaDocumentMutation = createMutation(() =>
+		taskFormQueries.uploadWorksheetPDF({
+			transaction: taskFormParams.case_trx,
+			nopol: taskFormParams.nopol,
+			caseId: String(taskFormParams.case_id),
+			regSpaj: taskFormParams.reg_spaj,
+			noTrx: taskFormParams.no_trx
+		})
+	);
+
 	const mutation = createMutation(() => ({
 		mutationFn: async () => {
 			const paddingMm = 5;
+			// Coba cari iframe-nya dulu
 			const iframe = element.querySelector('#instruksi-bayar') as HTMLIFrameElement;
-
-			if (!iframe) throw new Error('Instruksi Bayar iframe not found');
-
-			const iframeImageBase64 = await captureInstruksiBayar();
-			const imgReplacement = document.createElement('img');
-			imgReplacement.src = iframeImageBase64;
-			imgReplacement.style.height = iframe.clientHeight + 'px';
-			imgReplacement.style.width = iframe.clientWidth + 'px';
-			imgReplacement.style.display = 'block';
+			let imgReplacement: HTMLImageElement | null = null;
 
 			try {
-				iframe.parentNode?.replaceChild(imgReplacement, iframe);
+				if (iframe) {
+					const iframeImageBase64 = await captureInstruksiBayar();
+					imgReplacement = document.createElement('img');
+					imgReplacement.src = iframeImageBase64;
+					imgReplacement.style.height = iframe.clientHeight + 'px';
+					imgReplacement.style.width = iframe.clientWidth + 'px';
+					imgReplacement.style.display = 'block';
+
+					iframe.parentNode?.replaceChild(imgReplacement, iframe);
+				}
 
 				const canvas = await snapdom.toCanvas(element);
 
@@ -77,22 +101,19 @@
 
 				pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm, '', 'MEDIUM');
 				pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
+
+				return pdf.output('blob');
 			} finally {
-				if (imgReplacement.parentNode) imgReplacement.parentNode.replaceChild(iframe, imgReplacement);
+				if (iframe && imgReplacement && imgReplacement.parentNode) {
+					imgReplacement.parentNode.replaceChild(iframe, imgReplacement);
+				}
 			}
 		},
-		onSuccess: () => element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		onSuccess: async (blob) => {
+			element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			await uploaDocumentMutation.mutateAsync(blob);
+		}
 	}));
-
-	const SHOW_INSTRUKSI_BAYAR: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
-	const SHOW_JUMLAH_DIBAYARKAN: TransactionType[] = [
-		'Withdrawal',
-		'Surrender Link',
-		'Cancel Free Look Link',
-		'Maturity Link',
-		'Auto Maturity Link',
-		'Top Up UL'
-	];
 </script>
 
 <div class="space-y-2">
