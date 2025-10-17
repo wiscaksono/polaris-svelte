@@ -36,7 +36,9 @@
 			{#if query.data?.status === 'EDITED'}
 				<Badge variant="secondary">EDITED</Badge>
 			{/if}
-			<Update data={query.data} />
+			{#if query.data}
+				<Update data={query.data} />
+			{/if}
 		{/snippet}
 	</InfoGroup.Trigger>
 	<InfoGroup.Content class="bg-background">

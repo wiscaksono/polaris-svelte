@@ -8,17 +8,17 @@
 	import { goto } from '$app/navigation';
 	import { createMutation } from '@tanstack/svelte-query';
 
-	import { userStore } from '$lib/stores';
-	import { api, exclude } from '$lib/utils';
-	import { loginQuery } from '$lib/features/login/queries';
+	import { exclude } from '$lib/utils';
+	import { userStore, menuStore } from '$lib/stores';
+	import { loginQueries } from '$lib/features/login/query';
 
 	let payload = $state({ username: 'billi', password: 'Asdf12345' });
 
 	const mutation = createMutation(() => ({
-		...loginQuery.login(),
-		onSuccess: (data) => {
-			api.setToken(data.token);
-			userStore.current = exclude(data, ['token']);
+		...loginQueries.login(),
+		onSuccess: ({ user, userMenu }) => {
+			userStore.current = exclude(user, ['token']);
+			menuStore.current = userMenu;
 			goto('/');
 		}
 	}));
@@ -30,6 +30,14 @@
 </script>
 
 <main class="grid min-h-svh lg:grid-cols-2">
+	<div class="relative hidden bg-muted lg:block">
+		<img
+			src="https://www.shadcn-svelte.com/placeholder.svg"
+			alt="placeholder"
+			class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+		/>
+	</div>
+
 	<div class="flex flex-col gap-4 p-6 md:p-10">
 		<div class="flex justify-center gap-2 md:justify-start">
 			<a href="##" class="flex items-center gap-2 font-medium">
@@ -65,12 +73,5 @@
 				</form>
 			</div>
 		</div>
-	</div>
-	<div class="relative hidden bg-muted lg:block">
-		<img
-			src="https://www.shadcn-svelte.com/placeholder.svg"
-			alt="placeholder"
-			class="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-		/>
 	</div>
 </main>

@@ -13,7 +13,7 @@
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['dataDiri'] | undefined } = $props();
 
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 
 	const diffMap = $derived([
 		{ label: 'Nama Lengkap', before: data?.before.namaLengkap, after: data?.after.namaLengkap },
@@ -21,8 +21,8 @@
 		{ label: 'Tempat Lahir', before: data?.before.tempatLahir, after: data?.after.tempatLahir },
 		{
 			label: 'Tanggal Lahir',
-			before: dayjs(data?.before.tanggalLahir).format('DD MMM YYYY'),
-			after: dayjs(data?.after.tanggalLahir).format('DD MMM YYYY')
+			before: data?.before.tanggalLahir && data?.before.tanggalLahir !== '-' ? dayjs(data?.before.tanggalLahir).format('DD MMM YYYY') : null,
+			after: data?.after.tanggalLahir && data?.after.tanggalLahir !== '-' ? dayjs(data?.after.tanggalLahir).format('DD MMM YYYY') : null
 		},
 		{ label: 'Usia', before: data?.before.usia, after: data?.after.usia },
 		{ label: 'Nama Gadis Ibu Kandung', before: data?.before.namaGadisIbuKandung, after: data?.after.namaGadisIbuKandung },
@@ -44,7 +44,7 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Data Diri">
 		{#snippet rightChild()}
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				{#if data}
 					<Edit data={data.after} />
 				{:else}

@@ -18,14 +18,14 @@
 	import AlamatDomisili from './alamat-domisili';
 	import SAR from './sar';
 
-	const { taskFormParams, currentTaskFormTab } = getTaskFormContext();
+	const { taskFormParams, currentTaskFormTab, meta } = getTaskFormContext();
 
 	const query = createQuery(() => dataTTQueries.get({ caseId: taskFormParams.case_id, regSpaj: taskFormParams.reg_spaj }));
 	const isCurrentTabWorksheet = $derived(currentTaskFormTab.slug === 'worksheet');
 </script>
 
 <div class="space-y-2">
-	{#if currentTaskFormTab.slug !== 'worksheet'}
+	{#if meta.isActionAllowed}
 		<div class="flex items-center justify-end gap-2">
 			<Create data={query.data} />
 		</div>

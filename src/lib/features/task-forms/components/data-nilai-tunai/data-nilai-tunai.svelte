@@ -35,8 +35,6 @@
 		const end = start + values.perPage;
 		return filteredData.slice(start, end);
 	});
-
-	$inspect(filteredData.length);
 </script>
 
 <InfoGroup.Root>
@@ -76,7 +74,7 @@
 					<Table.Row>
 						<Table.Cell colspan={5} class="h-16 text-center">Error: {query.error.message}</Table.Cell>
 					</Table.Row>
-				{:else if query.data.length}
+				{:else if query.data?.length}
 					{#each paginatedData as item, i (i)}
 						<Table.Row>
 							<Table.Cell>{item.tahun}</Table.Cell>

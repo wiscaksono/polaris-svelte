@@ -11,7 +11,7 @@
 
 	let { data }: { data: DataPPdanTURes['pemegangPolis']['infoPekerjaan'] | undefined } = $props();
 
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 
 	const diffMap = $derived([
 		{ label: 'Nama Perusahaan', before: data?.before.namaPerusahaan, after: data?.after.namaPerusahaan },
@@ -24,7 +24,7 @@
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Info Pekerjaan">
 		{#snippet rightChild()}
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				{#if data}
 					<Edit data={data.after} />
 				{:else}

@@ -18,10 +18,21 @@
 
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { getTaskFormContext } from '../context.svelte';
+	import { taskFormQueries } from '../queries';
 
 	let element: HTMLElement;
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
+
+	const uploaDocumentMutation = createMutation(() =>
+		taskFormQueries.uploadWorksheetPDF({
+			transaction: taskFormParams.case_trx,
+			nopol: taskFormParams.nopol,
+			caseId: String(taskFormParams.case_id),
+			regSpaj: taskFormParams.reg_spaj,
+			noTrx: taskFormParams.no_trx
+		})
+	);
 
 	const mutation = createMutation(() => ({
 		mutationFn: async () => {
@@ -48,23 +59,28 @@
 				format: [pdfWidth, pdfHeight]
 			});
 
-			pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm);
+			pdf.addImage(dataUrl, 'PNG', paddingMm, paddingMm, imgWidthMm, imgHeightMm, '', 'MEDIUM');
 			pdf.save(`Worksheet - ${taskFormParams.nopol} - ${taskFormParams.case_id}.pdf`);
-		}
+
+			return pdf.output('blob');
+		},
+		onSuccess: async (blob) => await uploaDocumentMutation.mutateAsync(blob)
 	}));
 </script>
 
 <div class="space-y-2">
-	<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
-		<Button onclick={() => mutation.mutate()} class="!pl-2" disabled={mutation.isPending}>
-			{#if mutation.isPending}
-				<LoaderCircle class="animate-spin" />
-			{:else}
-				<FileText />
-			{/if}
-			Generate PDF
-		</Button>
-	</div>
+	{#if meta.isActionAllowed}
+		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
+			<Button onclick={() => mutation.mutate()} class="!pl-2" disabled={mutation.isPending}>
+				{#if mutation.isPending}
+					<LoaderCircle class="animate-spin" />
+				{:else}
+					<FileText />
+				{/if}
+				Generate PDF
+			</Button>
+		</div>
+	{/if}
 	<div class="space-y-2" bind:this={element}>
 		<TabTwo />
 		<TabThree />

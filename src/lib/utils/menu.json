@@ -1,0 +1,182 @@
+[
+  {
+    "id": 1,
+    "name": "Home",
+    "sub": [],
+    "count": null
+  },
+  {
+    "id": 2,
+    "name": "Data Polis",
+    "sub": [
+      {
+        "id": 4,
+        "name": "Churning",
+        "count": null
+      },
+      {
+        "id": 6,
+        "name": "Client Roles",
+        "count": null
+      },
+      {
+        "id": 7,
+        "name": "Due Diligence",
+        "count": null
+      },
+      {
+        "id": 10,
+        "name": "Data Investasi",
+        "count": null
+      },
+      {
+        "id": 16,
+        "name": "Transaction Detail",
+        "count": null
+      },
+      {
+        "id": 17,
+        "name": "Transaction History",
+        "count": null
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 3,
+    "name": "Workbasket",
+    "sub": [
+      {
+        "id": 18,
+        "name": "New Submission",
+        "count": 3733
+      },
+      {
+        "id": 19,
+        "name": "Further",
+        "count": 220
+      },
+      {
+        "id": 20,
+        "name": "Filling",
+        "count": null
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 4,
+    "name": "Approval",
+    "sub": [
+      {
+        "id": 21,
+        "name": "Detail",
+        "count": 12
+      },
+      {
+        "id": 22,
+        "name": "Bulk",
+        "count": 12
+      },
+      {
+        "id": 37,
+        "name": "Escalation",
+        "count": 4
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 5,
+    "name": "Flagged",
+    "sub": [],
+    "count": 4
+  },
+  {
+    "id": 6,
+    "name": "Reports",
+    "sub": [
+      {
+        "id": 29,
+        "name": "Report Transaksi",
+        "count": null
+      },
+      {
+        "id": 31,
+        "name": "Report Financial",
+        "count": null
+      },
+      {
+        "id": 33,
+        "name": "Reconcile Investasi",
+        "count": null
+      },
+      {
+        "id": 34,
+        "name": "YRT Approval",
+        "count": null
+      },
+      {
+        "id": 35,
+        "name": "YRT History",
+        "count": null
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 7,
+    "name": "Data Entry",
+    "sub": [
+      {
+        "id": 23,
+        "name": "List Transaksi",
+        "count": null
+      },
+      {
+        "id": 24,
+        "name": "Draft",
+        "count": 33791
+      },
+      {
+        "id": 25,
+        "name": "New Document",
+        "count": 2773
+      },
+      {
+        "id": 26,
+        "name": "Filling",
+        "count": null
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 8,
+    "name": "Administration",
+    "sub": [
+      {
+        "id": 27,
+        "name": "Re Assign Task",
+        "count": null
+      },
+      {
+        "id": 28,
+        "name": "Menu Configuration",
+        "count": null
+      },
+      {
+        "id": 36,
+        "name": "Dashboard Transaction",
+        "count": null
+      }
+    ],
+    "count": null
+  },
+  {
+    "id": 9,
+    "name": "Utility",
+    "sub": [],
+    "count": null
+  }
+]

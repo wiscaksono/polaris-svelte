@@ -8,14 +8,14 @@
 	import { getTaskFormContext } from '../../context.svelte';
 	import { decisionFinalMajorAlterationQueries } from './query';
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 	const query = createQuery(() => decisionFinalMajorAlterationQueries.get({ idDoc: taskFormParams.case_id }));
 </script>
 
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Decision Final Major Alteration">
 		{#snippet rightChild()}
-			{#if query.data}
+			{#if query.data && meta.isActionAllowed}
 				<Update data={query.data} />
 			{/if}
 		{/snippet}

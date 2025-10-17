@@ -17,14 +17,14 @@
 	}
 
 	let { data }: Props = $props();
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 	const diffMap = $derived([{ label: 'Alamat Korespondensi', before: data?.before?.alamatKorespondensi.label, after: data?.after?.alamatKorespondensi.label }]);
 </script>
 
 <InfoGroup.Root>
 	<InfoGroup.Trigger title="Korespondensi">
 		{#snippet rightChild()}
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				{#if data.after}
 					<Edit data={data.after} />
 				{:else}

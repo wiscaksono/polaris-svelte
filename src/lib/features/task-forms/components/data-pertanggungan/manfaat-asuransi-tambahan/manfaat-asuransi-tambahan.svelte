@@ -25,7 +25,7 @@
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 	const diffMap = $derived((index: number) => [
 		{ label: 'Nama Tertanggung', before: data?.[index].before.nama_tertanggung, after: data?.[index].after.nama_tertanggung },
 		{ label: 'Jenis Tertanggung', before: data?.[index].before.jenis_tertanggung.label, after: data?.[index].after.jenis_tertanggung.label },
@@ -100,7 +100,7 @@
 				</div>
 			{/if}
 
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				<Create {data} {initialData} />
 			{/if}
 		{/snippet}

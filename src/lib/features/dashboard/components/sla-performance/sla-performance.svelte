@@ -2,7 +2,7 @@
 	import dayjs from 'dayjs';
 	import duration from 'dayjs/plugin/duration';
 
-	import { Info } from '@lucide/svelte';
+	import { Info, User } from '@lucide/svelte';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { parseAsStringLiteral, useQueryState } from 'nuqs-svelte';
 
@@ -11,6 +11,7 @@
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import SlaPerformanceDetail from './sla-performance-detail.svelte';
 
+	import { IS_DEV } from '$lib/utils';
 	import { dashboardQueries, type TrxType } from '../../queries';
 
 	let height = $state(300);
@@ -71,18 +72,21 @@
 			{:else if query.data.length}
 				{#each query.data as item, i (i)}
 					<li class="flex items-center gap-x-4">
-						<p>
-							{i + 1}.
-						</p>
-						<Avatar.Root class="size-10">
-							<Avatar.Image src={item.image} alt={item.fullName} />
-							<Avatar.Fallback class="text-xs text-muted-foreground">
-								{item.fullName
-									.split(' ')
-									.map((n, i) => (i <= 1 ? n[0] : ''))
-									.join('')}
-							</Avatar.Fallback>
-						</Avatar.Root>
+						{#if IS_DEV}
+							<div class="flex size-10 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground">
+								<User size={18} />
+							</div>
+						{:else}
+							<Avatar.Root class="size-10">
+								<Avatar.Image src={item.image} alt={item.fullName} />
+								<Avatar.Fallback class="text-xs text-muted-foreground">
+									{item.fullName
+										.split(' ')
+										.map((n, i) => (i <= 1 ? n[0] : ''))
+										.join('')}
+								</Avatar.Fallback>
+							</Avatar.Root>
+						{/if}
 						<div class="flex-1">
 							<p class="text-sm font-medium">{item.fullName}</p>
 							<p class="text-sm text-muted-foreground">{item.jabatan}</p>

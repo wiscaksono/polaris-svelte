@@ -22,7 +22,7 @@
 
 	const MSPRFlagJenis = { 1: 'Permil', 2: 'Persen' };
 
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 	const diffMap = $derived([
 		{ label: 'Nama Produk', before: data?.before.nama_produk.product, after: data?.after.nama_produk.product },
 		{
@@ -123,7 +123,7 @@
 				</div>
 			{/if}
 
-			{#if currentTaskFormTab.slug !== 'worksheet'}
+			{#if meta.isActionAllowed}
 				{#if data?.after}
 					<Update data={data.after} {initialData} />
 				{/if}

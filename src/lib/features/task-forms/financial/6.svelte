@@ -41,7 +41,7 @@
 
 	let element: HTMLElement;
 
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const SHOW_INSTRUKSI_BAYAR: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
 	const SHOW_JUMLAH_DIBAYARKAN: TransactionType[] = [
