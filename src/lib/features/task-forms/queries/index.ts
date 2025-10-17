@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api, mutationOptions, transactionIDs, type TransactionType } from '$lib/utils';
+import { api, mutationOptions, TRANSACTION_IDS, type TransactionType } from '$lib/utils';
 
 export const taskFormQueries = {
 	checkIsReUnderwriting: ({ noTrx }: { noTrx: string }) => {
@@ -21,7 +21,7 @@ export const taskFormQueries = {
 				formData.append('file', new Blob([blob], { type: 'application/pdf' }), fileName)
 				formData.append('regSpaj', regSpaj)
 				formData.append('noTrx', noTrx)
-				formData.append('idTrx', String(transactionIDs[transaction]))
+				formData.append('idTrx', String(TRANSACTION_IDS[transaction]))
 				formData.append('idJn', '345')
 				formData.append('flag', '2')
 				formData.append('purpose', 'STORAGE_PANDORA')

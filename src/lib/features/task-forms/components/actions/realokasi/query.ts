@@ -1,4 +1,4 @@
-import { api, mutationOptions, transactionIDs, type TransactionType } from '$lib/utils';
+import { api, mutationOptions, TRANSACTION_IDS, type TransactionType } from '$lib/utils';
 
 import { biayaQueries } from '../../biaya/query';
 import { redemptionInstructionQueries } from '../../redemption-instruction/query';
@@ -20,7 +20,7 @@ export const realocationQueries = {
         const payload: RedemptionReq = {
           summary: {
             regSpaj,
-            ltId: transactionIDs[transaction],
+            ltId: TRANSACTION_IDS[transaction],
             jlhPremi: redemptionTotalAmount,
             jlhUnit: redemptionTotalUnit,
             muLspdId: 46,

@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api, mutationOptions, IS_DEV, type TransactionType, transactionIDs } from '$lib/utils';
+import { api, mutationOptions, IS_DEV, type TransactionType, TRANSACTION_IDS } from '$lib/utils';
 
 import * as Type from './type';
 
@@ -26,7 +26,7 @@ export const actionQueries = {
 					formData.append('file', file[0], file[0].name);
 					formData.append('regSpaj', regSpaj);
 					formData.append('noTrx', noTrx);
-					formData.append('idTrx', String(transactionIDs[transaction]));
+					formData.append('idTrx', String(TRANSACTION_IDS[transaction]));
 					formData.append('idJn', '303');
 					formData.append('flag', '2');
 					formData.append('purpose', 'STORAGE');
@@ -130,7 +130,7 @@ export const actionQueries = {
 				formData.append('file', file[0], file[0].name);
 				formData.append('regSpaj', regSpaj);
 				formData.append('noTrx', noTrx);
-				formData.append('idTrx', String(transactionIDs[transaction]));
+				formData.append('idTrx', String(TRANSACTION_IDS[transaction]));
 				formData.append('idJn', '303');
 				formData.append('flag', '2');
 				formData.append('purpose', 'STORAGE');

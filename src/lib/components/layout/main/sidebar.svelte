@@ -6,7 +6,7 @@
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import SearchPolis from '$lib/features/search-polis/components/search-polis.svelte';
 
-	import { sideMenu } from '$lib/utils';
+	import { SIDE_MENU } from '$lib/utils';
 
 	const sidebar = Sidebar.useSidebar();
 </script>
@@ -82,7 +82,7 @@
 		{/if}
 	</Sidebar.Header>
 	<Sidebar.Content class="divide-y divide-sidebar-border overflow-x-hidden [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-		{#each sideMenu as { title, subMenu }, i (i)}
+		{#each SIDE_MENU as { title, subMenu }, i (i)}
 			{#if !title}
 				<Sidebar.Group>
 					<Sidebar.Menu>

@@ -1,9 +1,9 @@
 import * as icon from '@lucide/svelte';
-import type { TransactionType, SideMenu } from './type';
+import type { TransactionType, SideMenu, UserRoles } from './type';
 
 export const IS_DEV = import.meta.env.MODE === 'development';
 
-export const sideMenu: SideMenu = [
+export const SIDE_MENU: SideMenu = [
 	{
 		title: null,
 		subMenu: [
@@ -121,7 +121,7 @@ export const sideMenu: SideMenu = [
 	}
 ];
 
-export const transactionIDs = {
+export const TRANSACTION_IDS = {
 	'Major Alteration': 1,
 	'Minor Alteration': 2,
 	Withdrawal: 3,
@@ -146,3 +146,18 @@ export const transactionIDs = {
 	'Refund Trad': 22,
 	'Tolakan Trad': 23
 } as const satisfies Record<TransactionType, number>;
+
+export const USER_ROLES: UserRoles[] = [
+	'COO',
+	'CEO',
+	'POLARIS Analyst Financial',
+	'POLARIS Team Leader Financial',
+	'POLARIS Analyst Alteration',
+	'POLARIS Team Leader Alteration',
+	'POLARIS Manager of PAS',
+	'POLARIS Head of PAS',
+	'POLARIS Head of OPS',
+	'POLARIS Guest',
+	'POLARIS Document Center',
+	'POLARIS Admin'
+];

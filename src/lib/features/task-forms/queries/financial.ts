@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api, mutationOptions, transactionIDs, type TransactionType } from '$lib/utils';
+import { api, mutationOptions, TRANSACTION_IDS, type TransactionType } from '$lib/utils';
 import type { FinancialDataSubmissionRes, FinancialPerhitunganOrPengembalianNialaiTunai } from './type';
 
 export const financialQueries = {
@@ -12,7 +12,7 @@ export const financialQueries = {
 
 				searchParams.set('regSpaj', regSpaj);
 				searchParams.set('noTrx', noTrx);
-				searchParams.set('transaction', String(transactionIDs[transaction]));
+				searchParams.set('transaction', String(TRANSACTION_IDS[transaction]));
 
 				const { data } = await api.get<FinancialDataSubmissionRes>(`/polaris/api-financial-polaris/v1/financial/getFinancialDataNewSub?${searchParams.toString()}`);
 				return data;
@@ -22,7 +22,7 @@ export const financialQueries = {
 	updateDataSubmission: ({ lusId, noTrx, regSpaj, transaction }: { lusId: number; noTrx: string; regSpaj: string; transaction: TransactionType }) => {
 		return mutationOptions({
 			mutationFn: async ({ payload, initialData }: { payload: FinancialDataSubmissionRes; initialData: FinancialDataSubmissionRes }) => {
-				await api.post(`/polaris/api-financial-polaris/v1/financial/saveFinancialDataNewSub?transaction=${transactionIDs[transaction]}`, {
+				await api.post(`/polaris/api-financial-polaris/v1/financial/saveFinancialDataNewSub?transaction=${TRANSACTION_IDS[transaction]}`, {
 					...payload,
 					before: initialData,
 					lusId,

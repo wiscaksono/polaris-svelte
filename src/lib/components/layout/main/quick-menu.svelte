@@ -4,7 +4,7 @@
 	import { useQueryClient } from '@tanstack/svelte-query';
 	import { Sun, Moon, PanelLeft, PanelRight, DatabaseZap } from '@lucide/svelte';
 
-	import { sideMenu } from '$lib/utils';
+	import { SIDE_MENU } from '$lib/utils';
 	import { useSidebar } from '$lib/components/ui/sidebar';
 	import * as Command from '$lib/components/ui/command/index.js';
 
@@ -53,7 +53,7 @@
 	<Command.Input placeholder="Type a page or search…" />
 	<Command.List>
 		<Command.Empty>No results found.</Command.Empty>
-		{#each sideMenu as { title, subMenu } (title)}
+		{#each SIDE_MENU as { title, subMenu } (title)}
 			<Command.Group heading={title ?? 'General'}>
 				{#each subMenu as item (item.title)}
 					<Command.Item onSelect={() => runCommand(() => goto(item.href))} value={(title ?? 'General') + ' ' + item.title}>

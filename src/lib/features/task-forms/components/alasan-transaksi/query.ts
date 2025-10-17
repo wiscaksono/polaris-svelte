@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/svelte-query';
 
-import { api, type TransactionType, transactionIDs } from '$lib/utils';
+import { api, type TransactionType, TRANSACTION_IDS } from '$lib/utils';
 import type { AlasanTransaksiListReasonRes } from './type';
 
 export const alasanTransaksiQueries = {
@@ -15,29 +15,29 @@ export const alasanTransaksiQueries = {
 					case 'Maturity Trad':
 					case 'Auto Maturity Link':
 					case 'Auto Maturity Trad':
-						transactionID = transactionIDs['Maturity Trad']
+						transactionID = TRANSACTION_IDS['Maturity Trad']
 						break;
 					case 'Cancel Free Look Link':
-						transactionID = transactionIDs['Cancel Free Look Link']
+						transactionID = TRANSACTION_IDS['Cancel Free Look Link']
 						break;
 					case 'Cancel Free Look Trad':
-						transactionID = transactionIDs['Cancel Free Look Trad']
+						transactionID = TRANSACTION_IDS['Cancel Free Look Trad']
 						break;
 					case 'Switching':
 					case 'Redirection':
-						transactionID = transactionIDs['Switching and Redirection']
+						transactionID = TRANSACTION_IDS['Switching and Redirection']
 						break;
 					case 'Surrender Trad':
-						transactionID = transactionIDs['Surrender Trad']
+						transactionID = TRANSACTION_IDS['Surrender Trad']
 						break;
 					case 'Surrender Link':
-						transactionID = transactionIDs['Surrender Link']
+						transactionID = TRANSACTION_IDS['Surrender Link']
 						break;
 					case 'Top Up UL':
-						transactionID = transactionIDs['Top Up UL']
+						transactionID = TRANSACTION_IDS['Top Up UL']
 						break;
 					default:
-						transactionID = transactionIDs[transaction]
+						transactionID = TRANSACTION_IDS[transaction]
 						break;
 				}
 
