@@ -27,6 +27,7 @@
 	import { userStore } from '$lib/stores';
 
 	const isAdmin = userStore.current!.role_name === 'POLARIS Admin';
+	const isTeamLeader = userStore.current!.role_name === 'POLARIS Team Leader Financial' || userStore.current!.role_name === 'POLARIS Team Leader Alteration';
 
 	const queryParams = useQueryStates(ticketFilterParams);
 	const listUserQuery = createQuery(() => ({ ...commonQueries.listUser(), enabled: isAdmin }));
@@ -119,7 +120,7 @@
 				<Input id="start-at" data-testid="input-start-at" class="w-full" type="date" bind:value={localParams.from} />
 				<Input id="end-at" data-testid="input-end-at" class="w-full" type="date" bind:value={localParams.until} />
 			</div>
-			{#if isAdmin}
+			{#if isAdmin || isTeamLeader}
 				<div class="grid grid-cols-3 items-center gap-4">
 					<Label for="user-assign">User Assign</Label>
 					<Select.Root type="single" bind:value={localParams.user}>

@@ -19,7 +19,7 @@
 	let openTransDetDialog = $state(false);
 
 	const queryClient = useQueryClient();
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 	const mutation = createMutation(() => redemptionQueries.redempt());
 
 	const isButtonRedemptionEnabledQuery = createQuery(() =>
@@ -62,13 +62,19 @@
 			}
 		);
 	}
+
+	$inspect(meta);
 </script>
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
 		{#snippet child({ props })}
 			<div {...props}>
-				<Button class="!pl-2.5" onclick={handleOpenDialog} disabled={!isButtonRedemptionEnabledQuery.data || isButtonRedemptionEnabledQuery.isLoading}>
+				<Button
+					class="!pl-2.5"
+					onclick={handleOpenDialog}
+					disabled={!isButtonRedemptionEnabledQuery.data || isButtonRedemptionEnabledQuery.isLoading || !meta.isActionAllowed}
+				>
 					{#if isButtonRedemptionEnabledQuery.isLoading || checkTransDetQuery.isLoading}
 						<LoaderCircle class="animate-spin" />
 					{:else}

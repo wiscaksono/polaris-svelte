@@ -25,7 +25,7 @@
 
 	const queryClient = useQueryClient();
 	const isFormDirty = $derived(!deepEqual(values, undefined));
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 
 	const isButtonRedemptionEnabledQuery = createQuery(() =>
 		financialQueries.isButtonRedemptionEnabled({ noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
@@ -74,7 +74,7 @@
 </script>
 
 <Dialog.Root bind:open onOpenChangeComplete={() => (values = undefined)}>
-	<Dialog.Trigger disabled={!isButtonRedemptionEnabledQuery.data}>
+	<Dialog.Trigger disabled={!isButtonRedemptionEnabledQuery.data || !meta.isActionAllowed}>
 		{#snippet child({ props })}
 			<Button {...props} class="!pl-2.5">
 				{#if isButtonRedemptionEnabledQuery.isLoading}

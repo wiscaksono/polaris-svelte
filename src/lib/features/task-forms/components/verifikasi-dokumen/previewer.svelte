@@ -18,7 +18,7 @@
 
 	let { data }: { data: VerifikasiDokumenListDocument[number] } = $props();
 
-	const { currentTaskFormTab } = getTaskFormContext();
+	const { currentTaskFormTab, meta } = getTaskFormContext();
 	const documentQuery = createQuery(() => verifikasiDokumenQueries.viewDocument(data.ID));
 
 	let thumbnailUrl = $state('');
@@ -94,13 +94,17 @@
 								<DropdownMenu.Group>
 									<DropdownMenu.Label>Actions</DropdownMenu.Label>
 									<DropdownMenu.Separator />
-									<Update {data} />
+									{#if meta.isActionAllowed}
+										<Update {data} />
+									{/if}
 									<DropdownMenu.Item onclick={handleDownload}>
 										<Download />
 										Download
 									</DropdownMenu.Item>
-									<DropdownMenu.Separator />
-									<Delete idDoc={data.ID_DOC} />
+									{#if meta.isActionAllowed}
+										<DropdownMenu.Separator />
+										<Delete idDoc={data.ID_DOC} />
+									{/if}
 								</DropdownMenu.Group>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>

@@ -18,7 +18,7 @@
 	let open = $state(false);
 
 	const queryClient = useQueryClient();
-	const { taskFormParams } = getTaskFormContext();
+	const { taskFormParams, meta } = getTaskFormContext();
 	const isButtonRedemptionEnabledQuery = createQuery(() =>
 		financialQueries.isButtonRedemptionEnabled({ noTrx: taskFormParams.no_trx, transaction: taskFormParams.case_trx })
 	);
@@ -52,7 +52,7 @@
 	<Tooltip.Trigger disabled={!isButtonRedemptionEnabledQuery.data}>
 		{#snippet child({ props })}
 			<div {...props}>
-				<Button class="!pl-2.5" onclick={() => (open = true)} disabled={!isButtonRedemptionEnabledQuery.data}>
+				<Button class="!pl-2.5" onclick={() => (open = true)} disabled={!isButtonRedemptionEnabledQuery.data || !meta.isActionAllowed}>
 					{#if isButtonRedemptionEnabledQuery.isLoading}
 						<LoaderCircle class="animate-spin" />
 					{:else}

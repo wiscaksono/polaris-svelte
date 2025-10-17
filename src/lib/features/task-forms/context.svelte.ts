@@ -42,6 +42,7 @@ class TaskFormContext {
 	}
 
 	private getActionPermission() {
+		if (this.taskFormParams.kind === 'Filling') return false;
 		if (userStore.current!.role_name === 'POLARIS Guest') return false;
 		if (this.currentTaskFormTab.slug === 'worksheet') return false;
 		if (this.taskFormParams.kind === 'New Submission') return true;
