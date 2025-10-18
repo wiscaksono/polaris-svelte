@@ -10,6 +10,8 @@ export const load: LayoutLoad = async ({ parent, params }) => {
   const { queryClient } = await parent();
   const { ApprovalRs: [taskFormParams] } = await queryClient.fetchQuery(approvalQueries.detailList({ caseId: params.caseID }));
 
+  if (!taskFormParams) throw redirect(303, resolve('/(protected)/approval/detail'));
+
   const currentTaskForm = taskForms[taskFormParams.case_trx];
   const currentTaskFormRightTabs = taskFormRightTabs[taskFormParams.case_trx];
   const currentTaskFormTab = currentTaskForm.find(({ slug }) => slug === 'worksheet');

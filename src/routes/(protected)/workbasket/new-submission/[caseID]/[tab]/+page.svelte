@@ -4,6 +4,10 @@
 	let { data }: PageProps = $props();
 </script>
 
+<svelte:head>
+	<title>{data.currentTaskFormTab.title}</title>
+</svelte:head>
+
 {#if data.currentTaskFormTab}
 	{#await data.currentTaskFormTab.component then { default: Component }}
 		<Component />

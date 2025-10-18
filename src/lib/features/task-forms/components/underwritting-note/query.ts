@@ -11,7 +11,7 @@ export const underwrittingNoteQueries = {
 				const { data } = await api.get<UnderwrittingNoteRes>(
 					`/polaris/api-business-polaris/major/alteration/getWorksheet?trx_major=${trxMajor}&id_doc=${idDoc}`
 				);
-				return data.list_worksheet;
+				return data.list_worksheet ?? null;
 			}
 		});
 	},

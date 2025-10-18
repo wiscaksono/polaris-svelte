@@ -12,11 +12,15 @@
 	import TabNine from './9.svelte';
 
 	import Approver from '../components/approver';
+	import ApproverNotes from '../components/approver-notes';
 	import HistoryApproval from '../components/history-approval';
 	import UnderwrittingNote from '../components/underwritting-note';
 	import DecisionFinalMajorAlteration from '../components/decision-final-major-alteration';
 
 	import Button from '$lib/components/ui/button/button.svelte';
+	import ReturnToUser from '../components/actions/return-to-user';
+	import ApprovalApprove from '../components/actions/approval-approve';
+
 	import { getTaskFormContext } from '../context.svelte';
 	import { taskFormQueries } from '../queries';
 
@@ -34,16 +38,15 @@
 		})
 	);
 
-	const mutation = createMutation(() => ({
+	const generatePDFMutation = createMutation(() => ({
 		mutationFn: async () => {
-			const paddingMm = 5; // Amount of padding in millimeters
+			const paddingMm = 5;
 
 			const canvas = await snapdom.toCanvas(element);
 
 			const imgWidthPx = canvas.width;
 			const imgHeightPx = canvas.height;
 
-			// Convert px to mm (assuming 96dpi)
 			const pxToMm = (px: number) => (px * 25.4) / 96;
 			const imgWidthMm = pxToMm(imgWidthPx);
 			const imgHeightMm = pxToMm(imgHeightPx);
@@ -69,10 +72,16 @@
 </script>
 
 <div class="space-y-2">
+	{#if taskFormParams.kind === 'Approval'}
+		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
+			<ReturnToUser />
+			<ApprovalApprove {generatePDFMutation} />
+		</div>
+	{/if}
 	{#if meta.isActionAllowed}
 		<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
-			<Button onclick={() => mutation.mutate()} class="!pl-2" disabled={mutation.isPending}>
-				{#if mutation.isPending}
+			<Button onclick={() => generatePDFMutation.mutate()} class="!pl-2" disabled={generatePDFMutation.isPending}>
+				{#if generatePDFMutation.isPending}
 					<LoaderCircle class="animate-spin" />
 				{:else}
 					<FileText />
@@ -92,5 +101,6 @@
 		<DecisionFinalMajorAlteration />
 		<Approver />
 		<HistoryApproval />
+		<ApproverNotes />
 	</div>
 </div>

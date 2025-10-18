@@ -31,6 +31,8 @@
 	import Approve from '../components/actions/approve';
 	import CancelTicket from '../components/actions/cancel-ticket-financial';
 	import Decline from '../components/actions/decline';
+	import ReturnToUser from '../components/actions/return-to-user';
+	import ApprovalApprove from '../components/actions/approval-approve';
 
 	import { captureInstruksiBayar } from '../components/instruksi-bayar/instruksi-bayar.svelte';
 
@@ -41,7 +43,7 @@
 
 	let element: HTMLElement;
 
-	const { taskFormParams, meta } = getTaskFormContext();
+	const { taskFormParams } = getTaskFormContext();
 
 	const SHOW_INSTRUKSI_BAYAR: TransactionType[] = ['Withdrawal', 'Surrender Link', 'Cancel Free Look Link', 'Maturity Link', 'Auto Maturity Link'];
 	const SHOW_JUMLAH_DIBAYARKAN: TransactionType[] = [
@@ -63,10 +65,9 @@
 		})
 	);
 
-	const mutation = createMutation(() => ({
+	const generatePDFMutation = createMutation(() => ({
 		mutationFn: async () => {
 			const paddingMm = 5;
-			// Coba cari iframe-nya dulu
 			const iframe = element.querySelector('#instruksi-bayar') as HTMLIFrameElement;
 			let imgReplacement: HTMLImageElement | null = null;
 
@@ -118,17 +119,22 @@
 
 <div class="space-y-2">
 	<div class="flex items-center justify-end gap-2 overflow-x-auto border-b pb-2">
-		<CancelTicket />
-		<Decline />
-		<Approve />
-		<Button onclick={() => mutation.mutate()} class="!pl-2" disabled={mutation.isPending}>
-			{#if mutation.isPending}
-				<LoaderCircle class="animate-spin" />
-			{:else}
-				<FileText />
-			{/if}
-			Generate PDF
-		</Button>
+		{#if taskFormParams.kind === 'Approval'}
+			<ReturnToUser />
+			<ApprovalApprove {generatePDFMutation} />
+		{:else}
+			<CancelTicket />
+			<Decline />
+			<Approve />
+			<Button onclick={() => generatePDFMutation.mutate()} class="!pl-2" disabled={generatePDFMutation.isPending}>
+				{#if generatePDFMutation.isPending}
+					<LoaderCircle class="animate-spin" />
+				{:else}
+					<FileText />
+				{/if}
+				Generate PDF
+			</Button>
+		{/if}
 	</div>
 	<div class="space-y-2" bind:this={element}>
 		<DataPolis />

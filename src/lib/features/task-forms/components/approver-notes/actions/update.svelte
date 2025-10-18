@@ -15,13 +15,15 @@
 
 	let { data }: { data?: ApproverNotesRes['remarks'] } = $props();
 
+	const getInitialValues = () => data ?? '';
+
 	let open = $state(false);
-	let values = $state(data ?? '');
+	let values = $state(getInitialValues());
 	let submitButton: HTMLButtonElement;
 
 	const queryClient = useQueryClient();
 	const { taskFormParams } = getTaskFormContext();
-	const isFormDirty = $derived(!deepEqual(values, data));
+	const isFormDirty = $derived(!deepEqual(values, getInitialValues()));
 	const mutation = createMutation(() => approverNotesQueries.update({ caseId: String(taskFormParams.case_id) }));
 
 	function handleCloseAttempt(e: KeyboardEvent | PointerEvent) {
@@ -46,7 +48,7 @@
 	}
 </script>
 
-<Dialog.Root bind:open onOpenChangeComplete={() => (values = data ?? '')}>
+<Dialog.Root bind:open onOpenChangeComplete={() => (values = getInitialValues())}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button
@@ -71,14 +73,14 @@
 
 		<form onsubmit={handleSubmit}>
 			<div class="space-y-2">
-				<Label for="notes">Notes</Label>
+				<Label for="notes" required>Notes</Label>
 				<Textarea id="notes" placeholder="Notes" bind:value={values} />
 			</div>
 			<button type="submit" bind:this={submitButton} class="hidden">Update</button>
 		</form>
 
 		<Dialog.Footer>
-			<Button onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending}>
+			<Button onclick={() => submitButton.click()} disabled={!isFormDirty || mutation.isPending || values === ''}>
 				Update
 				{#if mutation.isPending}
 					<LoaderCircle class="h-4 w-4 animate-spin" data-testid="loading-spinner" />

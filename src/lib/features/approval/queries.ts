@@ -10,7 +10,7 @@ const cleanProps = (props: WorkbasketReq) => Object.fromEntries(Object.entries(p
 export const approvalQueries = {
   detailList: (props: WorkbasketReq) => {
     return queryOptions({
-      queryKey: ["approval-detail", "list"],
+      queryKey: ["approval-detail", "list", props],
       queryFn: async () => {
         const { data } = await api.post<PolisListRes<'ApprovalRs'>>("/polaris/api-business-polaris/major/workbasket/approval", {
           pageSize: props.pageSize ?? 10,
